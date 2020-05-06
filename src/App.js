@@ -1,24 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-bootstrap';
 import './App.css';
+
+import Searchbar from './components/SearchBar';
+import Floater from './components/Floater';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    <div className="app-container d-flex flex-column">
+      <div className="p-2 border-bottom d-flex flex-row">
+        <img src="/icon.png" className="jina-icon mt-2" />
+        <p className="ml-2 px-4 mb-0 py-2 flex-fill text-left no-wrap">
+          <b>Jina Box</b> | Demo
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Searchbar />
+      </div>
+      <Floater/>
+      <div className="flex-fill content-container">
+        <div className="empty-content" />
+        <div className="empty-content" />
+        <div className="empty-content" />
+        <div className="empty-content" />
+        <div className="empty-content" />
+        <div className="empty-content" />
+      </div>
     </div>
   );
 }

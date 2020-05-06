@@ -1,38 +1,101 @@
-.App {
-  text-align: center;
+.jina-icon{
+  width: 1.25em; 
+  height: 1.25em;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.jina-box{
+  max-width: 300px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.jina-icon{
+  position: absolute;
+  top: .65em;
+  left: .75em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.jina-search{
+  border-width: 2px;
+  padding-left: 2.75em;
+  border-radius: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.jina-search.drag-active{
+  border-color: #009999;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.p-relative{
+  position: relative;
+}
+
+.empty-content{
+  height: 10em;
+  background: #eceff1;
+  margin: 1.5em;
+  border-radius: .5em;
+}
+
+.header{
+  position: fixed;
+  width: 100%;
+  background: white;
+}
+
+.app-container{
+  height: 100vh;
+}
+
+.content-container{
+  overflow-y: auto;
+}
+
+.floater-container{
+  position: absolute;
+  bottom: 2em;
+  right: 2em;
+}
+
+.floater-icon{
+  background: white;
+  border: 2px solid #cfd8dc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  height: 3em;
+  width: 3em;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+}
+
+.floater-icon .jina-icon{
+  margin-top: .15em !important;
+  margin-left: .1em !important;
+}
+
+.floater-box{
+  position: absolute;
+  background: white;
+  border: 2px solid #cfd8dc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  bottom: 6em;
+  right: 2em;
+  height: 500px;
+  max-height: 65vh;
+  width: 300px;
+  border-radius: 1em;
+}
+
+.floater-box .results{
+  overflow-y: auto;
+  border: 2px solid transparent;
+}
+
+.floater-box .results.drag-active{
+  border-color: #009999;
+}
+
+.d-none{
+  display: none !important;
+}
+
+.no-outline{
+  outline: none !important;
 }
