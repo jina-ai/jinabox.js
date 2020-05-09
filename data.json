@@ -1,0 +1,517 @@
+{
+	"request_id": 1,
+	"search": {
+		"docs": [
+			{
+				"chunks": [],
+				"topk_results": [
+					{
+						"score": {
+							"operands": [],
+							"value": 0.43080267310142517,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 5449,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									66,
+									117,
+									116,
+									116,
+									101,
+									114,
+									115,
+									33,
+									32,
+									85,
+									104,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									63
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.3853986859321594,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 4743,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									75,
+									97,
+									116,
+									104,
+									101,
+									114,
+									105,
+									110,
+									101,
+									33,
+									32,
+									79,
+									104,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									32,
+									82,
+									101,
+									103,
+									105,
+									115,
+									46
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.3652595281600952,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 4390,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									77,
+									114,
+									115,
+									71,
+									97,
+									114,
+									114,
+									105,
+									115,
+									111,
+									110,
+									33,
+									32,
+									83,
+									97,
+									121,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									32,
+									116,
+									111,
+									46
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.34545233845710754,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 91,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									77,
+									114,
+									115,
+									71,
+									97,
+									114,
+									114,
+									105,
+									115,
+									111,
+									110,
+									33,
+									32,
+									72,
+									101,
+									108,
+									108,
+									111,
+									32,
+									101,
+									118,
+									101,
+									114,
+									121,
+									98,
+									111,
+									100,
+									121,
+									33
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.33921077847480774,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 5716,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									80,
+									105,
+									112,
+									33,
+									32,
+									79,
+									104,
+									44,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									46
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.33921077847480774,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 195,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									77,
+									105,
+									115,
+									115,
+									83,
+									116,
+									101,
+									118,
+									101,
+									110,
+									115,
+									33,
+									32,
+									79,
+									104,
+									44,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									46
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.33126509189605713,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 9850,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									67,
+									97,
+									114,
+									116,
+									109,
+									97,
+									110,
+									33,
+									32,
+									74,
+									101,
+									102,
+									102,
+									101,
+									114,
+									115,
+									111,
+									110,
+									44,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									33
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.32912012934684753,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 2130,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									67,
+									97,
+									114,
+									116,
+									109,
+									97,
+									110,
+									33,
+									32,
+									79,
+									104,
+									32,
+									121,
+									101,
+									115,
+									44,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									33
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.32523584365844727,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 3259,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									80,
+									114,
+									111,
+									99,
+									116,
+									111,
+									108,
+									111,
+									103,
+									105,
+									115,
+									116,
+									33,
+									32,
+									72,
+									101,
+									108,
+									108,
+									111,
+									32,
+									101,
+									118,
+									101,
+									114,
+									121,
+									111,
+									110,
+									101,
+									33
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					},
+					{
+						"score": {
+							"operands": [],
+							"value": 0.30762648582458496,
+							"op_name": "MinRanker",
+							"description": ""
+						},
+						"match_doc": {
+							"chunks": [],
+							"topk_results": [],
+							"doc_id": 6802,
+							"raw_bytes": {
+								"type": "Buffer",
+								"data": [
+									82,
+									97,
+									98,
+									98,
+									105,
+									116,
+									121,
+									33,
+									32,
+									87,
+									101,
+									108,
+									108,
+									44,
+									32,
+									104,
+									101,
+									108,
+									108,
+									111,
+									32,
+									116,
+									104,
+									101,
+									114,
+									101,
+									46
+								]
+							},
+							"weight": 1,
+							"length": 0,
+							"meta_info": {
+								"type": "Buffer",
+								"data": []
+							}
+						},
+						"body": "match_doc"
+					}
+				],
+				"doc_id": 1,
+				"raw_bytes": {
+					"type": "Buffer",
+					"data": []
+				},
+				"weight": 0,
+				"length": 1,
+				"meta_info": {
+					"type": "Buffer",
+					"data": []
+				}
+			}
+		],
+		"top_k": 10
+	},
+	"body": "search"
+}

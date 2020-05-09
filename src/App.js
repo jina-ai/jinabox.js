@@ -6,6 +6,8 @@ import './App.css';
 import Searchbar from './components/SearchBar';
 import Floater from './components/Floater';
 
+import {runTest} from './testClient';
+
 function App() {
   return (
     <div className="app-container d-flex flex-column">
@@ -14,7 +16,7 @@ function App() {
         <p className="ml-2 px-4 mb-0 py-2 flex-fill text-left no-wrap">
           <b>Jina Box</b> | Demo
         </p>
-        <Searchbar />
+        <Searchbar onClick={runTest} />
       </div>
       <Floater/>
       <div className="flex-fill content-container">
