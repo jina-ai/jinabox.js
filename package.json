@@ -7,7 +7,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "cors": "^2.8.5",
     "google-protobuf": "^3.12.0-rc.1",
     "grpc": "^1.24.2",
     "grpc-web": "^1.0.7",
@@ -17,7 +19,8 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-transition-group": "^4.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

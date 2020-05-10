@@ -100,16 +100,46 @@ code {
 .floater-box .results{
   overflow-y: auto;
   border: 2px solid transparent;
+  transition: .2s;
 }
 
 .floater-box .results.drag-active{
   border-color: #009999;
 }
 
-.d-none{
-  display: none !important;
-}
-
 .no-outline{
   outline: none !important;
+}
+
+.search-result{
+  padding: .5em;
+  margin: .5em;
+  border-radius: .25em;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+
+}
+
+.jina-box-floater-enter{
+  opacity:0;
+  max-height: 0vh;
+  transform: translateY(10%);
+}
+
+.jina-box-floater-enter-active{
+  opacity: 1;
+  max-height: 65vh;
+  transform: translateY(0%);
+  transition: .2s ease-in-out;
+}
+
+.jina-box-floater-exit{
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+.jina-box-floater-exit{
+  opacity:0;
+  max-height: 0vh;
+  transform: translateY(10%);
+  transition: .2s ease-in-out;
 }
