@@ -15,7 +15,7 @@ class App extends React.Component {
   }
   search = async (query) => {
     console.log('searching for ', query);
-    const response = await api.search([query]);
+    const response = await api.search(query);
     console.log('response:', response);
 
     const { error, results: items } = response;

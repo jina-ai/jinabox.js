@@ -1,3 +1,3 @@
 module.exports = {
-	jinaURL: 'localhost:50402'
+	jinaURL: 'localhost:55198'
 }

@@ -10,6 +10,8 @@ class Floater extends React.Component {
 	state = {
 		active: false,
 		content: false,
+		files:[],
+		filesProcessed: [],
 		results: [],
 	}
 	toggle = () => {
@@ -20,13 +22,33 @@ class Floater extends React.Component {
 	}
 	search = async (query) => {
 		console.log('searching for ', query);
-		const response = await api.search([query]);
+		const response = await api.search(query);
 
 		const { error, results:items } = response;
 		if (error)
 			alert(error);
 		else if (items)
 			this.setState({ results:{items,query}, content: true });
+	}
+	onDrop = (acceptedFiles) => {
+		console.log('files dropped:', acceptedFiles);
+		this.setState({ files: [...this.state.files, ...acceptedFiles] });
+		for (let i = 0; i < acceptedFiles.length; ++i) {
+			const file = acceptedFiles[i];
+			let reader = new FileReader();
+			reader.addEventListener("load", ()=>{
+				const processed = reader.result;
+				this.setState({filesProcessed: [...this.state.filesProcessed,processed]},()=>{
+					const {files,filesProcessed} = this.state;
+					if(filesProcessed.length===files.length){
+						console.log('floater files:',files,'\nprocessed:',filesProcessed)
+						// this.search(filesProcessed);
+						alert('converted '+filesProcessed.length+' files to data URI')
+					}
+				})
+			}, false);
+			reader.readAsDataURL(file);
+		}
 	}
 	render = () => {
 		const { active, content,results } = this.state;
@@ -45,9 +67,9 @@ class Floater extends React.Component {
 					>
 					<div className="floater-box p-2 d-flex flex-column">
 						<div className="pb-2">
-							<SearchBar search={this.search} id="floater-search" />
+							<SearchBar search={this.search} onDrop={this.onDrop} id="floater-search" />
 						</div>
-						<DropZone onDrop={() => alert('drop')} noClick={true}>
+						<DropZone onDrop={this.onDrop} noClick={true}>
 							{({ getRootProps, getInputProps, isDragActive }) =>
 								<div {...getRootProps()} className={`no-outline flex-fill results ${isDragActive ? 'drag-active' : ''}`}>
 									<input {...getInputProps()} />
