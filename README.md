@@ -1,5 +1,9 @@
 # Jina Box
 
+### Install
+
+`yarn`
+
 ### Run in Demo Mode
 
 1. run Jina example such as South Park Search in query mode
