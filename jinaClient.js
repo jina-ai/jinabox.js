@@ -8,10 +8,12 @@ class JinaClient {
 		const packageDefinition = protoLoader.loadSync(PROTO_PATH, { keepCase: true, longs: String, enums: String, defaults: true, oneofs: true });
 		const jina_proto = grpc.loadPackageDefinition(packageDefinition).jina;
 		this.client = new jina_proto.JinaRPC(url, grpc.credentials.createInsecure());
-		console.log('gRPC Jina Client initialized for ',url);
+		console.log('gRPC Jina Client initialized for ', url);
 	}
-	search(queries, top_k = 10) {
+	search(queries, top_k = 10, inBytes = false) {
 		const docs = queries.map(q => {
+			if (inBytes)
+				return { raw_bytes: Buffer.from(q.substring(q.indexOf(','),q.length)) }
 			return { raw_bytes: Buffer.from(q) }
 		});
 		const query = {
@@ -22,7 +24,7 @@ class JinaClient {
 		}
 
 		const call = this.client.call();
-
+		
 		let result = new Promise((resolve, reject) => {
 			let results = [];
 			call.on('data', function (data) {

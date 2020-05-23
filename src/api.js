@@ -11,11 +11,11 @@ const jina = axios.create({
 })
 
 export default {
-	search: async (queries, top_k) => {
-		console.log('api: searching for ',queries);
+	search: async (data, top_k) => {
+		console.log('api: searching for ',data);
 		let res;
 		try {
-			res = await jina.post('search', { queries, top_k });
+			res = await jina.post('search', { data, top_k });
 			return res.data
 		}
 		catch (error) {
