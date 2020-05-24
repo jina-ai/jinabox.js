@@ -91,11 +91,11 @@ let defaultStyles = {
   top: 1rem;
 	left: 1rem;
 	`,
-	jinaFloaterInstructions:`
+	jinaFloaterInstructions: `
 	text-align: center;
 	opacity: .5;
 	`,
-	jinaResultsLabel:`
+	jinaResultsLabel: `
 	margin-top: 0px;
 	margin-left: .5em;
 	opacity: .5;
@@ -202,16 +202,16 @@ class Floater extends HTMLElement {
 		this.results = results;
 		let html = '';
 		console.log('results before:', this.results);
-		this.results = this.results.sort((a,b)=>{return b.score-a.score});
+		this.results = this.results.sort((a, b) => { return b.score - a.score });
 		console.log('results after:', this.results);
-		html += `<p class="jina-floater-results-label">results for ${inBytes?`${query.length} image input${query.length>1?'s':''}`:`"${query}"`}</p>`;
-		this.results.map((result,idx) => { 
-			html += `<div class="jina-floater-result" id="jina-floater-result-${idx}">${result.contentType==='text'?result.data:`<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+		html += `<p class="jina-floater-results-label">results for ${inBytes ? `${query.length} image input${query.length > 1 ? 's' : ''}` : `"${query}"`}</p>`;
+		this.results.map((result, idx) => {
+			html += `<div class="jina-floater-result" id="jina-floater-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
 		});
 		this.dropArea.innerHTML = html;
-		this.results.map((result,idx)=>{
+		this.results.map((result, idx) => {
 			let resultElement = document.getElementById(`jina-floater-result-${idx}`);
-			resultElement.addEventListener('click',()=>{this.search([result.data],result.data.startsWith('data:image/'))});
+			resultElement.addEventListener('click', () => { this.search([result.data], result.data.startsWith('data:image/')) });
 		})
 	}
 
@@ -237,7 +237,7 @@ class Floater extends HTMLElement {
 				const processed = reader.result;
 				processedFiles.push(processed);
 				if (processedFiles.length === acceptedFiles.length)
-					this.search(processedFiles,true)
+					this.search(processedFiles, true)
 				console.log('processed: ', processed);
 			}, false);
 			reader.readAsDataURL(file);
@@ -302,18 +302,18 @@ class SearchBar extends HTMLElement {
 			}
 		}
 		this.results = results;
-		this.results = this.results.sort((a,b)=>{return b.score-a.score});
+		this.results = this.results.sort((a, b) => { return b.score - a.score });
 		let html = '';
 		console.log('this.results:', this.results);
-		html += `<p class="jina-results-label">results for ${inBytes?`${query.length} image input${query.length>1?'s':''}`:`"${query}"`}</p>`;
-		this.results.map((result,idx) => { 
-			html += `<div class="jina-result" id="jina-result-${idx}">${result.contentType==='text'?result.data:`<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+		html += `<p class="jina-results-label">results for ${inBytes ? `${query.length} image input${query.length > 1 ? 's' : ''}` : `"${query}"`}</p>`;
+		this.results.map((result, idx) => {
+			html += `<div class="jina-result" id="jina-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
 		});
 		this.resultsArea = document.getElementById('jina-results-area');
 		this.resultsArea.innerHTML = html;
-		this.results.map((result,idx)=>{
+		this.results.map((result, idx) => {
 			let resultElement = document.getElementById(`jina-result-${idx}`);
-			resultElement.addEventListener('click',()=>{this.search([result.data],result.data.startsWith('data:image/'))});
+			resultElement.addEventListener('click', () => { this.search([result.data], result.data.startsWith('data:image/')) });
 		})
 	}
 
