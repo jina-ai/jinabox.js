@@ -7,7 +7,7 @@ const TEST_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAAB
 
 let defaultStyles = {
 	floaterContainer: `
-	position: absolute;
+	position: fixed;
   bottom: 2em;
   right: 2em;
 	`,
@@ -28,7 +28,7 @@ let defaultStyles = {
 	left: .85rem;
 	`,
 	floaterBox: `
-	position: absolute;
+	position: fixed;
   background: white;
   border: 2px solid #cfd8dc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
@@ -68,7 +68,7 @@ let defaultStyles = {
 	jinaFloaterFileInput: `
 	display: none;
 	`,
-	jinaFloaterResult: `
+	jinaResult: `
 	padding: .5em;
   margin: .5em;
   border-radius: .25em;
@@ -76,6 +76,8 @@ let defaultStyles = {
   cursor: pointer;
 	`,
 	jinaResultsArea: `
+	font-family: sans-serif;
+	padding: .5em;
 	height: 100%;
 	overflow-y: auto;
 	`,
@@ -91,6 +93,11 @@ let defaultStyles = {
 	`,
 	jinaFloaterInstructions:`
 	text-align: center;
+	opacity: .5;
+	`,
+	jinaResultsLabel:`
+	margin-top: 0px;
+	margin-left: .5em;
 	opacity: .5;
 	`
 }
@@ -108,10 +115,11 @@ class Floater extends HTMLElement {
 		.jina-search-icon{${defaultStyles.searchIcon}}
 		.jina-search-input{${defaultStyles.jinaSearch}}
 		.jina-floater-results-container{${defaultStyles.jinaFloaterResultsContainer}}
-		.jina-floater-result{${defaultStyles.jinaFloaterResult}}
+		.jina-floater-result{${defaultStyles.jinaResult}}
 		.jina-highlighted{${defaultStyles.jinaHighlighted}}
 		.jina-contained{width:100%;box-sizing: border-box;}
 		.jina-floater-instructions{${defaultStyles.jinaFloaterInstructions}}
+		.jina-floater-results-label{${defaultStyles.jinaResultsLabel}}
 		#jina-floater-file-input{${defaultStyles.jinaFloaterFileInput}}
 		</style>
 		<div class="jina-floater-container">
@@ -196,8 +204,15 @@ class Floater extends HTMLElement {
 		console.log('results before:', this.results);
 		this.results = this.results.sort((a,b)=>{return b.score-a.score});
 		console.log('results after:', this.results);
-		this.results.map(result => { html += `<div class="jina-floater-result">${result.contentType==='text'?result.data:`<img src="${result.data}" class="jina-result-image"/>`}</div>` });
+		html += `<p class="jina-floater-results-label">results for ${inBytes?`${query.length} image input${query.length>1?'s':''}`:`"${query}"`}</p>`;
+		this.results.map((result,idx) => { 
+			html += `<div class="jina-floater-result" id="jina-floater-result-${idx}">${result.contentType==='text'?result.data:`<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+		});
 		this.dropArea.innerHTML = html;
+		this.results.map((result,idx)=>{
+			let resultElement = document.getElementById(`jina-floater-result-${idx}`);
+			resultElement.addEventListener('click',()=>{this.search([result.data],result.data.startsWith('data:image/'))});
+		})
 	}
 
 	preventDefaults = (e) => {
@@ -222,7 +237,7 @@ class Floater extends HTMLElement {
 				const processed = reader.result;
 				processedFiles.push(processed);
 				if (processedFiles.length === acceptedFiles.length)
-					this.search([TEST_DATA])
+					this.search(processedFiles,true)
 				console.log('processed: ', processed);
 			}, false);
 			reader.readAsDataURL(file);
@@ -272,15 +287,34 @@ class SearchBar extends HTMLElement {
 		this.searchInput.addEventListener('keydown', this.listenForEnter);
 	}
 
-	async search() {
-		const query = this.searchInput.value;
+	async search(query = [this.searchInput.value], inBytes = false) {
 		console.log('searching...');
-		this.results = (await window.JinaBox.search([query], 10)).results;
+		let response = await window.JinaBox.search(query, 10, inBytes);
+		console.log('response:', response);
+		let results = [];
+		let { docs } = response.search;
+		for (let i = 0; i < docs.length; ++i) {
+			let docResults = docs[i];
+			let { topkResults } = docResults;
+			for (let j = 0; j < topkResults.length; ++j) {
+				const res = topkResults[j];
+				results.push({ data: res.matchDoc.dataUri, score: res.score.value, contentType: res.matchDoc.dataUri.startsWith('data:image/') ? 'image' : 'text' });
+			}
+		}
+		this.results = results;
+		this.results = this.results.sort((a,b)=>{return b.score-a.score});
 		let html = '';
-		console.log('this.results:', this.results)
-		this.results.map(result => { html += `<div class="jina-floater-result">${result}</div>` });
+		console.log('this.results:', this.results);
+		html += `<p class="jina-results-label">results for ${inBytes?`${query.length} image input${query.length>1?'s':''}`:`"${query}"`}</p>`;
+		this.results.map((result,idx) => { 
+			html += `<div class="jina-result" id="jina-result-${idx}">${result.contentType==='text'?result.data:`<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+		});
 		this.resultsArea = document.getElementById('jina-results-area');
 		this.resultsArea.innerHTML = html;
+		this.results.map((result,idx)=>{
+			let resultElement = document.getElementById(`jina-result-${idx}`);
+			resultElement.addEventListener('click',()=>{this.search([result.data],result.data.startsWith('data:image/'))});
+		})
 	}
 
 	listenForEnter = (key) => {
@@ -324,6 +358,8 @@ class Results extends HTMLElement {
 		this.innerHTML = `
 		<style>
 		.jina-results-area{${defaultStyles.jinaResultsArea}}
+		.jina-results-label{${defaultStyles.jinaResultsLabel}}
+		.jina-result{${defaultStyles.jinaResult}}
 		</style>
 		<div class="jina-results-area" id="jina-results-area"></div>
 		`;
