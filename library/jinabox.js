@@ -6,12 +6,12 @@ const JINA_ICON = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAA
 const TEST_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA2ElEQVR4nADIADf/AxWcWRUeCEeBO68T3u1qLWarHqMaxDnxhAEaLh0Ssu6ZGfnKcjP4CeDLoJok3o4aOPYAJocsjktZfo4Z7Q/WR1UTgppAAdguAhR+AUm9AnqRH2jgdBZ0R+kKxAFoAME32BL7fwQbcLzhw+dXMmY9BS9K8EarXyWLH8VYK1MACkxlLTY4Eh69XfjpROqjE7P0AeBx6DGmA8/lRRlTCmPkL196pC0aWBkVs2wyjqb/LABVYL8Xgeomjl3VtEMxAeaUrGvnIawVh/oBAAD///GwU6v3yCoVAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA2ElEQVR4nADIADf/AvdGjTZeOlQq07xSYPgJjlWRwfWEBx2+CgAVrPrP+O5ghhOa+a0cocoWnaMJFAsBuCQCgiJOKDBcIQTiLieOrPD/cp/6iZ/Iu4HqAh5dGzggIQVJI3WqTxwVTDjs5XJOy38AlgHoaKgY+xJEXeFTyR7FOfF7JNWjs3b8evQE6B2dTDvQZx3n3Rz6rgOtVlaZRLvR9geCAxuY3G+0mepEAhrTISES3bwPWYYi48OUrQOc//IaJeij9xZGGmDIG9kc73fNI7eA8VMBAAD//0SxXMMT90UdAAAAAElFTkSuQmCC';
 
 let defaultStyles = {
-	floaterContainer: `
+	jinaFloaterContainer: `
 	position: fixed;
   bottom: 2em;
   right: 2em;
 	`,
-	floater: `
+	jinaFloater: `
 	background: white;
   border: 2px solid #cfd8dc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
@@ -20,14 +20,14 @@ let defaultStyles = {
   border-radius: 50%;
   position: relative;
 	cursor: pointer;`,
-	floaterIcon: `
+	jinaFloaterIcon: `
 	width: 1.25em; 
   height: 1.25em;
 	position: absolute;
   top: .85rem;
 	left: .85rem;
 	`,
-	floaterBox: `
+	jinaFloaterBox: `
 	position: fixed;
   background: white;
   border: 2px solid #cfd8dc;
@@ -43,7 +43,7 @@ let defaultStyles = {
 	align-items: stretch;
 	font-family: sans-serif;
 	`,
-	jinaSearch: `
+	jinaSearchInput: `
 	font-size:1em;
 	border-radius: .5em;
 	outline: none;
@@ -70,10 +70,10 @@ let defaultStyles = {
 	`,
 	jinaResult: `
 	padding: .5em;
-  margin: .5em;
+	margin: .5em;
   border-radius: .25em;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+	cursor: pointer;
 	`,
 	jinaResultsArea: `
 	font-family: sans-serif;
@@ -84,12 +84,12 @@ let defaultStyles = {
 	jinaHighlighted: `
 	border-color: #009999
 	`,
-	searchIcon: `
+	jinaSearchIcon: `
 	width: 1.25em; 
   height: 1.25em;
 	position: absolute;
-  top: 1rem;
-	left: 1rem;
+  top: .55rem;
+	left: .55rem;
 	`,
 	jinaFloaterInstructions: `
 	text-align: center;
@@ -99,6 +99,9 @@ let defaultStyles = {
 	margin-top: 0px;
 	margin-left: .5em;
 	opacity: .5;
+	`,
+	jinaSearchContainer: `
+	position: relative;
 	`
 }
 
@@ -107,13 +110,14 @@ class Floater extends HTMLElement {
 		super();
 		this.innerHTML = `
 		<style>
-		.jina-floater-container{${defaultStyles.floaterContainer}}
-		.jina-floater{${defaultStyles.floater}}
-		.jina-floater-icon{${defaultStyles.floaterIcon}}
-		.jina-floater-box{${defaultStyles.floaterBox}}
+		.jina-floater-container{${defaultStyles.jinaFloaterContainer}}
+		.jina-floater{${defaultStyles.jinaFloater}}
+		.jina-floater-icon{${defaultStyles.jinaFloaterIcon}}
+		.jina-floater-box{${defaultStyles.jinaFloaterBox}}
 		.jina-floater-search-container{${defaultStyles.jinaFloaterSearchContainer}}
-		.jina-search-icon{${defaultStyles.searchIcon}}
-		.jina-search-input{${defaultStyles.jinaSearch}}
+		.jina-search-container{${defaultStyles.jinaSearchContainer}}
+		.jina-search-icon{${defaultStyles.jinaSearchIcon}}
+		.jina-search-input{${defaultStyles.jinaSearchInput}}
 		.jina-floater-results-container{${defaultStyles.jinaFloaterResultsContainer}}
 		.jina-floater-result{${defaultStyles.jinaResult}}
 		.jina-highlighted{${defaultStyles.jinaHighlighted}}
@@ -129,8 +133,10 @@ class Floater extends HTMLElement {
 		</div>
 		<div class="jina-floater-box" ondrag={function(){alert('drag')}} id="jina-floater-box">
 			<div class="jina-floater-search-container">
-				<img src="${JINA_ICON}" class="jina-search-icon" />
-				<input placeholder="search" class="jina-search-input jina-contained" id="jina-floater-search-box">
+				<div class="jina-search-container">
+					<img src="${JINA_ICON}" class="jina-search-icon" />
+					<input placeholder="search" class="jina-search-input jina-contained" id="jina-floater-search-box">
+				</div>
 			</div>
 			<div class="jina-floater-results-container" id="jina-floater-drop-area">
 				<input type="file" id="jina-floater-file-input" multiple>
@@ -186,6 +192,7 @@ class Floater extends HTMLElement {
 	}
 
 	async search(query = [this.searchInput.value], inBytes = false) {
+		console.log('query: ',query);
 		console.log('searching...');
 		let response = await window.JinaBox.search(query, 10, inBytes);
 		console.log('response:', response);
@@ -228,19 +235,26 @@ class Floater extends HTMLElement {
 	handleDrop = (e) => {
 		console.log('handle drop files');
 		let dt = e.dataTransfer;
-		let acceptedFiles = dt.files;
-		let processedFiles = [];
-		for (let i = 0; i < acceptedFiles.length; ++i) {
-			const file = acceptedFiles[i];
-			let reader = new FileReader();
-			reader.addEventListener("load", () => {
-				const processed = reader.result;
-				processedFiles.push(processed);
-				if (processedFiles.length === acceptedFiles.length)
-					this.search(processedFiles, true)
-				console.log('processed: ', processed);
-			}, false);
-			reader.readAsDataURL(file);
+		let imgsrc = dt.getData('text')
+		if (imgsrc) {
+			this.search([imgsrc],true);
+		}
+		else {
+			let acceptedFiles = dt.files;
+			let processedFiles = [];
+			console.log('files: ', acceptedFiles)
+			for (let i = 0; i < acceptedFiles.length; ++i) {
+				const file = acceptedFiles[i];
+				let reader = new FileReader();
+				reader.addEventListener("load", () => {
+					const processed = reader.result;
+					processedFiles.push(processed);
+					if (processedFiles.length === acceptedFiles.length)
+						this.search(processedFiles, true)
+					console.log('processed: ', processed);
+				}, false);
+				reader.readAsDataURL(file);
+			}
 		}
 	}
 
@@ -264,7 +278,9 @@ class SearchBar extends HTMLElement {
 		super();
 		this.innerHTML = `
 		<style>
-		.jina-search{${defaultStyles.jinaSearch}}
+		.jina-search-container{${defaultStyles.jinaSearchContainer}}
+		.jina-search-icon{${defaultStyles.jinaSearchIcon}}
+		.jina-search-input{${defaultStyles.jinaSearchInput}}
 		</style>
 		<div class="jina-search-container">
 			<img src="${JINA_ICON}" class="jina-search-icon" />
@@ -328,19 +344,29 @@ class SearchBar extends HTMLElement {
 		e.stopPropagation()
 	}
 
-	handleDrop = function (e) {
+	handleDrop = (e) => {
 		console.log('handle drop files');
-		let dt = e.dataTransfer
-		let acceptedFiles = dt.files
-
-		for (let i = 0; i < acceptedFiles.length; ++i) {
-			const file = acceptedFiles[i];
-			let reader = new FileReader();
-			reader.addEventListener("load", () => {
-				const processed = reader.result;
-				console.log('processed: ', processed);
-			}, false);
-			reader.readAsDataURL(file);
+		let dt = e.dataTransfer;
+		let imgsrc = dt.getData('text')
+		if (imgsrc) {
+			this.search([imgsrc],true);
+		}
+		else {
+			let acceptedFiles = dt.files;
+			let processedFiles = [];
+			console.log('files: ', acceptedFiles)
+			for (let i = 0; i < acceptedFiles.length; ++i) {
+				const file = acceptedFiles[i];
+				let reader = new FileReader();
+				reader.addEventListener("load", () => {
+					const processed = reader.result;
+					processedFiles.push(processed);
+					if (processedFiles.length === acceptedFiles.length)
+						this.search(processedFiles, true)
+					console.log('processed: ', processed);
+				}, false);
+				reader.readAsDataURL(file);
+			}
 		}
 	}
 
