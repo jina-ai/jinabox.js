@@ -2,8 +2,69 @@ console.log('loading widget')
 let _url;
 let _results;
 
-const JINA_ICON = 'data:image/png;base64,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';
-const TEST_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA2ElEQVR4nADIADf/AxWcWRUeCEeBO68T3u1qLWarHqMaxDnxhAEaLh0Ssu6ZGfnKcjP4CeDLoJok3o4aOPYAJocsjktZfo4Z7Q/WR1UTgppAAdguAhR+AUm9AnqRH2jgdBZ0R+kKxAFoAME32BL7fwQbcLzhw+dXMmY9BS9K8EarXyWLH8VYK1MACkxlLTY4Eh69XfjpROqjE7P0AeBx6DGmA8/lRRlTCmPkL196pC0aWBkVs2wyjqb/LABVYL8Xgeomjl3VtEMxAeaUrGvnIawVh/oBAAD///GwU6v3yCoVAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA2ElEQVR4nADIADf/AvdGjTZeOlQq07xSYPgJjlWRwfWEBx2+CgAVrPrP+O5ghhOa+a0cocoWnaMJFAsBuCQCgiJOKDBcIQTiLieOrPD/cp/6iZ/Iu4HqAh5dGzggIQVJI3WqTxwVTDjs5XJOy38AlgHoaKgY+xJEXeFTyR7FOfF7JNWjs3b8evQE6B2dTDvQZx3n3Rz6rgOtVlaZRLvR9geCAxuY3G+0mepEAhrTISES3bwPWYYi48OUrQOc//IaJeij9xZGGmDIG9kc73fNI7eA8VMBAAD//0SxXMMT90UdAAAAAElFTkSuQmCC';
+_icons = {
+	color: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDEwcHgiIGhlaWdodD0iNDEwcHgiIHZpZXdCb3g9IjAgMCA0MTAgNDEwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA2NCAoOTM1MzcpIC0gaHR0cHM6Ly9za2V0Y2guY29tIC0tPgogICAgPHRpdGxlPlByb2R1Y3QgbG9nb19Db3JlX0NvbG9yZnVsPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGcgaWQ9Iumhtemdoi0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iUHJvZHVjdC1sb2dvX0NvcmVfQ29sb3JmdWwiIGZpbGwtcnVsZT0ibm9uemVybyI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0yNDcuODE2MjczLDE1My4yMTczNjggTDI0OS43MzA4MzIsMTUzLjI0MDUzMSBDMjg4LjIwODk3NCwxNTQuNjgzMDI3IDMwOS44NjQ2OSwxNzAuMzE1MTY2IDMyNy4xMDg5ODUsMTkzLjE1Nzg2MyBDMzE5LjIxNDY0MywyNzIuMzU1NTEyIDI1MC4wNjA3MTEsMzMwLjIwNTg3NSAxNzEuNTI0MjQzLDMyNi45OTY0NTIgQzEzMS41NjU5NzcsMzI0LjU5NjA3NCA5Ni42NjE3MDc5LDMwNi42MjYyNDMgNzEuNzI4NjYwMywyNzkuNTI0OTA0IEMxMTQuMzYxOTczLDIyMC43NDU5NzUgMTgzLjM2OTk5NCwxNTQuNDg2NTY3IDI0NS45MTAyLDE1My4yMzUyOTcgTDI0Ny44MTYyNzMsMTUzLjIxNzM2OCBaIiBpZD0i6Lev5b6EIiBmaWxsPSIjRkZDQzY2Ij48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zOC42MTYzNTQ5LDIyMi4wNjY3MTkgTDM4LjY0NTc3OTQsMjIyLjAyNTkxMSBDNTMuNTM5MzMwNiwyMDAuMDk3NjYyIDc3LjM5NzEwMiwxNzguMzEwNzk4IDEwOS4zNTcxNzUsMTg3LjA3OTMzOSBDMTcwLjEzNDY3OCwyMDQuOTc0MzIxIDIyNy4xODU1MTcsMjQxLjYzMjY1IDI2MS45Njk5NDQsMjQwLjU5NzMzNyBDMjk1LjA3NDUxOSwyMzkuNjEyMDI0IDMwOC40NDI4MzEsMjI5Ljc2ODUyNCAzMjIuOTQ3NzU1LDIxNi4yNjU1MTkgQzMwNS4yNzE4OTgsMjgzLjMyODM3MiAyNDIuMTk2OTA1LDMyOS44ODQ1MTggMTcxLjUyNDI0MywzMjYuOTk2NDUyIEMxMDcuNTE0ODg4LDMyMy4xNTEyNzQgNTYuNDc0NTk3NCwyNzkuMzUzMzE3IDM4LjYxNjM1NDksMjIyLjA2NjcxOSBaIiBpZD0i6Lev5b6EIiBmaWxsPSIjRkY3NjczIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xNDQuMTIxOTYsMjAwLjcwMDUzMyBMMTQ1LjM5NDI1OCwxOTkuNjI5NTA3IEwxNDguMDE3NTk3LDIwMC42Mjk1MzIgQzE5MC42ODcwNTMsMjE2Ljk5MTg4OSAyMjQuNjI0ODg1LDIzNC42NTgzNDggMjUxLjM5MjkzNywyMzkuMjE4NTM1IEMyODQuODcxNTU1LDI0NC45MjE5MyAzMDYuOTExMzA5LDIyOS4wODI2NDkgMzIzLjA5MDg3NiwyMTUuNzI3ODAyIEMzMDUuNjEwNzkxLDI4My4wNzc4MzUgMjQyLjM4Njc5MywzMjkuODkyMjc4IDE3MS41MjQyNDMsMzI2Ljk5NjQ1MiBDMTMyLjI5MjA2LDMyNC42Mzk2OTEgOTcuOTMxODcwNiwzMDcuMjc0MTYzIDczLjA5NzY4NjMsMjgwLjk5MzE5OCBDOTEuODQzMzY1MSwyNTIuODc3MjA0IDExNi43MjExNDQsMjIzLjkyMTM2OSAxNDQuMTIxOTYsMjAwLjcwMDUzMyBaIiBpZD0i6Lev5b6EIiBmaWxsPSIjRkY5RjczIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0zMzkuODExMzg4LDMwMy41MjA0NjEgTDM5OS42MTMyOTksMzU3LjI2ODUzOCBDNDEyLjAwNDI4NSwzNjguNDA1MjQgNDEzLjAwNzA4OCwzODcuNDM2NCA0MDEuODU0NjU4LDM5OS44MDQ5NjcgQzM5MC44NDA4MDUsNDEyLjAxOTg0NiAzNzIuMDUzODAyLDQxMy4xMzY5MzcgMzU5LjY2NTE1Miw0MDIuNDAxMzA2IEwzNTkuMjQ5MTk3LDQwMi4wMzQyMTcgTDI5Ni4wOTAyNzQsMzQ1LjI2ODM1NSBDMzEyLjY3NTc1MSwzMzMuNjA4MDA1IDMyNy40MjI1NzcsMzE5LjUxOTIxOCAzMzkuODExMzg4LDMwMy41MjA0NjEgWiBNMC41NTAwMzIxOTIsMTY4LjQ4MjU2OCBDNS45MTU2MzY4OCw3MC4wNjA2NjE5IDkxLjc2NTMxMTksLTUuMDk3ODg0NzQgMTkwLjEzNDczMSwwLjI3MDU4Mjg4MSBDMjg4LjUwNDE1LDcuNDI4NTM5ODQgMzY1LjQxMTE1MSw5MS41MzQ1MzI4IDM1OC4yNTcwMTEsMTg5Ljk1NjQzOSBDMzUxLjEwMjg3MiwyODguMzc4MzQ1IDI2Ny4wNDE3MzIsMzYzLjUzNjg5MSAxNjguNjcyMzEzLDM1OC4xNjg0MjQgQzcwLjMwMjg5MzEsMzUyLjc5OTk1NiAtNC44MTU1NzI1LDI2Ni45MDQ0NzUgMC41NTAwMzIxOTIsMTY4LjQ4MjU2OCBaIE0xODcuOTUyMTI3LDMwLjkzOTA5ODEgQzEwNy40NTU0OTcsMjcuNjQ5NTcxNyAzNS4xNzI4MDk1LDkwLjE1MDU2ODUgMzEuODg3MjMyNSwxNzAuNzQzOTU5IEMyOC42MDE2NTU1LDI1MS4zMzczNSA4OS4zODQ4MjUxLDMyMi4wNjIxNjMgMTcxLjUyNDI0MywzMjYuOTk2NDUyIEMyNTIuMDIwODczLDMzMC4yODU5NzggMzIyLjY2MDc3MywyNjkuNDI5NzQ0IDMyNy41ODkxMzgsMTg3LjE5MTU5IEMzMzAuODQxODU5LDEwNy40MDQxMzQgMjcxLjMwMDgwMSwzNy4yODg4NzA1IDE5MC40MDk4NiwzMS4xMDY4MDggTDE4Ny45NTIxMjcsMzAuOTM5MDk4MSBaIiBpZD0i5b2i54q2IiBmaWxsPSIjMDA5OTk5Ij48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=',
+	mono: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iODJweCIgaGVpZ2h0PSI4MnB4IiB2aWV3Qm94PSIwIDAgODIgODIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDY0ICg5MzUzNykgLSBodHRwczovL3NrZXRjaC5jb20gLS0+CiAgICA8dGl0bGU+UHJvZHVjdCBsb2dvL0NvcmUvbGlnaHQvUHJvZHVjdCBsb2dvX0NvcmVfbGlnaHQ8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0i6aG16Z2iLTIiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJQcm9kdWN0LWxvZ28vQ29yZS9saWdodC9Qcm9kdWN0LWxvZ29fQ29yZV9saWdodCIgZmlsbD0iIzAwOTk5OSIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgPHBhdGggZD0iTTQ5LjcwMjM4OTQsMzAuNTM0Mzc1NyBDMzYuOTc5Mjk1OCwzMC4yNDIwMTQ0IDIyLjc2MjgzNzUsNDMuODQ0MDgyNSAxNC4wODgwMDA5LDU1LjgzMDg5NDIgQzE5LjAwMzc0MTYsNjAuODAxMDM1NiAyNy4yNjU4Mjk3LDY1LjE5OTI3NTEgMzQuNzg0MDIxNCw2NS40OTE2MzY0IEM1MC4zOTg3MjcyLDY2LjM2ODcyMDIgNjMuODcxMjg5MSw1NC4yMTU2Mzc5IDY1LjMxNzA5NTIsMzguNzIwNDkxIEM2MS44NDcxNjA2LDM0LjA0MjcxMDggNTcuNTA5NzQyMywzMC44MjY3MzcgNDkuNzAyMzg5NCwzMC41MzQzNzU3IFoiIGlkPSLot6/lvoQiIGZpbGwtb3BhY2l0eT0iMC43OTU3ODIzNDMiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0iTTY0LjgwOTUyNDgsNDIuNzU3MTY3MiBDNjEuNzMzNjIwMSw0NS42NjYxMDA5IDU5LjE0MTM0MTUsNDcuODI2MjM1MiA1Mi4yMDIxMDQ5LDQ4LjAzMzAxNzUgQzQ1LjI2Mjg2ODIsNDguMjM5Nzk5OSAzMy44ODE2NDY2LDQwLjkxODA1MzEgMjEuNzU2OTgyOSwzNy4zNDM4OTg5IEMxNS4yNTEwNjU4LDM1LjU1NjgyMTggMTAuNDI4MTQ0Niw0MC4xMjQxOTQxIDcuNDcwOTA5NTgsNDQuNTkxODg2OSBDMTEuMDE5NTkxNiw1Ni4yMDc4ODgxIDIxLjM2OTkxNDMsNjQuODQ1NDI3NSAzNC4wODYwMjUsNjUuNDQxMTE5OSBDNDguNTc2NDc2Nyw2Ni42MzI1MDQ3IDYxLjg1MjI4OTcsNTYuNzU1OTM4IDY0LjgwOTUyNDgsNDIuNzU3MTY3MiBaIiBpZD0i6Lev5b6EIiBmaWxsLW9wYWNpdHk9IjAuNzk1NzgyMzQzIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik02Ny43MzQ3ODc3LDYwLjMwNjg1NTUgTDc5LjY1NDg3MDMsNzAuOTk3MDA0NiBDODIuMTI0NjcyOCw3My4yMTIwODA5IDgyLjMyNDU1NDEsNzYuOTk3MzU1IDgwLjEwMTYyMzcsNzkuNDU3NDQ3NiBDNzcuOTA2MzE0Nyw4MS44ODY5NzE4IDc0LjE2MTY0MTksODIuMTA5MTU5OSA3MS42OTIzMDQ4LDc5Ljk3Mzg1NjEgTDcxLjYwOTM5NTYsNzkuOTAwODQyNiBMNTkuMDIwODA0LDY4LjYwOTg5OTUgQzYyLjMyNjQwMjcsNjYuMjkwNzkyOCA2NS4yNjU1NjM2LDYzLjQ4ODc0NDUgNjcuNzM0Nzg3Nyw2MC4zMDY4NTU1IFoiIGlkPSLlvaLnirbnu5PlkIgiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0iTTM3LjQzOTk4NzQsNi4xNzc5NzkxNCBDNTMuODI2NTAyNCw3LjE2MjM1MTg5IDY1Ljk1MjUyMzUsMjEuMjcxNjk0NiA2NS4yOTcwNjMsMzcuMzQ5NzgyNyBDNjQuMzEzODcyMSw1My43NTU5OTUxIDUwLjIyMTQ2OTEsNjUuODk2NTkyMyAzNC4xNjI2ODQ0LDY1LjI0MDM0MzkgQzE3Ljc3NjE2OTQsNjQuMjU1OTcxMSA1LjY1MDE0ODI5LDUwLjE0NjYyODQgNi4zMDU2MDg5NCwzNC4wNjg1NDAyIEM2Ljk2MTA2OTU5LDE3Ljk5MDQ1MiAyMS4zODEyMDI4LDUuNTIxNzMwNiAzNy40Mzk5ODc0LDYuMTc3OTc5MTQgTTM3Ljg3NTQwOTEsMC4wNTk3MjE5NTc1IEMxOC4yNTEwNjc5LC0xLjAxMTI2NzggMS4xMjQzNzAxMiwxMy45ODI1ODg3IDAuMDUzOTUxNTEzMSwzMy42MTc0MDA5IEMtMS4wMTY0NjcxLDUzLjI1MjIxMzEgMTMuOTY5MzkzNCw3MC4zODgwNDkgMzMuNTkzNzM0Niw3MS40NTkwMzg4IEM1My4yMTgwNzU4LDcyLjUzMDAyODUgNjkuOTg3OTY3Myw1Ny41MzYxNzIgNzEuNDE1MTkyMSwzNy45MDEzNTk5IEM3Mi44NDI0MTY5LDE4LjI2NjU0NzggNTcuNDk5NzUwMiwxLjQ4NzcwODMyIDM3Ljg3NTQwOTEsMC4wNTk3MjE5NTc1IFoiIGlkPSLlvaLnirYiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==',
+	inverse: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDIwcHgiIGhlaWdodD0iNDIwcHgiIHZpZXdCb3g9IjAgMCA0MjAgNDIwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA2NCAoOTM1MzcpIC0gaHR0cHM6Ly9za2V0Y2guY29tIC0tPgogICAgPHRpdGxlPlByb2R1Y3QgbG9nb19Db3JlX0Rhcms8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0i6aG16Z2iLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJQcm9kdWN0LWxvZ29fQ29yZV9EYXJrIiBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8cGF0aCBkPSJNMjUzLjg2MDU3MywxNTYuOTU0Mzc3IEwyNTUuODIxODI4LDE1Ni45NzgxMDUgQzI5NS4yMzg0NjEsMTU4LjQ1NTc4MyAzMTcuNDIyMzY1LDE3NC40NjkxOTQgMzM1LjA4NzI1MywxOTcuODY5MDMxIEMzMjcuMDAwMzY2LDI3OC45OTgzMjkgMjU2LjE1OTc1MiwzMzguMjU5Njc3IDE3NS43MDc3NjEsMzM0Ljk3MTk3NSBDMTM0Ljc3NDkwMywzMzIuNTEzMDUyIDk5LjAxOTMxMDYsMzE0LjEwNDkzMiA3My40NzgxMzk4LDI4Ni4zNDI1ODQgQzExNy4xNTEyOSwyMjYuMTMwMDIzIDE4Ny44NDI0MzMsMTU4LjI1NDUzMiAyNTEuOTA4MDEsMTU2Ljk3Mjc0MyBMMjUzLjg2MDU3MywxNTYuOTU0Mzc3IFoiIGlkPSLot6/lvoQiIGZpbGwtb3BhY2l0eT0iMC44MDI5MzkyNDgiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0iTTM5LjU1ODIxNzIsMjI3LjQ4Mjk4IEwzOS41ODgzNTkzLDIyNy40NDExNzcgQzU0Ljg0NTE2OCwyMDQuOTc4MDkzIDc5LjI4NDgzNjEsMTgyLjY1OTg0MiAxMTIuMDI0NDIzLDE5MS42NDIyNSBDMTc0LjI4NDMwNCwyMDkuOTczNjk0IDIzMi43MjY2MjcsMjQ3LjUyNjEyOSAyNjguMzU5NDU0LDI0Ni40NjU1NjUgQzMwMi4yNzE0NTgsMjQ1LjQ1NjIxOSAzMTUuOTY1ODI2LDIzNS4zNzI2MzQgMzMwLjgyNDUyOSwyMjEuNTQwMjg4IEMzMTIuNzE3NTU0LDI5MC4yMzg4MiAyNDguMTA0MTQ3LDMzNy45MzA0ODIgMTc1LjcwNzc2MSwzMzQuOTcxOTc1IEMxMTAuMTM3MjAzLDMzMS4wMzMwMTMgNTcuODUyMDI2NiwyODYuMTY2ODEzIDM5LjU1ODIxNzIsMjI3LjQ4Mjk4IFoiIGlkPSLot6/lvoQiIGZpbGwtb3BhY2l0eT0iMC44MDI5MzkyNDgiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0iTTM0OC4wOTk0NzEsMzEwLjkyMzM5OSBMNDA5LjM1OTk2NSwzNjUuOTgyNDA1IEM0MjIuMDUzMTcsMzc3LjM5MDczNCA0MjMuMDgwNDMyLDM5Ni44ODYwNjkgNDExLjY1NTk5MSw0MDkuNTU2MzA4IEM0MDAuMzczNTA4LDQyMi4wNjkxMSAzODEuMTI4Mjg1LDQyMy4yMTM0NDggMzY4LjQzNzQ3Myw0MTIuMjE1OTcyIEwzNjguMDExMzcyLDQxMS44Mzk5MjkgTDMwMy4zMTE5ODgsMzUzLjY4OTUzNSBDMzIwLjMwMTk4OSwzNDEuNzQ0Nzg2IDMzNS40MDg0OTMsMzI3LjMxMjM3IDM0OC4wOTk0NzEsMzEwLjkyMzM5OSBaIE0wLjU2MzQ0NzYxMSwxNzIuNTkxODk5IEM2LjA1OTkyMDcxLDcxLjc2OTQ1ODUgOTQuMDAzNDkwMiwtNS4yMjIyMjMzOSAxOTQuNzcyMTY0LDAuMjc3MTgyNDYzIEMyOTUuNTQwODM3LDcuNjA5NzIzNzQgMzc0LjMyMzYxOCw5My43NjcwODI0IDM2Ni45OTQ5ODcsMTk0LjU4OTUyMyBDMzU5LjY2NjM1NywyOTUuNDExOTYzIDI3My41NTQ5NDUsMzcyLjQwMzY0NSAxNzIuNzg2MjcxLDM2Ni45MDQyMzkgQzcyLjAxNzU5NzgsMzYxLjQwNDgzMyAtNC45MzMwMjU0OCwyNzMuNDE0MzQgMC41NjM0NDc2MTEsMTcyLjU5MTg5OSBaIE0xOTIuNTM2MzI1LDMxLjY5MzcxMDMgQzExMC4wNzYzNjMsMjguMzIzOTUxNSAzNi4wMzA2ODI5LDkyLjM0OTM2MjkgMzIuNjY0OTY5OSwxNzQuOTA4NDQ2IEMyOS4yOTkyNTY5LDI1Ny40Njc1MyA5MS41NjQ5NDI4LDMyOS45MTczMzcgMTc1LjcwNzc2MSwzMzQuOTcxOTc1IEMyNTguMTY3NzI0LDMzOC4zNDE3MzQgMzMwLjUzMDU0OCwyNzYuMDAxMjAxIDMzNS41NzkxMTcsMTkxLjc1NzIzOSBDMzM4LjkxMTE3MiwxMTAuMDIzNzQ3IDI3Ny45MTc4OTQsMzguMTk4MzU1MSAxOTUuMDU0MDAzLDMxLjg2NTUxMDcgTDE5Mi41MzYzMjUsMzEuNjkzNzEwMyBaIiBpZD0i5b2i54q2Ij48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=',
+	target: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfkBR0DMy4BaSWgAAAEKUlEQVRYw72YQWwbRRSG/02s2rFSSA5RKlUyOK1DHYfcGrhwiRIaoUg5Aj3kwiVCVRS1VW8IIdp7KwTKhRMEOPTQVFwcGV+aSyltpERGVKKmASHvNlIciQh5m9KPw26c9dpre0PN29PO/PP+mTfz3rw3UghBDLLOOoOEGaZIKLTUr5OS+mV1gISAFuPFkPjUH5MhdCwcVZN+j/q4hjSmjF7VKxqX9KO29FgFbaiov9tQFUzhfkMssMo2jWSbVRYYOsCGWkkVntQHel9Dkiz9rIIeKqqPJH0qW8Ma1YgGJRX1rb7Ub6HW484ryhwFoEKOedLEEeI0FhanESJOmnlyVIACc0Sbr6ee4gRL2ECeWXo5NN4ZnvCEM56WXmbJAzZLnGiLxh04TBawuEK/196IJFtskcSLFv1cxgKyDLekcYekWAM2mfBvKCLCDDNE8I8RE2wCa6Ra0LiGygJ3GasHe4zUqH2Mu0DWMVoziihLwEYjijZsMMYGsOQcgWDYHDbWgaHCSNVoJjZzAeNxtrUAXAlP4aG5BBRIBpNcBfLOiTqKuCctD1xtoMMNII+oMHtUiqqeWSo8coJNfecCkHNcL9AYgSfMg+olBywcIrqq/XHNSLqpvUbxx4XHNKJJTWpEMU+rRwxJ2tNNSTOK1/OPso1JutEMEcLgHCtY7LOPxQpvYwRi05hsM1rTjxDngTzxQIoPKQM73Oc+O8AO84E0PfwAnK8nuQZ8Fji3aco852vO0kcfZ1kGdpgKxF8HrlV7q9u4DFxotKmIHr4HvvLE4+MsA7eI4lfvfBeA5YO/iAbUJxRVQlJESUVk60/9UzO5IY1rR9e1V235Szf0jt5UUr/UILt1UlE9U0RSQhnZMrQr7mFSwsQGypQwKTLtm98U+/zEy56QL/pZx2bCh5ymiEmJMmBjUqLEvS61I8+FulSPNdq4bQ1JDJAiRYY7wCJJUiTo9s0vjUWZ8RpXfIOyc+RrkN0kSJFkEbhDhhQpBtrb+Bi3gW84Xu1/ie+AFWJtbbwh13MfSxo+WJ9PKvpCb+k9STf0UIZe06LeVVmfq+K3jKvtlKvxUFsIZyzzgAeuWzZzxlxjZ2wVVro4x20s9nmKxS2mQoYVOVnUKjDfNAbHGGGSSdLEmsbheWC1ziqdDfXezk5fWv/L9VuTSFz+T4nExVaJRKdToprkbvPIyd1m0+SuCu1smurJ6deAjYYJdzfTTHsDqCfh3gDWwuT1WcDkUl3pkKBIkURd6XARE8i2zOlraIKKoBQm5oEq1/XCFkEeGn851+Me8hIl54DS0245135hWtCmflVEH0v6RM90Sq9r9MiFqW9DO1Vi+9bjfSxIuI8Fv7+Qx4K6FTlfBhOTTKtoXCst31Y8V6okPRWS7HCzb/OVyENlCBnhjBP2vWtXf0jaDTfoXxBSJgmkpHUYAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTI5VDAzOjUxOjM0KzAwOjAwYs79EwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yOVQwMzo1MTozNCswMDowMBOTRa8AAAAASUVORK5CYII='
+}
+
+let baseStyles = `
+@keyframes jina-bg-rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+.jina-bg-default{
+	background: #009999;
+	border-radius: 50px;
+	padding: 1px;
+	overflow: hidden;
+}
+
+.jina-bg-rainbow {
+	position: relative;
+	z-index: 0;
+	border-radius: 50px;
+	overflow-y: hidden;
+	padding: 1px;
+}
+
+.jina-bg-rainbow:before {
+	content: '';
+	position: absolute;
+	z-index: -2;
+	left: -50%;
+	top: -450%;
+	width: 200%;
+	height: 1000%;
+	background-color: #399953;
+	background-repeat: no-repeat;
+	background-size: 50% 50%, 50% 50%;
+	background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+	background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
+	animation: jina-bg-rotate 4s linear infinite;
+}
+
+.jina-bg-rainbow:after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	left: 1px;
+	top: 1px;
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	background: white;
+	border-radius: 50px;
+}
+
+.jina-search-input::placeholder{
+	opacity: .5;
+	font-weight: 700;
+	font-size: .75em;
+}
+`
 
 let defaultStyles = {
 	jinaFloaterContainer: `
@@ -13,7 +74,7 @@ let defaultStyles = {
 	`,
 	jinaFloater: `
 	background: white;
-  border: 2px solid #cfd8dc;
+  border: 1px solid #cfd8dc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   height: 3em;
   width: 3em;
@@ -30,7 +91,7 @@ let defaultStyles = {
 	jinaFloaterBox: `
 	position: fixed;
   background: white;
-  border: 2px solid #cfd8dc;
+  border: 1px solid #cfd8dc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   bottom: 6em;
   right: 2em;
@@ -41,14 +102,16 @@ let defaultStyles = {
 	display: none;
 	flex-direction: column;
 	align-items: stretch;
-	font-family: sans-serif;
+	font-family: Comfortaa;
 	`,
 	jinaSearchInput: `
+	font-family: Comfortaa;
 	font-size:1em;
-	border-radius: .5em;
+	border-radius: 2em;
+	border: none;
 	outline: none;
 	padding: .5em;
-	border: 2px solid #cfd8dc;
+	// border: 1px solid #cfd8dc;
 	padding-left: 2.25rem;
 	`,
 	jinaFloaterSearchContainer: `
@@ -58,7 +121,7 @@ let defaultStyles = {
 	`,
 	jinaFloaterResultsContainer: `
 	align-content: flex-end;
-	border: 2px solid white;
+	border: 1px solid white;
 	border-radius: .5em;
 	margin: .5em;
 	height: 100%;
@@ -69,6 +132,7 @@ let defaultStyles = {
 	display: none;
 	`,
 	jinaResult: `
+	background: white;
 	padding: .5em;
 	margin: .5em;
   border-radius: .25em;
@@ -76,7 +140,7 @@ let defaultStyles = {
 	cursor: pointer;
 	`,
 	jinaResultsArea: `
-	font-family: sans-serif;
+	font-family: Comfortaa;
 	padding: .5em;
 	height: 100%;
 	overflow-y: auto;
@@ -88,7 +152,7 @@ let defaultStyles = {
 	width: 1.25em; 
   height: 1.25em;
 	position: absolute;
-  top: .55rem;
+  top: .5rem;
 	left: .55rem;
 	`,
 	jinaFloaterInstructions: `
@@ -102,14 +166,43 @@ let defaultStyles = {
 	`,
 	jinaSearchContainer: `
 	position: relative;
+	`,
+	jinaPersian: `
+	border-color: #009999;
 	`
+}
+
+let defaultPlaceholders = ['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'];
+
+let defaultSettings = {
+	typewriterDelayCharacter: 50,
+	typewriterDelayItem: 1000,
+	styleTheme: 'persian',
+	searchIcon: 'color',
+	floaterIcon: 'color',
+	globalDrag: true,
 }
 
 class Floater extends HTMLElement {
 	constructor() {
 		super();
+
+		const customSettings = JSON.parse(this.getAttribute('settings'));
+		this.settings = {
+			...defaultSettings,
+			...customSettings,
+		}
+
+		const floaterIcon = _icons[this.settings.floaterIcon] || this.settings.floaterIcon;
+		const searchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
+
 		this.innerHTML = `
+		<head>
+			<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap" rel="stylesheet">
+		</head>
+
 		<style>
+		${baseStyles}
 		.jina-floater-container{${defaultStyles.jinaFloaterContainer}}
 		.jina-floater{${defaultStyles.jinaFloater}}
 		.jina-floater-icon{${defaultStyles.jinaFloaterIcon}}
@@ -124,18 +217,22 @@ class Floater extends HTMLElement {
 		.jina-contained{width:100%;box-sizing: border-box;}
 		.jina-floater-instructions{${defaultStyles.jinaFloaterInstructions}}
 		.jina-floater-results-label{${defaultStyles.jinaResultsLabel}}
+		.jina-persian-theme{${defaultStyles.jinaPersian}}
 		#jina-floater-file-input{${defaultStyles.jinaFloaterFileInput}}
 		</style>
+
 		<div class="jina-floater-container">
 			<div class="jina-floater" id="jina-floater-icon">
-				<img src="${JINA_ICON}" class="jina-floater-icon" />
+				<img src="${floaterIcon}" class="jina-floater-icon" />
 			</div>
 		</div>
 		<div class="jina-floater-box" ondrag={function(){alert('drag')}} id="jina-floater-box">
 			<div class="jina-floater-search-container">
-				<div class="jina-search-container">
-					<img src="${JINA_ICON}" class="jina-search-icon" />
-					<input placeholder="search" class="jina-search-input jina-contained" id="jina-floater-search-box">
+				<div id="jina-floater-background-search-container" class="jina-bg-default">
+					<div class="jina-search-container">
+						<img src="${searchIcon}" class="jina-search-icon" />
+						<input placeholder="search" class="jina-search-input jina-contained" id="jina-floater-search-box" autocomplete="off">
+					</div>
 				</div>
 			</div>
 			<div class="jina-floater-results-container" id="jina-floater-drop-area">
@@ -146,7 +243,6 @@ class Floater extends HTMLElement {
 		`;
 
 		this.showBox = false;
-
 
 		this.jinaButton = document.getElementById('jina-floater-icon');
 		this.dropArea = document.getElementById('jina-floater-drop-area');
@@ -171,6 +267,14 @@ class Floater extends HTMLElement {
 
 		this.searchInput = document.getElementById('jina-floater-search-box');
 		this.searchInput.addEventListener('keydown', this.listenForEnter);
+		this.searchInput.addEventListener('focus', this.highlightSearch);
+		this.searchInput.addEventListener('blur', this.unhighlightSearch);
+
+		this.searchBackground = document.getElementById('jina-floater-background-search-container');
+
+		const placeholders = JSON.parse(this.getAttribute('placeholders'));
+		console.log('settings: ', this.settings)
+		typeWriter('#jina-floater-search-box', placeholders || defaultPlaceholders, 0, 0, this.settings.typewriterDelayCharacter, this.settings.typewriterDelayItem);
 	}
 
 	toggleShow() {
@@ -192,7 +296,7 @@ class Floater extends HTMLElement {
 	}
 
 	async search(query = [this.searchInput.value], inBytes = false) {
-		console.log('query: ',query);
+		console.log('query: ', query);
 		console.log('searching...');
 		let response = await window.JinaBox.search(query, 10, inBytes);
 		console.log('response:', response);
@@ -237,7 +341,7 @@ class Floater extends HTMLElement {
 		let dt = e.dataTransfer;
 		let imgsrc = dt.getData('text')
 		if (imgsrc) {
-			this.search([imgsrc],true);
+			this.search([imgsrc], true);
 		}
 		else {
 			let acceptedFiles = dt.files;
@@ -266,9 +370,11 @@ class Floater extends HTMLElement {
 	}
 
 	highlightSearch = () => {
+		this.searchBackground.classList.add('jina-bg-rainbow');
 		this.searchInput.classList.add('jina-highlighted')
 	}
 	unhighlightSearch = () => {
+		this.searchBackground.classList.remove('jina-bg-rainbow');
 		this.searchInput.classList.remove('jina-highlighted')
 	}
 }
@@ -276,34 +382,82 @@ class Floater extends HTMLElement {
 class SearchBar extends HTMLElement {
 	constructor() {
 		super();
+		const customSettings = JSON.parse(this.getAttribute('settings'));
+		this.settings = {
+			...defaultSettings,
+			...customSettings,
+		}
+
+		const searchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
+
 		this.innerHTML = `
 		<style>
 		.jina-search-container{${defaultStyles.jinaSearchContainer}}
 		.jina-search-icon{${defaultStyles.jinaSearchIcon}}
 		.jina-search-input{${defaultStyles.jinaSearchInput}}
+		.jina-searchbar-container{
+			max-width: 300px;
+			position: relative;
+		}
+		.jina-expander{
+			position: absolute;
+			top: 0;
+			width: 100%;
+			background: #009999;
+			border-radius: 1.25em;
+			padding-top: 0em;
+			padding-bottom: 0em;
+			text-align: center;
+			opacity: 0;
+			height: 0px;
+			transition: .2s;
+			overflow: hidden;
+		}
+
 		</style>
-		<div class="jina-search-container">
-			<img src="${JINA_ICON}" class="jina-search-icon" />
-			<input placeholder="search" class="jina-search-input" id="jina-search-box">
+		<div class="jina-searchbar-container">
+			<div class="jina-expander" id="jina-search-expander">
+				<h3>Drop here to search</h3>
+				<img src="${_icons.target}" class="jina-target-drop-icon">
+			</div>
+			<div id="jina-searchbar-background-container" class="jina-bg-default">
+				<div class="jina-search-container">
+					<img src="${searchIcon}" class="jina-search-icon" />
+					<input placeholder="search" class="jina-search-input jina-contained" id="jina-search-box" autocomplete="off">
+				</div>
+			</div>
+			
 		</div>
-		
 		`;
 
 		this.dropArea = document.getElementById('jina-search-box');
-		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => { this.dropArea.addEventListener(eventName, this.preventDefaults, false) });
-		['dragenter', 'dragover'].forEach(eventName => {
-			this.dropArea.addEventListener(eventName, this.highlight, false)
+		this.expander = document.getElementById('jina-search-expander');
+
+		this.dragCounter = 0;
+
+		['drag','dragenter', 'dragover', 'dragleave', 'dragexit', 'drop'].forEach(eventName => {
+			document.addEventListener(eventName, this.preventDefaults, false);
 		});
-		['dragleave', 'drop'].forEach(eventName => {
-			this.dropArea.addEventListener(eventName, this.unhighlight, false)
+		['dragenter'].forEach(eventName => {
+			document.addEventListener(eventName, this.highlight, false);
 		});
+		['dragleave', 'drop','dragexit'].forEach(eventName => {
+			document.addEventListener(eventName, this.unhighlight, false);
+		});
+
 		this.dropArea.addEventListener('drop', this.handleDrop, false);
+		this.expander.addEventListener('drop', this.handleDrop, false);
 
 		this.searchInput = document.getElementById('jina-search-box');
 		this.searchInput.addEventListener('keydown', this.listenForEnter);
+
+		const placeholders = JSON.parse(this.getAttribute('placeholders'));
+
+		typeWriter('#jina-search-box', placeholders || defaultPlaceholders);
 	}
 
 	async search(query = [this.searchInput.value], inBytes = false) {
+		this.unhighlight();
 		console.log('searching...');
 		let response = await window.JinaBox.search(query, 10, inBytes);
 		console.log('response:', response);
@@ -344,12 +498,22 @@ class SearchBar extends HTMLElement {
 		e.stopPropagation()
 	}
 
-	handleDrop = (e) => {
+	handleDrop = async (e) => {
+		e.stopPropagation();
+		e.preventDefault();
 		console.log('handle drop files');
+		console.log('drop event:', e);
 		let dt = e.dataTransfer;
-		let imgsrc = dt.getData('text')
+		let imgsrc = dt.getData('URL')
+		console.log('imgsrc: ', imgsrc)
 		if (imgsrc) {
-			this.search([imgsrc],true);
+			if (imgsrc.startsWith('data:')) {
+				this.search([imgsrc], true);
+			}
+			else {
+				const dataURI = await getDataUri(imgsrc);
+				console.log('dataUri:', dataURI)
+			}
 		}
 		else {
 			let acceptedFiles = dt.files;
@@ -371,10 +535,25 @@ class SearchBar extends HTMLElement {
 	}
 
 	highlight = () => {
-		this.dropArea.classList.add('jina-highlighted')
+		this.dragCounter++;
+		console.log('highlighting')
+		this.dropArea.classList.add('jina-highlighted');
+		this.expander.style.paddingTop = '5em';
+		this.expander.style.paddingBottom = '5em';
+		this.expander.style.height = 'auto';
+		this.expander.style.opacity = 1;
 	}
 	unhighlight = () => {
-		this.dropArea.classList.remove('jina-highlighted')
+		console.log('dragexit')
+		this.dragCounter--;
+		if(this.dragCounter<1){
+			console.log('unhighlighting')
+			this.dropArea.classList.remove('jina-highlighted');
+			this.expander.style.paddingTop = '0em';
+			this.expander.style.paddingBottom = '0em';
+			this.expander.style.height = '0px';
+			this.expander.style.opacity = 0;
+		}
 	}
 }
 
@@ -420,5 +599,59 @@ window.JinaBox = {
 			body: JSON.stringify({ data, top_k, mode: 'search' })
 		})
 		return results.json();
+	}
+}
+
+function getDataUri(url) {
+	return new Promise(function (resolve, reject) {
+		var xhr = new XMLHttpRequest();
+
+		xhr.responseType = "arraybuffer";
+		xhr.open("GET", `${url}`);
+
+		xhr.onload = function () {
+			var base64, binary, bytes, mediaType;
+
+			bytes = new Uint8Array(xhr.response);
+			//NOTE String.fromCharCode.apply(String, ...
+			//may cause "Maximum call stack size exceeded"
+			binary = [].map.call(bytes, function (byte) {
+				return String.fromCharCode(byte);
+			}).join('');
+			mediaType = xhr.getResponseHeader('content-type');
+			base64 = [
+				'data:',
+				mediaType ? mediaType + ';' : '',
+				'base64,',
+				btoa(binary)
+			].join('');
+			resolve(base64);
+		};
+		xhr.onerror = function (e) {
+			console.log('xhr error:', e);
+		}
+		xhr.send();
+	})
+}
+
+function typeWriter(selector_target, text_list, i = 0, text_list_i = 0, delay_next_char = 100, delay_next_item = 1000, ) {
+	if (!i) {
+		document.querySelector(selector_target).placeholder = "";
+	}
+	txt = text_list[text_list_i];
+	if (i < txt.length) {
+		document.querySelector(selector_target).placeholder += txt.charAt(i);
+		i++;
+		setTimeout(typeWriter, delay_next_char, selector_target, text_list, i, text_list_i, delay_next_char, delay_next_item);
+	}
+	else {
+		text_list_i++;
+		if (typeof text_list[text_list_i] === "undefined") {
+			setTimeout(typeWriter, delay_next_item, selector_target, text_list, 0, 0, delay_next_char, delay_next_item);
+		}
+		else {
+			i = 0;
+			setTimeout(typeWriter, delay_next_item, selector_target, text_list, i, text_list_i, delay_next_char, delay_next_item);
+		}
 	}
 }
