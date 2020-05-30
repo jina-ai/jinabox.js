@@ -9,15 +9,7 @@
 	<style>
 		body {
 			margin: 0px;
-			font-family: Comfortaa;
 			background: #eceff1;
-		}
-
-		h1,
-		h3 {
-			text-align: center;
-			color: white;
-			font-weight: 600;
 		}
 
 		.d-inline-block {
@@ -38,6 +30,14 @@
 			background: #009999;
 			position: fixed;
 			top: 0px;
+			font-family: Comfortaa;
+			color: white;
+			font-weight: 600;
+		}
+
+		.demo-bar h1,
+		.demo-bar h3{
+			text-align: center;
 		}
 
 		.jina-container {
@@ -102,7 +102,7 @@
 		</div>
 		<div class="jina-container">
 			<div class="header">
-				<jina-searchbar placeholders='["hello","test"]'/>
+				<jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>
 			</div>
 			<div class="content-body">
 				<jina-results></jina-results>

@@ -10,6 +10,7 @@ _icons = {
 }
 
 let baseStyles = `
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap');
 @keyframes jina-bg-rotate {
 	100% {
 		transform: rotate(1turn);
@@ -97,7 +98,7 @@ let baseStyles = `
 	background: #009999;
 	border-radius: 43%;
 	filter: opacity(0.4);
-	animation: drift linear infinite;
+	animation: jina-drift linear infinite;
 	transform-origin: 50% 48%;
 }
 
@@ -115,36 +116,56 @@ let baseStyles = `
 	filter: opacity(0.1);
 }
 
-@keyframes drift {
+@keyframes jina-drift {
 	from {
 		transform: rotate(360deg);
 	}
 }
-`
 
-let defaultStyles = {
-	jinaFloaterContainer: `
+.jina-floater-container{
+	font-family: Comfortaa;
 	position: fixed;
   bottom: 2em;
   right: 2em;
-	`,
-	jinaFloater: `
+}
+
+.jina-floater{
 	background: white;
   border: 1px solid #cfd8dc;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  height: 3em;
-  width: 3em;
+	width: 3.5em;
+	height: 3.5em;
   border-radius: 50%;
   position: relative;
-	cursor: pointer;`,
-	jinaFloaterIcon: `
-	width: 1.25em; 
-  height: 1.25em;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.jina-floater-icon{
+	width: 1.5em; 
+  height: 1.5em;
 	position: absolute;
-  top: .85rem;
-	left: .85rem;
-	`,
-	jinaFloaterBox: `
+  top: 1.15em;
+	left: 1.15em;
+	transition: .2s;
+}
+
+.jina-floater{
+	transition: .2s;
+}
+
+.jina-floater-large{
+	width: 14em;
+	height: 14em;
+	transition: .2s;
+}
+
+.jina-floater-large .jina-floater-icon{
+	left: 6em;
+	top: 3em;
+}
+
+.jina-floater-box{
 	position: fixed;
   background: white;
   border: 1px solid #cfd8dc;
@@ -159,23 +180,25 @@ let defaultStyles = {
 	flex-direction: column;
 	align-items: stretch;
 	font-family: Comfortaa;
-	`,
-	jinaSearchInput: `
+}
+
+.jina-search-input{
 	font-family: Comfortaa;
 	font-size:1em;
 	border-radius: 2em;
 	border: none;
 	outline: none;
 	padding: .5em;
-	// border: 1px solid #cfd8dc;
 	padding-left: 2.25rem;
-	`,
-	jinaFloaterSearchContainer: `
+}
+
+.jina-floater-search-container{
 	padding: .5em;
 	border-radius: .5em .5em 0em 0em;
 	position: relative;
-	`,
-	jinaFloaterResultsContainer: `
+}
+
+.jina-floater-results-container{
 	align-content: flex-end;
 	border: 1px solid white;
 	border-radius: .5em;
@@ -183,50 +206,109 @@ let defaultStyles = {
 	height: 100%;
 	overflow-y: auto;
 	transition: .2s;
-	`,
-	jinaFloaterFileInput: `
+}
+
+.jina-floater-file-input{
 	display: none;
-	`,
-	jinaResult: `
+}
+
+.jina-result{
 	background: white;
 	padding: .5em;
 	margin: .5em;
   border-radius: .25em;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
 	cursor: pointer;
-	`,
-	jinaResultsArea: `
+}
+
+.jina-results-area{
 	font-family: Comfortaa;
 	padding: .5em;
 	height: 100%;
 	overflow-y: auto;
-	`,
-	jinaHighlighted: `
-	border-color: #009999
-	`,
-	jinaSearchIcon: `
+}
+
+.jina-highlighted{
+	border-color: #009999;
+}
+
+.jina-search-icon{
 	width: 1.25em; 
   height: 1.25em;
 	position: absolute;
   top: .5rem;
 	left: .55rem;
-	`,
-	jinaFloaterInstructions: `
+}
+
+.jina-floater-instructions{
 	text-align: center;
 	opacity: .5;
-	`,
-	jinaResultsLabel: `
+}
+
+.jina-results-label{
+	font-family: Comfortaa;
 	margin-top: 0px;
 	margin-left: .5em;
 	opacity: .5;
-	`,
-	jinaSearchContainer: `
-	position: relative;
-	`,
-	jinaPersian: `
-	border-color: #009999;
-	`
 }
+
+.jina-search-container{
+	position: relative;
+}
+
+.jina-persian{
+	border-color: #009999;
+}
+
+.jina-searchbar-container{
+	max-width: 300px;
+	position: relative;
+}
+
+.jina-expander{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	background: #009999;
+	border-radius: 1.25em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+	text-align: center;
+	opacity: 0;
+	height: 0px;
+	transition: .2s;
+	overflow: hidden;
+}
+
+.jina-contained{width:100%;box-sizing: border-box;}
+
+.jina-floater-label{
+	font-family: Comfortaa;
+	text-align: center;
+	padding-top: 4em;
+	padding-right: 2.5em;
+	padding-left: 2.5em;
+	color: #009999;
+	opacity: 0;
+	font-size: 1px;
+	transition: .2s;
+}
+
+.jina-floater-large .jina-floater-label{
+	font-size: 1.25em;
+	opacity: 1;
+}
+
+.jina-expander-label{
+	font-family: Comfortaa;
+	text-align: center;
+	color: white;
+}
+`
+
+let stylesElement = document.createElement('style');
+stylesElement.innerHTML = baseStyles
+document.body.appendChild(stylesElement);
 
 let defaultPlaceholders = ['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'];
 
@@ -238,6 +320,10 @@ let defaultSettings = {
 	floaterIcon: 'color',
 	globalDrag: true,
 }
+
+setInterval(()=>{
+	console.log('  ')
+},2000);
 
 class Floater extends HTMLElement {
 	constructor() {
@@ -253,36 +339,13 @@ class Floater extends HTMLElement {
 		const searchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
 
 		this.innerHTML = `
-		<head>
-			<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap" rel="stylesheet">
-		</head>
-
-		<style>
-		${baseStyles}
-		.jina-floater-container{${defaultStyles.jinaFloaterContainer}}
-		.jina-floater{${defaultStyles.jinaFloater}}
-		.jina-floater-icon{${defaultStyles.jinaFloaterIcon}}
-		.jina-floater-box{${defaultStyles.jinaFloaterBox}}
-		.jina-floater-search-container{${defaultStyles.jinaFloaterSearchContainer}}
-		.jina-search-container{${defaultStyles.jinaSearchContainer}}
-		.jina-search-icon{${defaultStyles.jinaSearchIcon}}
-		.jina-search-input{${defaultStyles.jinaSearchInput}}
-		.jina-floater-results-container{${defaultStyles.jinaFloaterResultsContainer}}
-		.jina-floater-result{${defaultStyles.jinaResult}}
-		.jina-highlighted{${defaultStyles.jinaHighlighted}}
-		.jina-contained{width:100%;box-sizing: border-box;}
-		.jina-floater-instructions{${defaultStyles.jinaFloaterInstructions}}
-		.jina-floater-results-label{${defaultStyles.jinaResultsLabel}}
-		.jina-persian-theme{${defaultStyles.jinaPersian}}
-		#jina-floater-file-input{${defaultStyles.jinaFloaterFileInput}}
-		</style>
-
 		<div class="jina-floater-container">
 			<div class="jina-floater" id="jina-floater-icon">
 				<img src="${floaterIcon}" class="jina-floater-icon" />
+				<h3 class="jina-floater-label">Drop here to search</h3>
 			</div>
 		</div>
-		<div class="jina-floater-box" ondrag={function(){alert('drag')}} id="jina-floater-box">
+		<div class="jina-floater-box" id="jina-floater-box">
 			<div class="jina-floater-search-container">
 				<div id="jina-floater-background-search-container" class="jina-bg-default">
 					<div class="jina-search-container">
@@ -292,33 +355,35 @@ class Floater extends HTMLElement {
 				</div>
 			</div>
 			<div class="jina-floater-results-container" id="jina-floater-drop-area">
-				<input type="file" id="jina-floater-file-input" multiple>
+				<input type="file" id="jina-floater-file-input" class="jina-floater-file-input" multiple>
 				<h2 class="jina-floater-instructions">Search or Drop Files</h2>
 			</div>
 		</div>
 		`;
 
 		this.showBox = false;
+		this.dragCounter = 0;
 
 		this.jinaButton = document.getElementById('jina-floater-icon');
 		this.dropArea = document.getElementById('jina-floater-drop-area');
 		this.searchInput = document.getElementById('jina-floater-search-box');
+		this.searchBackground = document.getElementById('jina-floater-background-search-container');
+		this.floaterBox = document.getElementById('jina-floater-box');
 
 		this.jinaButton.addEventListener('click', this.toggleShow);
 
-		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-			this.dropArea.addEventListener(eventName, this.preventDefaults, false)
-			this.searchInput.addEventListener(eventName, this.preventDefaults, false)
+		['drag', 'dragenter', 'dragover', 'dragleave', 'dragexit', 'drop'].forEach(eventName => {
+			document.addEventListener(eventName, this.preventDefaults, false);
 		});
-		['dragenter', 'dragover'].forEach(eventName => {
-			this.dropArea.addEventListener(eventName, this.highlightArea, false)
-			this.searchInput.addEventListener(eventName, this.highlightSearch, false)
+		['dragenter'].forEach(eventName => {
+			document.addEventListener(eventName, this.handleDrag, false);
 		});
-		['dragleave', 'drop'].forEach(eventName => {
-			this.dropArea.addEventListener(eventName, this.unhighlightArea, false)
-			this.searchInput.addEventListener(eventName, this.unhighlightSearch, false)
+		['dragleave', 'drop', 'dragexit'].forEach(eventName => {
+			document.addEventListener(eventName, this.handleDragLeave, false);
 		});
+
 		this.dropArea.addEventListener('drop', this.handleDrop, false);
+		this.jinaButton.addEventListener('drop', this.handleDrop, false);
 		this.searchInput.addEventListener('drop', this.handleDrop, false);
 
 		this.searchInput = document.getElementById('jina-floater-search-box');
@@ -326,23 +391,9 @@ class Floater extends HTMLElement {
 		this.searchInput.addEventListener('focus', this.highlightSearch);
 		this.searchInput.addEventListener('blur', this.unhighlightSearch);
 
-		this.searchBackground = document.getElementById('jina-floater-background-search-container');
-
 		const placeholders = JSON.parse(this.getAttribute('placeholders'));
 		console.log('settings: ', this.settings)
 		typeWriter('#jina-floater-search-box', placeholders || defaultPlaceholders, 0, 0, this.settings.typewriterDelayCharacter, this.settings.typewriterDelayItem);
-	}
-
-	toggleShow() {
-		console.log('toggle show');
-		this.showBox = !this.showBox;
-		this.floaterBox = document.getElementById('jina-floater-box');
-		if (this.showBox) {
-			this.floaterBox.style.display = 'flex';
-		}
-		else {
-			this.floaterBox.style.display = 'none';
-		}
 	}
 
 	listenForEnter = (key) => {
@@ -386,26 +437,48 @@ class Floater extends HTMLElement {
 		e.preventDefault()
 		e.stopPropagation()
 	}
-	handleDrag = function () {
-		console.log('handle drag enter');
+	handleDrag = () => {
+		this.dragCounter++;
+		if (this.showBox) {
+			this.highlightArea();
+			this.highlightSearch();
+		}
+		else {
+			this.showLargeFloater();
+		}
 	}
-	handleDragLeave = function () {
-		console.log('handle drag leave');
+	handleDragLeave = () => {
+		console.log('***drag leave')
+		this.dragCounter--;
+		if (this.dragCounter < 1) {
+			if (this.showBox) {
+				this.unhighlightArea();
+				this.unhighlightSearch();
+			}
+			else {
+				this.hideLargeFloater();
+			}
+			this.dragCounter = 0;
+		}
 	}
+
 	handleDrop = async (e) => {
 		console.log('handle drop files');
 		let dt = e.dataTransfer;
-		let imgsrc = dt.getData('URL')
+		let imgsrc = dt.getData('URL');
+		this.handleDragLeave();
+		if(!this.showBox)
+			this.toggleShow()
 		if (imgsrc) {
 			if (imgsrc.startsWith('data:')) {
 				this.search([imgsrc], true);
 			}
 			else {
 				let dataURI;
-				try{
+				try {
 					dataURI = await getDataUri(imgsrc);
 				}
-				catch(e){
+				catch (e) {
 					dataURI = imgsrc;
 				}
 				console.log('dataUri:', dataURI)
@@ -431,6 +504,25 @@ class Floater extends HTMLElement {
 		}
 	}
 
+	toggleShow = ()=> {
+		console.log('toggle show');
+		this.showBox = !this.showBox;
+		if (this.showBox) {
+			this.floaterBox.style.display = 'flex';
+		}
+		else {
+			this.floaterBox.style.display = 'none';
+		}
+	}
+
+	showLargeFloater = () => {
+		this.jinaButton.classList.add('jina-floater-large')
+	}
+
+	hideLargeFloater = () => {
+		this.jinaButton.classList.remove('jina-floater-large')
+	}
+
 	highlightArea = () => {
 		this.dropArea.classList.add('jina-highlighted')
 	}
@@ -451,6 +543,7 @@ class Floater extends HTMLElement {
 class SearchBar extends HTMLElement {
 	constructor() {
 		super();
+		
 		const customSettings = JSON.parse(this.getAttribute('settings'));
 		this.settings = {
 			...defaultSettings,
@@ -460,33 +553,9 @@ class SearchBar extends HTMLElement {
 		const searchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
 
 		this.innerHTML = `
-		<style>
-		.jina-search-container{${defaultStyles.jinaSearchContainer}}
-		.jina-search-icon{${defaultStyles.jinaSearchIcon}}
-		.jina-search-input{${defaultStyles.jinaSearchInput}}
-		.jina-searchbar-container{
-			max-width: 300px;
-			position: relative;
-		}
-		.jina-expander{
-			position: absolute;
-			top: 0;
-			width: 100%;
-			background: #009999;
-			border-radius: 1.25em;
-			padding-top: 0em;
-			padding-bottom: 0em;
-			text-align: center;
-			opacity: 0;
-			height: 0px;
-			transition: .2s;
-			overflow: hidden;
-		}
-
-		</style>
 		<div class="jina-searchbar-container">
 			<div class="jina-expander" id="jina-search-expander">
-				<h3>Drop here to search</h3>
+				<h3 class="jina-expander-label">Drop here to search</h3>
 				<img src="${_icons.target}" class="jina-target-drop-icon">
 			</div>
 			<div id="jina-searchbar-background-container" class="jina-bg-default">
@@ -501,6 +570,7 @@ class SearchBar extends HTMLElement {
 
 		this.dropArea = document.getElementById('jina-search-box');
 		this.expander = document.getElementById('jina-search-expander');
+		this.searchInput = document.getElementById('jina-search-box');
 
 		this.dragCounter = 0;
 
@@ -517,11 +587,9 @@ class SearchBar extends HTMLElement {
 		this.dropArea.addEventListener('drop', this.handleDrop, false);
 		this.expander.addEventListener('drop', this.handleDrop, false);
 
-		this.searchInput = document.getElementById('jina-search-box');
 		this.searchInput.addEventListener('keydown', this.listenForEnter);
 
 		const placeholders = JSON.parse(this.getAttribute('placeholders'));
-
 		typeWriter('#jina-search-box', placeholders || defaultPlaceholders);
 	}
 
@@ -569,8 +637,7 @@ class SearchBar extends HTMLElement {
 	}
 
 	handleDrop = async (e) => {
-		e.stopPropagation();
-		e.preventDefault();
+		this.dropped = true;
 		console.log('handle drop files');
 		console.log('drop event:', e);
 		let dt = e.dataTransfer;
@@ -582,10 +649,10 @@ class SearchBar extends HTMLElement {
 			}
 			else {
 				let dataURI;
-				try{
+				try {
 					dataURI = await getDataUri(imgsrc);
 				}
-				catch(e){
+				catch (e) {
 					dataURI = imgsrc;
 				}
 				console.log('dataUri:', dataURI)
@@ -626,10 +693,13 @@ class SearchBar extends HTMLElement {
 		if (this.dragCounter < 1) {
 			console.log('unhighlighting')
 			this.dropArea.classList.remove('jina-highlighted');
-			this.expander.style.paddingTop = '0em';
-			this.expander.style.paddingBottom = '0em';
-			this.expander.style.height = '0px';
-			this.expander.style.opacity = 0;
+			if(!this.dropped){
+				this.expander.style.paddingTop = '0em';
+				this.expander.style.paddingBottom = '0em';
+				this.expander.style.height = '0px';
+				this.expander.style.opacity = 0;
+				this.clearExpander();
+			}
 		}
 	}
 
@@ -656,7 +726,7 @@ class SearchBar extends HTMLElement {
 		this.expander.style.opacity = 0;
 		this.expander.style.transition = '.2s';
 		this.expander.innerHTML = `
-		<h3>Drop here to search</h3>
+		<h3 class="jina-expander-label">Drop here to search</h3>
 		<img src="${_icons.target}" class="jina-target-drop-icon">
 		`
 	}
@@ -666,11 +736,6 @@ class Results extends HTMLElement {
 	constructor() {
 		super();
 		this.innerHTML = `
-		<style>
-		.jina-results-area{${defaultStyles.jinaResultsArea}}
-		.jina-results-label{${defaultStyles.jinaResultsLabel}}
-		.jina-result{${defaultStyles.jinaResult}}
-		</style>
 		<div class="jina-results-area" id="jina-results-area"></div>
 		`;
 		this.dropArea = document.getElementById('jina-search-box');
