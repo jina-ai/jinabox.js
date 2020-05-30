@@ -131,8 +131,7 @@ let baseStyles = `
 
 .jina-floater{
 	background: white;
-  border: 1px solid #cfd8dc;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
 	width: 3.5em;
 	height: 3.5em;
   border-radius: 50%;
@@ -168,8 +167,7 @@ let baseStyles = `
 .jina-floater-box{
 	position: fixed;
   background: white;
-  border: 1px solid #cfd8dc;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
   bottom: 6em;
   right: 2em;
   height: 500px;
@@ -238,6 +236,11 @@ let baseStyles = `
 	position: absolute;
   top: .5rem;
 	left: .55rem;
+	padding-right: .25em;
+}
+
+.jina-border-right{
+	border-right: 1px solid #009999;
 }
 
 .jina-floater-instructions{
@@ -304,6 +307,10 @@ let baseStyles = `
 	text-align: center;
 	color: white;
 }
+
+.jina-query-image{
+
+}
 `
 
 let stylesElement = document.createElement('style');
@@ -321,9 +328,9 @@ let defaultSettings = {
 	globalDrag: true,
 }
 
-setInterval(()=>{
+setInterval(() => {
 	console.log('  ')
-},2000);
+}, 2000);
 
 class Floater extends HTMLElement {
 	constructor() {
@@ -338,6 +345,8 @@ class Floater extends HTMLElement {
 		const floaterIcon = _icons[this.settings.floaterIcon] || this.settings.floaterIcon;
 		const searchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
 
+		this.originalSearchIcon = searchIcon;
+
 		this.innerHTML = `
 		<div class="jina-floater-container">
 			<div class="jina-floater" id="jina-floater-icon">
@@ -349,7 +358,7 @@ class Floater extends HTMLElement {
 			<div class="jina-floater-search-container">
 				<div id="jina-floater-background-search-container" class="jina-bg-default">
 					<div class="jina-search-container">
-						<img src="${searchIcon}" class="jina-search-icon" />
+						<img src="${searchIcon}" class="jina-search-icon" id="jina-floater-search-icon" />
 						<input placeholder="search" class="jina-search-input jina-contained" id="jina-floater-search-box" autocomplete="off">
 					</div>
 				</div>
@@ -369,6 +378,7 @@ class Floater extends HTMLElement {
 		this.searchInput = document.getElementById('jina-floater-search-box');
 		this.searchBackground = document.getElementById('jina-floater-background-search-container');
 		this.floaterBox = document.getElementById('jina-floater-box');
+		this.searchIcon = document.getElementById('jina-floater-search-icon');
 
 		this.jinaButton.addEventListener('click', this.toggleShow);
 
@@ -403,6 +413,11 @@ class Floater extends HTMLElement {
 	}
 
 	async search(query = [this.searchInput.value], inBytes = false) {
+		if (!inBytes){
+			this.searchIcon.src = this.originalSearchIcon;
+			this.searchIcon.classList.remove('jina-border-right');
+		}
+			
 		console.log('query: ', query);
 		console.log('searching...');
 		let response = await window.JinaBox.search(query, 10, inBytes);
@@ -467,11 +482,13 @@ class Floater extends HTMLElement {
 		let dt = e.dataTransfer;
 		let imgsrc = dt.getData('URL');
 		this.handleDragLeave();
-		if(!this.showBox)
+		if (!this.showBox)
 			this.toggleShow()
 		if (imgsrc) {
 			if (imgsrc.startsWith('data:')) {
 				this.search([imgsrc], true);
+				this.searchIcon.src = imgsrc;
+				this.searchIcon.classList.add('jina-border-right');
 			}
 			else {
 				let dataURI;
@@ -481,7 +498,9 @@ class Floater extends HTMLElement {
 				catch (e) {
 					dataURI = imgsrc;
 				}
-				console.log('dataUri:', dataURI)
+				console.log('dataUri:', dataURI);
+				this.searchIcon.src = dataURI;
+				this.searchIcon.classList.add('jina-border-right');
 				this.search([imgsrc], true);
 			}
 		}
@@ -504,7 +523,7 @@ class Floater extends HTMLElement {
 		}
 	}
 
-	toggleShow = ()=> {
+	toggleShow = () => {
 		console.log('toggle show');
 		this.showBox = !this.showBox;
 		if (this.showBox) {
@@ -543,7 +562,7 @@ class Floater extends HTMLElement {
 class SearchBar extends HTMLElement {
 	constructor() {
 		super();
-		
+
 		const customSettings = JSON.parse(this.getAttribute('settings'));
 		this.settings = {
 			...defaultSettings,
@@ -551,6 +570,7 @@ class SearchBar extends HTMLElement {
 		}
 
 		const searchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
+		this.originalSearchIcon = searchIcon;
 
 		this.innerHTML = `
 		<div class="jina-searchbar-container">
@@ -560,7 +580,7 @@ class SearchBar extends HTMLElement {
 			</div>
 			<div id="jina-searchbar-background-container" class="jina-bg-default">
 				<div class="jina-search-container">
-					<img src="${searchIcon}" class="jina-search-icon" />
+					<img src="${searchIcon}" class="jina-search-icon" id="jina-search-icon" />
 					<input placeholder="search" class="jina-search-input jina-contained" id="jina-search-box" autocomplete="off">
 				</div>
 			</div>
@@ -571,6 +591,7 @@ class SearchBar extends HTMLElement {
 		this.dropArea = document.getElementById('jina-search-box');
 		this.expander = document.getElementById('jina-search-expander');
 		this.searchInput = document.getElementById('jina-search-box');
+		this.searchIcon = document.getElementById('jina-search-icon');
 
 		this.dragCounter = 0;
 
@@ -594,6 +615,10 @@ class SearchBar extends HTMLElement {
 	}
 
 	async search(query = [this.searchInput.value], inBytes = false) {
+		if (!inBytes){
+			this.searchIcon.src = this.originalSearchIcon;
+			this.searchIcon.classList.remove('jina-border-right');
+		}
 		this.showLoading();
 		console.log('searching...');
 		let response = await window.JinaBox.search(query, 10, inBytes);
@@ -646,6 +671,8 @@ class SearchBar extends HTMLElement {
 		if (imgsrc) {
 			if (imgsrc.startsWith('data:')) {
 				this.search([imgsrc], true);
+				this.searchIcon.src = imgsrc;
+				this.searchIcon.classList.add('jina-border-right');
 			}
 			else {
 				let dataURI;
@@ -655,7 +682,9 @@ class SearchBar extends HTMLElement {
 				catch (e) {
 					dataURI = imgsrc;
 				}
-				console.log('dataUri:', dataURI)
+				console.log('dataUri:', dataURI);
+				this.searchIcon.src = dataURI;
+				this.searchIcon.classList.add('jina-border-right');
 				this.search([imgsrc], true);
 			}
 		}
@@ -693,7 +722,7 @@ class SearchBar extends HTMLElement {
 		if (this.dragCounter < 1) {
 			console.log('unhighlighting')
 			this.dropArea.classList.remove('jina-highlighted');
-			if(!this.dropped){
+			if (!this.dropped) {
 				this.expander.style.paddingTop = '0em';
 				this.expander.style.paddingBottom = '0em';
 				this.expander.style.height = '0px';
