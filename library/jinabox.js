@@ -274,6 +274,7 @@ let baseStyles = `
 }
 
 .jina-expander{
+	font-family: Comfortaa;
 	position: absolute;
 	top: 0;
 	background-color: whitesmoke;
@@ -287,6 +288,9 @@ let baseStyles = `
 	transition: .2s;
 	overflow: hidden;
 	max-height: 65vh;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+	display: flex;
+	flex-direction: column;
 }
 
 .jina-expander-results-area{
@@ -294,7 +298,15 @@ let baseStyles = `
 	background: whitesmoke;
 	overflow-y: scroll;
 	padding-bottom: .5em;
-	height: calc(500px - 3.5em);
+	flex: fill;
+}
+
+.jina-expander-close{
+	cursor: pointer;
+	color: white;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	background: #009999;
 }
 
 .jina-contained{width:100%;box-sizing: border-box;}
@@ -905,7 +917,10 @@ class SearchBar extends HTMLElement {
 		<div class="jina-expander-results-area">
 		${results}
 		</div>
+		<div class="jina-expander-close" id="jina-expander-close">close</div>
 		`;
+		this.closeButton = document.getElementById('jina-expander-close')
+		this.closeButton.onclick = this.clearExpander;
 	}
 
 	clearExpander = async () => {
