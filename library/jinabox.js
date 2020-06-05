@@ -169,7 +169,7 @@ let baseStyles = `
 
 .jina-floater-box{
 	position: fixed;
-  background: white;
+	background: white;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
   bottom: 6em;
   right: 2em;
@@ -201,6 +201,7 @@ let baseStyles = `
 }
 
 .jina-floater-results-container{
+	background: whitesmoke;
 	align-content: flex-end;
 	border: 1px solid white;
 	border-radius: .5em;
@@ -219,9 +220,15 @@ let baseStyles = `
 	background: white;
 	padding: .5em;
 	margin: .5em;
+	margin-bottom: 1em;
   border-radius: .25em;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
 	cursor: pointer;
+	transition: .2s;
+}
+
+.jina-floater-result:hover,
+.jina-result:hover{
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .jina-results-area{
@@ -429,6 +436,19 @@ let baseStyles = `
   50% {
      transform: translateY(-15px);
 	}
+}
+.jina-expander-overlay{
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0; 
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,.5);
+	display: none;
+	opacity: 0;
+	transition: .2s;
 }
 `
 
@@ -702,6 +722,7 @@ class SearchBar extends HTMLElement {
 
 		this.originalSearchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
 		this.innerHTML = `
+		<div class="jina-expander-overlay" id="jina-expander-overlay"></div>
 		<div class="jina-searchbar-container">
 			<div class="jina-expander" id="jina-search-expander"></div>
 			<div id="jina-searchbar-background-container" class="jina-bg-default">
@@ -713,6 +734,7 @@ class SearchBar extends HTMLElement {
 		</div>
 		`;
 
+		this.overlay = document.getElementById('jina-expander-overlay');
 		this.expander = document.getElementById('jina-search-expander');
 		this.searchInput = document.getElementById('jina-search-input');
 		this.searchIcon = document.getElementById('jina-search-icon');
@@ -729,6 +751,7 @@ class SearchBar extends HTMLElement {
 			document.addEventListener(eventName, this.handleDragLeave);
 		});
 
+		this.overlay.addEventListener('click',this.clearExpander);
 		this.searchInput.addEventListener('drop', this.handleDrop);
 		this.expander.addEventListener('drop', this.handleDrop);
 
@@ -753,7 +776,7 @@ class SearchBar extends HTMLElement {
 		catch (e) {
 			this.dropped = false;
 			console.log('error');
-			return this.showError()
+			return this.showError(e);
 		}
 		console.log('response:', response);
 		let results = [];
@@ -774,16 +797,16 @@ class SearchBar extends HTMLElement {
 		this.results.map((result, idx) => {
 			html += `<div class="jina-result" id="jina-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
 		});
-		if(this.settings.showResults)
+		if (this.settings.showResults)
 			this.showResults(html);
-		else{
+		else {
 			this.resultsArea = document.getElementById('jina-results-area')
 			this.resultsArea.innerHTML = html;
 			this.clearExpander()
 		}
 		this.results.map((result, idx) => {
 			let resultElement = document.getElementById(`jina-result-${idx}`);
-			resultElement.addEventListener('click', () => { 
+			resultElement.addEventListener('click', () => {
 				this.search([result.data], true)
 				this.searchIcon.src = result.data;
 				this.searchIcon.classList.add('jina-border-right');
@@ -912,18 +935,19 @@ class SearchBar extends HTMLElement {
 
 	showResults = (results) => {
 		//TODO: settings > expander height
+		this.overlay.style.display = 'block';
+		this.overlay.style.opacity = '1';
 		this.expander.style.height = '500px';
 		this.expander.innerHTML = `
 		<div class="jina-expander-results-area">
 		${results}
 		</div>
-		<div class="jina-expander-close" id="jina-expander-close">close</div>
 		`;
-		this.closeButton = document.getElementById('jina-expander-close')
-		this.closeButton.onclick = this.clearExpander;
 	}
 
 	clearExpander = async () => {
+		this.overlay.style.display = 'none';
+		this.overlay.style.opacity = '0';
 		this.dragCounter = 0;
 		this.searchInput.classList.remove('jina-highlighted');
 		this.expander.style.height = '0px';
@@ -964,15 +988,21 @@ window.JinaBox = {
 		_url = url;
 		console.log('initialized with ', url);
 	},
-	search: async function (data, top_k = 10, inBytes = false) {
-		const results = await fetch(_url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ data, top_k, mode: 'search' })
+	search: async function (data, top_k = 10) {
+		return new Promise(function (resolve, reject) {
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", _url);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.onload = () => resolve(JSON.parse(xhr.responseText))
+			xhr.onerror = function (e) {
+				console.log('xhr error:', e);
+				reject(e);
+			}
+			//TODO: add to settings
+			xhr.timeout = 15000;
+			xhr.ontimeout = () => reject('Search Timeout');
+			xhr.send(JSON.stringify({ data, top_k, mode: 'search' }));
 		})
-		return results.json();
 	}
 }
 
