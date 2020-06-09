@@ -8,7 +8,9 @@ _icons = {
 	inverse: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDIwcHgiIGhlaWdodD0iNDIwcHgiIHZpZXdCb3g9IjAgMCA0MjAgNDIwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA2NCAoOTM1MzcpIC0gaHR0cHM6Ly9za2V0Y2guY29tIC0tPgogICAgPHRpdGxlPlByb2R1Y3QgbG9nb19Db3JlX0Rhcms8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0i6aG16Z2iLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJQcm9kdWN0LWxvZ29fQ29yZV9EYXJrIiBmaWxsPSIjRkZGRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8cGF0aCBkPSJNMjUzLjg2MDU3MywxNTYuOTU0Mzc3IEwyNTUuODIxODI4LDE1Ni45NzgxMDUgQzI5NS4yMzg0NjEsMTU4LjQ1NTc4MyAzMTcuNDIyMzY1LDE3NC40NjkxOTQgMzM1LjA4NzI1MywxOTcuODY5MDMxIEMzMjcuMDAwMzY2LDI3OC45OTgzMjkgMjU2LjE1OTc1MiwzMzguMjU5Njc3IDE3NS43MDc3NjEsMzM0Ljk3MTk3NSBDMTM0Ljc3NDkwMywzMzIuNTEzMDUyIDk5LjAxOTMxMDYsMzE0LjEwNDkzMiA3My40NzgxMzk4LDI4Ni4zNDI1ODQgQzExNy4xNTEyOSwyMjYuMTMwMDIzIDE4Ny44NDI0MzMsMTU4LjI1NDUzMiAyNTEuOTA4MDEsMTU2Ljk3Mjc0MyBMMjUzLjg2MDU3MywxNTYuOTU0Mzc3IFoiIGlkPSLot6/lvoQiIGZpbGwtb3BhY2l0eT0iMC44MDI5MzkyNDgiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0iTTM5LjU1ODIxNzIsMjI3LjQ4Mjk4IEwzOS41ODgzNTkzLDIyNy40NDExNzcgQzU0Ljg0NTE2OCwyMDQuOTc4MDkzIDc5LjI4NDgzNjEsMTgyLjY1OTg0MiAxMTIuMDI0NDIzLDE5MS42NDIyNSBDMTc0LjI4NDMwNCwyMDkuOTczNjk0IDIzMi43MjY2MjcsMjQ3LjUyNjEyOSAyNjguMzU5NDU0LDI0Ni40NjU1NjUgQzMwMi4yNzE0NTgsMjQ1LjQ1NjIxOSAzMTUuOTY1ODI2LDIzNS4zNzI2MzQgMzMwLjgyNDUyOSwyMjEuNTQwMjg4IEMzMTIuNzE3NTU0LDI5MC4yMzg4MiAyNDguMTA0MTQ3LDMzNy45MzA0ODIgMTc1LjcwNzc2MSwzMzQuOTcxOTc1IEMxMTAuMTM3MjAzLDMzMS4wMzMwMTMgNTcuODUyMDI2NiwyODYuMTY2ODEzIDM5LjU1ODIxNzIsMjI3LjQ4Mjk4IFoiIGlkPSLot6/lvoQiIGZpbGwtb3BhY2l0eT0iMC44MDI5MzkyNDgiPjwvcGF0aD4KICAgICAgICAgICAgPHBhdGggZD0iTTM0OC4wOTk0NzEsMzEwLjkyMzM5OSBMNDA5LjM1OTk2NSwzNjUuOTgyNDA1IEM0MjIuMDUzMTcsMzc3LjM5MDczNCA0MjMuMDgwNDMyLDM5Ni44ODYwNjkgNDExLjY1NTk5MSw0MDkuNTU2MzA4IEM0MDAuMzczNTA4LDQyMi4wNjkxMSAzODEuMTI4Mjg1LDQyMy4yMTM0NDggMzY4LjQzNzQ3Myw0MTIuMjE1OTcyIEwzNjguMDExMzcyLDQxMS44Mzk5MjkgTDMwMy4zMTE5ODgsMzUzLjY4OTUzNSBDMzIwLjMwMTk4OSwzNDEuNzQ0Nzg2IDMzNS40MDg0OTMsMzI3LjMxMjM3IDM0OC4wOTk0NzEsMzEwLjkyMzM5OSBaIE0wLjU2MzQ0NzYxMSwxNzIuNTkxODk5IEM2LjA1OTkyMDcxLDcxLjc2OTQ1ODUgOTQuMDAzNDkwMiwtNS4yMjIyMjMzOSAxOTQuNzcyMTY0LDAuMjc3MTgyNDYzIEMyOTUuNTQwODM3LDcuNjA5NzIzNzQgMzc0LjMyMzYxOCw5My43NjcwODI0IDM2Ni45OTQ5ODcsMTk0LjU4OTUyMyBDMzU5LjY2NjM1NywyOTUuNDExOTYzIDI3My41NTQ5NDUsMzcyLjQwMzY0NSAxNzIuNzg2MjcxLDM2Ni45MDQyMzkgQzcyLjAxNzU5NzgsMzYxLjQwNDgzMyAtNC45MzMwMjU0OCwyNzMuNDE0MzQgMC41NjM0NDc2MTEsMTcyLjU5MTg5OSBaIE0xOTIuNTM2MzI1LDMxLjY5MzcxMDMgQzExMC4wNzYzNjMsMjguMzIzOTUxNSAzNi4wMzA2ODI5LDkyLjM0OTM2MjkgMzIuNjY0OTY5OSwxNzQuOTA4NDQ2IEMyOS4yOTkyNTY5LDI1Ny40Njc1MyA5MS41NjQ5NDI4LDMyOS45MTczMzcgMTc1LjcwNzc2MSwzMzQuOTcxOTc1IEMyNTguMTY3NzI0LDMzOC4zNDE3MzQgMzMwLjUzMDU0OCwyNzYuMDAxMjAxIDMzNS41NzkxMTcsMTkxLjc1NzIzOSBDMzM4LjkxMTE3MiwxMTAuMDIzNzQ3IDI3Ny45MTc4OTQsMzguMTk4MzU1MSAxOTUuMDU0MDAzLDMxLjg2NTUxMDcgTDE5Mi41MzYzMjUsMzEuNjkzNzEwMyBaIiBpZD0i5b2i54q2Ij48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=',
 	target: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfkBR0DMy4BaSWgAAAEKUlEQVRYw72YQWwbRRSG/02s2rFSSA5RKlUyOK1DHYfcGrhwiRIaoUg5Aj3kwiVCVRS1VW8IIdp7KwTKhRMEOPTQVFwcGV+aSyltpERGVKKmASHvNlIciQh5m9KPw26c9dpre0PN29PO/PP+mTfz3rw3UghBDLLOOoOEGaZIKLTUr5OS+mV1gISAFuPFkPjUH5MhdCwcVZN+j/q4hjSmjF7VKxqX9KO29FgFbaiov9tQFUzhfkMssMo2jWSbVRYYOsCGWkkVntQHel9Dkiz9rIIeKqqPJH0qW8Ma1YgGJRX1rb7Ub6HW484ryhwFoEKOedLEEeI0FhanESJOmnlyVIACc0Sbr6ee4gRL2ECeWXo5NN4ZnvCEM56WXmbJAzZLnGiLxh04TBawuEK/196IJFtskcSLFv1cxgKyDLekcYekWAM2mfBvKCLCDDNE8I8RE2wCa6Ra0LiGygJ3GasHe4zUqH2Mu0DWMVoziihLwEYjijZsMMYGsOQcgWDYHDbWgaHCSNVoJjZzAeNxtrUAXAlP4aG5BBRIBpNcBfLOiTqKuCctD1xtoMMNII+oMHtUiqqeWSo8coJNfecCkHNcL9AYgSfMg+olBywcIrqq/XHNSLqpvUbxx4XHNKJJTWpEMU+rRwxJ2tNNSTOK1/OPso1JutEMEcLgHCtY7LOPxQpvYwRi05hsM1rTjxDngTzxQIoPKQM73Oc+O8AO84E0PfwAnK8nuQZ8Fji3aco852vO0kcfZ1kGdpgKxF8HrlV7q9u4DFxotKmIHr4HvvLE4+MsA7eI4lfvfBeA5YO/iAbUJxRVQlJESUVk60/9UzO5IY1rR9e1V235Szf0jt5UUr/UILt1UlE9U0RSQhnZMrQr7mFSwsQGypQwKTLtm98U+/zEy56QL/pZx2bCh5ymiEmJMmBjUqLEvS61I8+FulSPNdq4bQ1JDJAiRYY7wCJJUiTo9s0vjUWZ8RpXfIOyc+RrkN0kSJFkEbhDhhQpBtrb+Bi3gW84Xu1/ie+AFWJtbbwh13MfSxo+WJ9PKvpCb+k9STf0UIZe06LeVVmfq+K3jKvtlKvxUFsIZyzzgAeuWzZzxlxjZ2wVVro4x20s9nmKxS2mQoYVOVnUKjDfNAbHGGGSSdLEmsbheWC1ziqdDfXezk5fWv/L9VuTSFz+T4nExVaJRKdToprkbvPIyd1m0+SuCu1smurJ6deAjYYJdzfTTHsDqCfh3gDWwuT1WcDkUl3pkKBIkURd6XARE8i2zOlraIKKoBQm5oEq1/XCFkEeGn851+Me8hIl54DS0245135hWtCmflVEH0v6RM90Sq9r9MiFqW9DO1Vi+9bjfSxIuI8Fv7+Qx4K6FTlfBhOTTKtoXCst31Y8V6okPRWS7HCzb/OVyENlCBnhjBP2vWtXf0jaDTfoXxBSJgmkpHUYAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIwLTA1LTI5VDAzOjUxOjM0KzAwOjAwYs79EwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMC0wNS0yOVQwMzo1MTozNCswMDowMBOTRa8AAAAASUVORK5CYII=',
 	closeLight: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABYSURBVDiNY2AYOeD////8FKv5//8//////6////+/D4+aPqgagoa1/4eAflLkiDaMZEPQvPAfSsPZJBmCxRUEXcJElg0kuoZyr1ElsKkS/dROkJRnkeEFAKzLyY+5gUu3AAAAAElFTkSuQmCC',
-	closeDark: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABVSURBVDiNY2AYUYCfGmr4GRgYrjMwMPThUdMHVUPQsHYGBob/DAwM/STKEW0YyYbAQB9UYx8amywAcwVBlzCRawMpgCpeo0pgUyX6qZogqZJFhhEAABK8IjeHVD73AAAAAElFTkSuQmCC'
+	closeDark: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABVSURBVDiNY2AYUYCfGmr4GRgYrjMwMPThUdMHVUPQsHYGBob/DAwM/STKEW0YyYbAQB9UYx8amywAcwVBlzCRawMpgCpeo0pgUyX6qZogqZJFhhEAABK8IjeHVD73AAAAAElFTkSuQmCC',
+	gridView: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iYmxhY2siIHdpZHRoPSIxOHB4IiBoZWlnaHQ9IjE4cHgiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNCAxMWg1VjVINHY2em0wIDdoNXYtNkg0djZ6bTYgMGg1di02aC01djZ6bTYgMGg1di02aC01djZ6bS02LTdoNVY1aC01djZ6bTYtNnY2aDVWNWgtNXoiLz48L3N2Zz4=',
+	listView: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iYmxhY2siIHdpZHRoPSIxOHB4IiBoZWlnaHQ9IjE4cHgiPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMyAxM2gydi0ySDN2MnptMCA0aDJ2LTJIM3Yyem0wLThoMlY3SDN2MnptNCA0aDE0di0ySDd2MnptMCA0aDE0di0ySDd2MnpNNyA3djJoMTRWN0g3eiIvPjwvc3ZnPg==',
 }
 
 let baseStyles = `
@@ -191,7 +193,7 @@ let baseStyles = `
 	border: none;
 	outline: none;
 	padding: .5em;
-	padding-left: 2.25rem;
+	padding-left: 2.5rem;
 }
 
 .jina-floater-search-container{
@@ -224,6 +226,12 @@ let baseStyles = `
   border-radius: .25em;
 	cursor: pointer;
 	transition: .2s;
+}
+
+.jina-grid-container{
+	display: inline-block;
+	margin: none;
+	width: 33%;
 }
 
 .jina-floater-result:hover,
@@ -261,8 +269,11 @@ let baseStyles = `
 }
 
 .jina-results-label{
+	font-size: .75em;
+	text-align: left;
+	padding-left: .5em;
 	font-family: Comfortaa;
-	margin-top: 0px;
+	margin-top: 1em;
 	margin-left: .5em;
 	opacity: .5;
 }
@@ -301,11 +312,15 @@ let baseStyles = `
 }
 
 .jina-expander-results-area{
-	margin-top: 3em;
+	overflow-x: hidden;
 	background: whitesmoke;
 	overflow-y: scroll;
 	padding-bottom: .5em;
 	flex: fill;
+}
+
+.jina-expander-spacer{
+	margin-top: 3em;
 }
 
 .jina-expander-close{
@@ -448,7 +463,50 @@ let baseStyles = `
 	background: rgba(0,0,0,.5);
 	display: none;
 	opacity: 0;
-	transition: .2s;
+}
+
+.jina-results-toolbar{
+	margin-top: 3em;
+	padding-right: .5em;
+	padding-left: .5em;
+	text-align: left;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid #cfd8dc;
+}
+
+.jina-results-tabs{
+	overflow-x: auto;
+	flex: 1;
+}
+
+.jina-results-tab{
+	display: inline-block;
+	margin: .15em;
+	cursor: pointer;
+	border-bottom: 2px solid #cfd8dc;
+}
+
+.jina-results-tab.jina-active{
+	border-bottom-color: #009999;
+}
+
+.jina-results-tab-img{
+	width: 2em;
+	height: 2em;
+	margin-bottom: .25em;
+	border-radius: .25em;
+}
+
+.jina-results-action-button{
+	cursor: pointer;
+	width: 2em;
+	height: 2em;
+	border-radius: .25em;
+}
+
+.jina-results-action-button.jina-active{
+	background-color: rgba(0, 153, 153, 0.25);
 }
 `
 
@@ -751,24 +809,31 @@ class SearchBar extends HTMLElement {
 			document.addEventListener(eventName, this.handleDragLeave);
 		});
 
-		this.overlay.addEventListener('click',this.clearExpander);
+		this.overlay.addEventListener('click', this.clearExpander);
 		this.searchInput.addEventListener('drop', this.handleDrop);
 		this.expander.addEventListener('drop', this.handleDrop);
 
 		this.searchInput.addEventListener('keydown', this.listenForEnter);
 
+		this.resultsView = localStorage.getItem('jina-expander-results-view') || 'list';
+
 		const placeholders = JSON.parse(this.getAttribute('placeholders'));
 		typeWriter('#jina-search-input', placeholders || defaultPlaceholders);
 	}
 
+	//zzzzz
 	async search(query = [this.searchInput.value], inBytes = false) {
-		if (!inBytes) {
+		console.log('query: ', query);
+		if (!inBytes || query.length > 1) {
+			console.log('removing search icon')
 			this.searchIcon.src = this.originalSearchIcon;
 			this.searchIcon.classList.remove('jina-border-right');
 		}
+
 		this.showLoading();
 		console.log('searching...');
 		let response;
+		let startTime = new Date();
 		try {
 			response = await window.JinaBox.search(query, 10, inBytes);
 			this.dropped = false;
@@ -778,40 +843,40 @@ class SearchBar extends HTMLElement {
 			console.log('error');
 			return this.showError(e);
 		}
+		let endTime = new Date();
+		let totalTime = Math.round((endTime - startTime) / 10) / 100;
+
 		console.log('response:', response);
 		let results = [];
+		let queries = [];
+		let totalResults = 0;
 		let { docs } = response.search;
 		for (let i = 0; i < docs.length; ++i) {
 			let docResults = docs[i];
-			let { topkResults } = docResults;
+			let { topkResults, uri } = docResults;
+			queries.push(uri);
 			for (let j = 0; j < topkResults.length; ++j) {
 				const res = topkResults[j];
-				results.push({ data: res.matchDoc.uri, score: res.score.value, contentType: res.matchDoc.uri.startsWith('data:image/') ? 'image' : 'text' });
+				if (!results[i])
+					results[i] = [];
+				results[i].push({ data: res.matchDoc.uri, score: res.score.value, contentType: res.matchDoc.mimeType.startsWith('image') ? 'image' : 'text' });
+				totalResults++;
 			}
 		}
-		this.results = results;
-		this.results = this.results.sort((a, b) => { return b.score - a.score });
-		let html = '';
-		console.log('this.results:', this.results);
-		html += `<p class="jina-results-label">results for ${inBytes ? `${query.length} image input${query.length > 1 ? 's' : ''}` : `"${query}"`}</p>`;
-		this.results.map((result, idx) => {
-			html += `<div class="jina-result" id="jina-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
-		});
-		if (this.settings.showResults)
-			this.showResults(html);
-		else {
-			this.resultsArea = document.getElementById('jina-results-area')
-			this.resultsArea.innerHTML = html;
-			this.clearExpander()
+		for (let i = 0; i < results.length; ++i) {
+			results[i] = results[i].sort((a, b) => { return b.score - a.score });
 		}
-		this.results.map((result, idx) => {
-			let resultElement = document.getElementById(`jina-result-${idx}`);
-			resultElement.addEventListener('click', () => {
-				this.search([result.data], true)
-				this.searchIcon.src = result.data;
-				this.searchIcon.classList.add('jina-border-right');
-			});
-		})
+		this.queries = queries;
+		this.results = results;
+		this.resultsMeta = { totalTime, totalResults };
+
+		this.showResults(0);
+	}
+
+	setResultsView = (view) => {
+		localStorage.setItem('jina-expander-results-view', view);
+		this.resultsView = view;
+		this.showResults();
 	}
 
 	listenForEnter = (key) => {
@@ -864,8 +929,10 @@ class SearchBar extends HTMLElement {
 					processedFiles.push(processed);
 					if (processedFiles.length === acceptedFiles.length) {
 						this.search(processedFiles, true)
-						this.searchIcon.src = processedFiles[0];
-						this.searchIcon.classList.add('jina-border-right');
+						if (processedFiles.length < 2) {
+							this.searchIcon.src = processedFiles[0];
+							this.searchIcon.classList.add('jina-border-right');
+						}
 					}
 					console.log('processed: ', processed);
 				}, false);
@@ -877,6 +944,8 @@ class SearchBar extends HTMLElement {
 	handleDrag = () => {
 		this.dragCounter++;
 		if (!this.highlighted) {
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
 			this.searchInput.classList.add('jina-highlighted');
 			this.expander.style.height = '300px';
 			this.expander.style.opacity = 1;
@@ -896,6 +965,8 @@ class SearchBar extends HTMLElement {
 		if (this.dragCounter < 1) {
 			this.searchInput.classList.remove('jina-highlighted');
 			if (!this.dropped) {
+				this.overlay.style.display = 'none';
+				this.overlay.style.opacity = '0';
 				this.expander.style.height = '0px';
 				this.expander.style.opacity = 0;
 				this.clearExpander();
@@ -905,6 +976,8 @@ class SearchBar extends HTMLElement {
 	}
 
 	showLoading = () => {
+		this.overlay.style.display = 'block';
+		this.overlay.style.opacity = '1';
 		this.expander.style.height = '300px';
 		this.expander.style.opacity = 1;
 		this.expander.innerHTML = `
@@ -933,19 +1006,81 @@ class SearchBar extends HTMLElement {
 		this.errorButton.onclick = this.clearExpander;
 	}
 
-	showResults = (results) => {
+	showResults = (index = this.resultsIndex) => {
 		//TODO: settings > expander height
-		this.overlay.style.display = 'block';
-		this.overlay.style.opacity = '1';
-		this.expander.style.height = '500px';
-		this.expander.innerHTML = `
-		<div class="jina-expander-results-area">
-		${results}
-		</div>
-		`;
+		this.resultsIndex = index;
+		let resultsHTML = '';
+		let toolbar = '';
+		let results = this.results;
+		let queries = this.queries;
+		let { totalResults, totalTime } = this.resultsMeta;
+
+		if (queries.length > 1) {
+			toolbar = `
+			<div class="jina-results-toolbar">
+				<div class="jina-results-tabs">`;
+			for (let i = 0; i < queries.length; ++i) {
+				let uri = queries[i];
+				toolbar += `
+				<div class="jina-results-tab${index === i ? ' jina-active' : ''}" id="jina-results-tab-${i}">
+					<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
+				</div>`
+			}
+			toolbar += `
+				</div>
+				<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
+				<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
+			</div>`
+		}
+
+		resultsHTML += `<p class="jina-results-label">${totalResults} results in ${totalTime} seconds</p>`;
+
+		for (let i = 0; i < results[index].length; ++i) {
+			let result = results[index][i];
+			if (this.resultsView === 'grid' && toolbar)
+				resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
+			else
+				resultsHTML += `<div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+		}
+
+		if (this.settings.showResults) {
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
+			this.expander.style.height = '500px';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			${toolbar || '<div class="jina-expander-spacer"></div>'}
+			<div class="jina-expander-results-area">
+			${resultsHTML}
+			</div>
+			`;
+			if (toolbar) {
+				for (let i = 0; i < queries.length; ++i) {
+					document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
+				}
+				document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+				document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+			}
+		}
+		else {
+			this.resultsArea = document.getElementById('jina-results-area')
+			this.resultsArea.innerHTML = html;
+			this.clearExpander()
+		}
+
+		results[index].map((result, idx) => {
+			let resultElement = document.getElementById(`jina-result-${idx}`);
+			resultElement.addEventListener('click', () => {
+				this.search([result.data], true)
+				this.searchIcon.src = result.data;
+				this.searchIcon.classList.add('jina-border-right');
+			});
+		})
 	}
 
 	clearExpander = async () => {
+		this.searchIcon.src = this.originalSearchIcon;
+		this.searchIcon.classList.remove('jina-border-right');
 		this.overlay.style.display = 'none';
 		this.overlay.style.opacity = '0';
 		this.dragCounter = 0;
