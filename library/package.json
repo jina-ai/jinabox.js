@@ -1,0 +1,25 @@
+{
+  "name": "jina-box",
+  "version": "0.1.0",
+  "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
+  "main": "jinabox.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jina-ai/jina-box.git"
+  },
+  "keywords": [
+    "jina",
+    "jinabox",
+    "jina-box",
+    "neural search"
+  ],
+  "author": "Jina AI Limited",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jina-ai/jina-box/issues"
+  },
+  "homepage": "https://github.com/jina-ai/jina-box#readme"
+}
