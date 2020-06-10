@@ -38,11 +38,21 @@ npm install --save jinabox.js
 yarn add jinabox.js
 ```
 
-## What does it do?
+## Features
 
 - an easy-to-use web component for Jina search backend; 
-- allow user to drag-and-drop multiple files as queries and do search;
-- visualize the search results in the dropdown list.
+- allow user to drag-and-drop multiple files as queries to search;
+- visualize the search results in a dropdown list or a separate container;
+- highly customizable.
+
+## Supported MIME types
+
+| MIME type | Input (Query) | Output (Result) | Description | 
+| --- | --- | --- | --- |
+| [`text`](https://www.iana.org/assignments/media-types/media-types.xhtml#text) | typing | list only | Text-only data including any human-readable content, source code, or textual data such as comma-separated value (CSV) formatted data. Examples include `text/plain`, `text/csv`, and `text/html`. |
+| [`image`](https://www.iana.org/assignments/media-types/media-types.xhtml#image) | drag-and-drop | `<img>` containers in list/grid view | Image or graphical data including both bitmap and vector still images as well as animated versions of still image formats such as animated GIF or APNG. Common examples are `image/jpeg`, `image/png`, and `image/svg+xml`. |
+| [`video`](https://www.iana.org/assignments/media-types/media-types.xhtml#video) | drag-and-drop | `<video>`  containers in list/grid view | Video data or files, such as MP4 movies (`video/mp4`). |
+| [`audio`](https://www.iana.org/assignments/media-types/media-types.xhtml#audio) | drag-and-drop | `<audio>`  containers in list view | Audio or music data. Examples include `audio/mpeg`, `audio/vorbis`. |
 
 
 ## Browser support
