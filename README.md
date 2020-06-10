@@ -47,7 +47,7 @@ yarn add jinabox.js
 
 ## Supported MIME types
 
-| MIME type | Input | Output | Description | 
+| MIME type | Input (Query) | Output (Result) | Description | 
 | --- | --- | --- | --- |
 | [`text`](https://www.iana.org/assignments/media-types/media-types.xhtml#text) | typing | list only | Text-only data including any human-readable content, source code, or textual data such as comma-separated value (CSV) formatted data. Examples include `text/plain`, `text/csv`, and `text/html`. |
 | [`image`](https://www.iana.org/assignments/media-types/media-types.xhtml#image) | drag-and-drop | `<img>` containers in list/grid view | Image or graphical data including both bitmap and vector still images as well as animated versions of still image formats such as animated GIF or APNG. Common examples are `image/jpeg`, `image/png`, and `image/svg+xml`. |
