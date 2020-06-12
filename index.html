@@ -29,11 +29,17 @@
 
             <form id="configForm">
                 <h4>Configs</h4>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Server endpoint</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                           placeholder="https://0.0.0.0:45678">
-                    <small id="emailHelp" class="form-text text-muted">which Jina REST Gateway exposes</small>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="exampleInputEmail1">Server endpoint</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                               placeholder="https://0.0.0.0:45678">
+                        <small id="emailHelp" class="form-text text-muted">which Jina REST Gateway exposes</small>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputTimeout">Timeout</label>
+                        <input type="number" class="form-control" id="inputTimeout" value=5000>
+                    </div>
                 </div>
                 <div class="form-group">
                     <div class="form-check">
