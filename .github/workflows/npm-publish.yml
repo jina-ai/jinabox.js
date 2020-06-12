@@ -22,10 +22,12 @@ jobs:
     - name: increment version
       run: npm version patch
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # You need to set this in your repo settings
     - name: publish
       run: npm publish
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # You need to set this in your repo settings
+    - name: run git status
+      run: git status
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
