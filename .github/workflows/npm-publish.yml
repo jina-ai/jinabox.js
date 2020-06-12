@@ -15,6 +15,10 @@ jobs:
       with:
         node-version: 14
         registry-url: 'https://registry.npmjs.org'
+    - name: set git email
+      run: git config --global user.email "dev-bot@jina.ai"
+    - name: set git name
+      run: git config --global user.name "Jina Dev Bot"
     - name: increment version
       run: npm version patch
       env:
