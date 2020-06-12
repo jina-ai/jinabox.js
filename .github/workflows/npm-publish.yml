@@ -15,8 +15,9 @@ jobs:
       with:
         node-version: 14
         registry-url: https://registry.npmjs.org/
-    - name: publish new version
+    - name: create new version
       run: npm version patch
+    - name: publish package
       run: npm publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
