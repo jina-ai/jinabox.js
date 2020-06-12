@@ -18,7 +18,7 @@ jobs:
     - name: set git email
       run: git config --global user.email "dev-bot@jina.ai"
     - name: set git name
-      run: git config --global user.email "dev-bot@jina.ai"
+      run: git config --global user.name "Jina Dev Bot"
     - name: get current version
       run: version=$(npm view jinabox-test version)
     - name: set version
