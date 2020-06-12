@@ -15,6 +15,8 @@ jobs:
       with:
         node-version: 14
         registry-url: https://registry.npmjs.org/
+    - name: set npm auth config
+      run: npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
     - name: create new version
       run: npm version patch
     - name: publish package
