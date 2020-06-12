@@ -1,8 +1,9 @@
 {
   "name": "jinabox-test",
   "version": "0.1.0",
+  "private": true,
   "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
-  "main": "jinabox.js",
+  "main": "library/jinabox.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
