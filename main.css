@@ -1,0 +1,70 @@
+#browser {
+    margin: 50px auto;
+    background: #f0f0f0;
+    border: 1px solid #cdcdcd;
+    width: 100%;
+    height: 600px;
+    display: block;
+    border-radius: 5px;
+}
+
+#configForm {
+    margin: 50px auto;
+}
+
+#browser-frame {
+    position: relative;
+    height: 92.5%;
+    overflow: auto;
+    padding: 50px;
+}
+
+.browser-btn {
+    margin: 10px 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 8px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#btn-close {
+    background: #c73632;
+    margin-left: 10px;
+    margin-right: 3px
+}
+
+#btn-min {
+    background: #ee9742;
+    margin-right: 3px
+}
+
+#btn-max {
+    background: #79b559;
+}
+
+#browser-page-name {
+    font-family: Comfortaa;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+    display: inline-block;
+}
+
+.jina-floater-container {
+    position: absolute !important;
+}
+
+.img-thumbnail {
+    width: 30%;
+}
+
+.img-thumbnail.gif {
+    width: 70%;
+}
+
+.tab-pane {
+    margin: 10px;
+}
