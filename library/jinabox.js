@@ -23,10 +23,11 @@ let baseStyles = `
 
 .jina-bg-default {
     position: relative;
-    background: #009999;
-    border-radius: 50px;
-    padding: 1px;
+    border-radius: 1.1em;
+    border-color: #009999;
     overflow: hidden;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .jina-bg-rainbow {
@@ -186,7 +187,6 @@ let baseStyles = `
 .jina-search-input {
     font-family: Comfortaa;
     font-size: 1em;
-    border-radius: 2em;
     border: none;
     outline: none;
     padding: .5em;
@@ -244,10 +244,9 @@ let baseStyles = `
 }
 
 .jina-search-icon {
-    width: 1.25em;
     height: 1.25em;
     position: absolute;
-    top: .5rem;
+    top: .55rem;
     left: .55rem;
     padding-right: .25em;
 }
@@ -280,15 +279,15 @@ let baseStyles = `
 }
 
 .jina-searchbar-container {
-    max-width: 300px;
+    width: 300px;
     position: relative;
+    display: inline-block;
 }
 
 .jina-expander {
     font-family: Comfortaa;
     position: absolute;
-    top: 0;
-    background-color: whitesmoke;
+    top: 2px;
     width: 100%;
     border-radius: 1.1em;
     padding-top: 0em;
@@ -306,7 +305,6 @@ let baseStyles = `
 
 .jina-expander-results-area {
     overflow-x: hidden;
-    background: whitesmoke;
     overflow-y: scroll;
     padding-bottom: .5em;
     flex: fill;
@@ -558,7 +556,7 @@ class Floater extends HTMLElement {
 			</div>
 			<div class="jina-floater-results-container" id="jina-floater-drop-area">
 				<input type="file" id="jina-floater-file-input" class="jina-floater-file-input" multiple>
-				<h2 class="jina-floater-instructions">Search or Drop Files</h2>
+				<h2 class="jina-floater-instructions">Drop here to search</h2>
 			</div>
 		</div>
 		`;
@@ -952,7 +950,8 @@ class SearchBar extends HTMLElement {
 			<div class="jina-dropdown-message jina-success">
     		<div class="jina-face"></div>
     		<div class="jina-shadow jina-scale"></div>
-				<h3 class="alert">Drop here to search</h3>
+				<h3 class="alert">Drop here</h3>
+				<p>Drop any content here from webpage/local to search</p>
 			</div>
 			`
 			this.highlighted = true;
