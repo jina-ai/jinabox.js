@@ -498,10 +498,11 @@ let baseStyles = `
 
 .jina-results-action-button {
     cursor: pointer;
-    width: 1em;
-    height: 1em;
+    width: 1.75em;
+		height: 1.75em;
     border-radius: .25em;
-    padding: .5em
+		padding: .25em;
+		margin-bottom: .5em;
 }
 
 .jina-results-action-button.jina-active {
@@ -1009,15 +1010,14 @@ class SearchBar extends HTMLElement {
 		//TODO: settings > expander height
 		this.resultsIndex = index;
 		let resultsHTML = '';
-		let toolbar = '';
 		let results = this.results;
 		let queries = this.queries;
 		let { totalResults, totalTime } = this.resultsMeta;
 
+		let toolbar = `
+		<div class="jina-results-toolbar">
+			<div class="jina-results-tabs">`;
 		if (queries.length > 1) {
-			toolbar = `
-			<div class="jina-results-toolbar">
-				<div class="jina-results-tabs">`;
 			for (let i = 0; i < queries.length; ++i) {
 				let uri = queries[i];
 				toolbar += `
@@ -1025,18 +1025,19 @@ class SearchBar extends HTMLElement {
 					<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
 				</div>`
 			}
-			toolbar += `
-				</div>
-				<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
-				<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
-			</div>`
 		}
+		toolbar += `
+			</div>
+			<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
+			<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
+		</div>`
+
 
 		resultsHTML += `<p class="jina-results-label">${totalResults} results in ${totalTime} seconds</p>`;
 
 		for (let i = 0; i < results[index].length; ++i) {
 			let result = results[index][i];
-			if (this.resultsView === 'grid' && toolbar)
+			if (this.resultsView === 'grid')
 				resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
 			else
 				resultsHTML += `<div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
@@ -1053,13 +1054,13 @@ class SearchBar extends HTMLElement {
 			${resultsHTML}
 			</div>
 			`;
-			if (toolbar) {
+			if (queries.length > 1) {
 				for (let i = 0; i < queries.length; ++i) {
 					document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
 				}
-				document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
-				document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
 			}
+			document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+			document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
 		}
 		else {
 			this.resultsArea = document.getElementById('jina-results-area')
