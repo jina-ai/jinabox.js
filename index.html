@@ -26,7 +26,6 @@
 <div class="container">
     <div class="row">
         <div class="col">
-
             <form id="configForm">
                 <h4>Configs</h4>
                 <div class="form-row">
@@ -147,23 +146,52 @@
             </div>
         </div>
         <div class="col-8">
-            <div id="browser">
-                <div id="browser-page-name">Your website</div>
-                <div id="btns">
-                    <div class="browser-btn" id="btn-close"></div>
-                    <div class="browser-btn" id="btn-min"></div>
-                    <div class="browser-btn" id="btn-max"></div>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-preview"
+                       role="tab"
+                       aria-controls="nav-image" aria-selected="true">Preview</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-code" role="tab"
+                       aria-controls="nav-video" aria-selected="false">Code</a>
                 </div>
-                <div id="browser-frame">
-                    <div class="jina-container">
-                        <div class="header">
-                            <jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-preview" role="tabpanel">
+                    <div id="browser">
+                        <div id="browser-page-name">Your website</div>
+                        <div id="btns">
+                            <div class="browser-btn" id="btn-close"></div>
+                            <div class="browser-btn" id="btn-min"></div>
+                            <div class="browser-btn" id="btn-max"></div>
                         </div>
-                        <div class="content-body">
-                            <jina-results></jina-results>
+                        <div id="browser-frame">
+                            <div class="jina-container">
+                                <div class="header">
+                                    <jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>
+                                </div>
+                                <div class="content-body">
+                                    <jina-results></jina-results>
+                                </div>
+                            </div>
+                            <jina-floater></jina-floater>
                         </div>
                     </div>
-                    <jina-floater></jina-floater>
+                </div>
+                <div class="tab-pane fade show active" id="nav-code" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-primary" data-clipboard-target="#jinabox-code">
+                                Copy to Clipboard
+                            </button>
+                            <pre><code class="html" id="#jinabox-code">
+                                    &lt;script src=&quot;https://unpkg.com/jinabox.js&quot;&gt;&lt;/script&gt;
+                                    &lt;script&gt;
+                                    jb = window.JinaBox
+                                    jb.init('http://0.0.0.0:65481/api/search');
+                                    &lt;/script&gt;
+                            </code></pre>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,9 +212,15 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
 <script src="./library/jinabox.js" type="text/javascript"></script>
 <script>
     jb = window.JinaBox
     jb.init('http://0.0.0.0:65481/api/search');
+</script>
+<script>
+    hljs.initHighlightingOnLoad();
+    new ClipboardJS('.btn');
 </script>
 </html>

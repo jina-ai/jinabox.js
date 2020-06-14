@@ -72,3 +72,7 @@
 .tab-pane {
     margin: 10px;
 }
+
+pre, code {
+    white-space: pre-line;
+}
