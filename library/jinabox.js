@@ -361,7 +361,7 @@ let baseStyles = `
 
 .jina-dropdown-message {
     font-family: Comfortaa;
-    padding-top: 8em;
+    padding-top: 9em;
     padding-bottom: 3em;
     padding-right: .5em;
     padding-left: .5em;
@@ -434,6 +434,10 @@ let baseStyles = `
     animation: jina-animation-move 3s ease-in-out infinite;
 }
 
+.jina-roll {
+  animation: jina-animation-roll 3s ease-in-out infinite;
+}
+
 @keyframes jina-animation-scale {
     50% {
         transform: scale(0.9);
@@ -450,6 +454,21 @@ let baseStyles = `
     100% {
         left: 25%;
     }
+}
+
+@keyframes jina-animation-roll {
+  0% {
+    transform: rotate(0deg);
+    left: 25%;
+  }
+  50% {
+    left: 60%;
+    transform: rotate(168deg);
+  }
+  100% {
+    transform: rotate(0deg);
+    left: 25%;
+  }
 }
 
 @keyframes jina-animation-bounce {
@@ -514,6 +533,50 @@ let baseStyles = `
 
 .jina-results-action-button.jina-active {
     background-color: rgba(0, 153, 153, 0.25);
+}
+.eye {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #777777;
+  border-radius: 50%;
+  top: 40%;
+  left: 20%;
+}
+
+.right {
+  left: 68%;
+}
+
+.mouth {
+  position: absolute;
+  top: 43%;
+  left: 41%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.happy {
+  border: 2px solid;
+  border-color: transparent #777777 #777777 transparent;
+  transform: rotate(45deg);
+}
+
+.sad {
+  top: 49%;
+  border: 2px solid;
+  border-color: #777777 transparent transparent #777777;
+  transform: rotate(45deg);
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 `
 
@@ -965,8 +1028,8 @@ class SearchBar extends HTMLElement {
             this.expander.style.height = '300px';
             this.expander.style.opacity = 1;
             this.expander.innerHTML = `
-			<div class="jina-dropdown-message jina-success">
-    		<div class="jina-face"></div>
+			<div class="jina-dropdown-message jina-success unselectable">
+    		<div class="jina-face"><div class="eye"></div><div class="eye right"></div><div class="mouth happy"></div></div>
     		<div class="jina-shadow jina-scale"></div>
 				<h4 class="alert">Drop here</h4>
 				<p>Drop any content here from webpage/local to search</p>
@@ -1010,8 +1073,9 @@ class SearchBar extends HTMLElement {
         this.expander.style.height = '300px';
         this.expander.style.opacity = 1;
         this.expander.innerHTML = `
-		<div class="jina-dropdown-message jina-error">
-    	<div class="jina-face jina-move"></div>
+		<div class="jina-dropdown-message jina-error unselectable">
+    	<div class="jina-face jina-roll"><div class="eye"></div><div class="eye right"></div><div class="mouth sad"></div>
+        </div>
    		<div class="jina-shadow jina-move"></div>
 			<h4 class="alert">Error!</h4>
 			<p>${message}</p>
