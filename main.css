@@ -1,15 +1,10 @@
 #browser {
-    margin: 50px auto;
     background: #f0f0f0;
     border: 1px solid #cdcdcd;
     width: 100%;
     height: 800px;
     display: block;
     border-radius: 5px;
-}
-
-#configForm {
-    margin: 50px auto;
 }
 
 #browser-frame {
