@@ -22,7 +22,7 @@ let baseStyles = `
 }
 .jina-bg-default {
     position: relative;
-    border-radius: 1.1em;
+    border-radius: 100px;
     border-color: #009999;
     overflow: hidden;
     border-style: solid;
@@ -64,7 +64,8 @@ let baseStyles = `
 .jina-search-input::placeholder {
     opacity: .5;
     font-weight: 700;
-    font-size: .75em;
+		font-size: .75em;
+		line-height:1.5;
 }
 .jina-sea {
     width: 300px;
@@ -72,7 +73,6 @@ let baseStyles = `
     background-color: whitesmoke;
     background-image: linear-gradient(#009999, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
     position: relative;
-    overflow: hidden;
 }
 .jina-sea .title {
     color: white;
@@ -91,7 +91,7 @@ let baseStyles = `
     width: 500px;
     height: 500px;
     background: #009999;
-    border-radius: 43%;
+    border-radius: 35%;
     filter: opacity(0.4);
     animation: jina-drift linear infinite;
     transform-origin: 50% 48%;
@@ -177,7 +177,9 @@ let baseStyles = `
     border: none;
     outline: none;
     padding: .5em;
-    padding-left: 2.5rem;
+		padding-left: 2.5rem;
+		margin: 0px;
+		line-height: 1;
 }
 .jina-floater-search-container {
     padding: .5em;
@@ -221,11 +223,11 @@ let baseStyles = `
     border-color: #009999;
 }
 .jina-search-icon {
-    height: 1.25em;
+    height: 1.25rem;
     position: absolute;
-    top: .55rem;
-    left: .55rem;
-    padding-right: .25em;
+    top: .5rem;
+    left: .65rem;
+		padding-right: .25rem;
 }
 .jina-border-right {
     border-right: 1px solid #009999;
@@ -256,7 +258,8 @@ let baseStyles = `
     display: inline-block;
 }
 .jina-expander {
-    font-family: Comfortaa;
+		font-family: Comfortaa;
+		background: white;
     position: absolute;
     top: 2px;
     width: 100%;
@@ -341,7 +344,8 @@ let baseStyles = `
     color: white;
 }
 .jina-dropdown-message button {
-    font-family: Comfortaa;
+		font-family: Comfortaa;
+		background: whitesmoke;
     padding: .5em;
     font-size: 1em;
     padding-left: 1em;
@@ -903,7 +907,7 @@ class SearchBar extends HTMLElement {
 				this.overlay.style.display = 'block';
 				this.overlay.style.opacity = '1';
 				this.searchInput.classList.add('jina-highlighted');
-				this.expander.style.height = '300px';
+				this.expander.style.height = 'auto';
 				this.expander.style.opacity = 1;
 				this.expander.innerHTML = `
 				<div class="jina-dropdown-message jina-success unselectable">
@@ -935,7 +939,7 @@ class SearchBar extends HTMLElement {
 		this.showLoading = () => {
 			this.overlay.style.display = 'block';
 			this.overlay.style.opacity = '1';
-			this.expander.style.height = '300px';
+			this.expander.style.height = 'auto';
 			this.expander.style.opacity = 1;
 			this.expander.innerHTML = `
 			<div class="jina-sea">
@@ -948,7 +952,7 @@ class SearchBar extends HTMLElement {
 		}
 
 		this.showError = (message = 'could not reach server') => {
-			this.expander.style.height = '300px';
+			this.expander.style.height = 'auto';
 			this.expander.style.opacity = 1;
 			this.expander.innerHTML = `
 			<div class="jina-dropdown-message jina-error unselectable">
