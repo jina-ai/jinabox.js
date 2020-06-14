@@ -508,7 +508,7 @@ let baseStyles = `
 .jina-results-action-button.jina-active {
     background-color: rgba(0, 153, 153, 0.25);
 }
-`
+`;
 
 let stylesElement = document.createElement('style');
 stylesElement.innerHTML = baseStyles
@@ -529,6 +529,175 @@ let defaultSettings = {
 class Floater extends HTMLElement {
 	constructor() {
 		super();
+
+		this.listenForEnter = (key) => {
+			if (key.keyCode == 13) {
+				this.search()
+			}
+		}
+
+		this.search = async (query = [this.searchInput.value], inBytes = false) => {
+			if (!inBytes) {
+				this.searchIcon.src = this.originalSearchIcon;
+				this.searchIcon.classList.remove('jina-border-right');
+			}
+			console.log('query: ', query);
+			console.log('searching...');
+			let response;
+			try {
+				response = await window.JinaBox.search(query, 10, inBytes);
+				this.dropped = false;
+			}
+			catch (e) {
+				this.dropped = false;
+				return console.log('error');
+			}
+			console.log('response:', response);
+			let results = [];
+			let { docs } = response.search;
+			for (let i = 0; i < docs.length; ++i) {
+				let docResults = docs[i];
+				let { topkResults } = docResults;
+				for (let j = 0; j < topkResults.length; ++j) {
+					const res = topkResults[j];
+					results.push({ data: res.matchDoc.uri, score: res.score.value, contentType: res.matchDoc.uri.startsWith('data:image/') ? 'image' : 'text' });
+				}
+			}
+			this.results = results;
+			let html = '';
+			console.log('results before:', this.results);
+			this.results = this.results.sort((a, b) => { return b.score - a.score });
+			console.log('results after:', this.results);
+			html += `<p class="jina-floater-results-label">results for ${inBytes ? `${query.length} image input${query.length > 1 ? 's' : ''}` : `"${query}"`}</p>`;
+			this.results.map((result, idx) => {
+				html += `<div class="jina-floater-result" id="jina-floater-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+			});
+			this.dropArea.innerHTML = html;
+			this.results.map((result, idx) => {
+				let resultElement = document.getElementById(`jina-floater-result-${idx}`);
+				resultElement.addEventListener('click', () => { this.search([result.data], result.data.startsWith('data:image/')) });
+			})
+		}
+
+		this.preventDefaults = (e) => {
+			e.preventDefault()
+			e.stopPropagation()
+		}
+		this.handleDrag = () => {
+			this.dragCounter++;
+			if (this.showBox) {
+				this.highlightArea();
+				this.highlightSearch();
+			}
+			else {
+				this.showLargeFloater();
+			}
+		}
+		this.handleDragLeave = () => {
+			this.dragCounter--;
+			if (this.dragCounter < 1) {
+				if (this.showBox) {
+					this.unhighlightArea();
+					this.unhighlightSearch();
+				}
+				else {
+					this.hideLargeFloater();
+				}
+				this.dragCounter = 0;
+			}
+		}
+
+		this.handleDrop = async (e) => {
+			console.log('handle drop files');
+			let dt = e.dataTransfer;
+			let imgsrc = dt.getData('URL');
+			this.handleDragLeave();
+			if (!this.showBox)
+				this.toggleShow()
+			if (imgsrc) {
+				if (imgsrc.startsWith('data:')) {
+					this.search([imgsrc], true);
+					this.searchIcon.src = imgsrc;
+					this.searchIcon.classList.add('jina-border-right');
+				}
+				else {
+					let dataURI;
+					try {
+						dataURI = await getDataUri(imgsrc);
+					}
+					catch (e) {
+						dataURI = imgsrc;
+					}
+					console.log('dataUri:', dataURI);
+					this.searchIcon.src = dataURI;
+					this.searchIcon.classList.add('jina-border-right');
+					this.search([imgsrc], true);
+				}
+			}
+			else {
+				let acceptedFiles = dt.files;
+				let processedFiles = [];
+				console.log('files: ', acceptedFiles)
+				for (let i = 0; i < acceptedFiles.length; ++i) {
+					const file = acceptedFiles[i];
+					let reader = new FileReader();
+					reader.addEventListener("load", () => {
+						const processed = reader.result;
+						processedFiles.push(processed);
+						if (processedFiles.length === acceptedFiles.length) {
+							this.search(processedFiles, true)
+							this.searchIcon.src = processedFiles[0];
+							this.searchIcon.classList.add('jina-border-right');
+						}
+						console.log('processed: ', processed);
+					}, false);
+					reader.readAsDataURL(file);
+				}
+			}
+		}
+
+		this.toggleShow = () => {
+			console.log('this.settings:', this.settings)
+			console.log('toggle show');
+			console.log('showBox: ', this.showBox)
+			this.showBox = !this.showBox;
+			if (this.showBox) {
+				this.floaterBox.style.opacity = '1'
+				this.floaterBox.style.display = 'flex';
+				this.floaterBox.style.height = '500px'
+				document.querySelector('#jina-floater-icon img').src = _icons.closeDark;
+			}
+			else {
+				this.floaterBox.opacity = '0';
+				this.floaterBox.height = '0px';
+				this.floaterBox.style.display = 'none';
+				document.querySelector('#jina-floater-icon img').src = this.floaterIcon
+			}
+		}
+
+		this.showLargeFloater = () => {
+			this.jinaButton.classList.add('jina-floater-large')
+		}
+
+		this.hideLargeFloater = () => {
+			this.jinaButton.classList.remove('jina-floater-large')
+		}
+
+		this.highlightArea = () => {
+			this.dropArea.classList.add('jina-highlighted')
+		}
+		this.unhighlightArea = () => {
+			this.dropArea.classList.remove('jina-highlighted')
+		}
+
+		this.highlightSearch = () => {
+			this.searchBackground.classList.add('jina-bg-rainbow');
+			this.searchInput.classList.add('jina-highlighted')
+		}
+		this.unhighlightSearch = () => {
+			this.searchBackground.classList.remove('jina-bg-rainbow');
+			this.searchInput.classList.remove('jina-highlighted')
+		}
 
 		const customSettings = JSON.parse(this.getAttribute('settings'));
 		this.settings = {
@@ -564,7 +733,6 @@ class Floater extends HTMLElement {
 		</div>
 		`;
 
-		this.showBox = false;
 		this.dragCounter = 0;
 
 		this.jinaButton = document.getElementById('jina-floater-icon');
@@ -599,178 +767,283 @@ class Floater extends HTMLElement {
 		console.log('settings: ', this.settings)
 		typeWriter('#jina-floater-search-box', placeholders || defaultPlaceholders, 0, 0, this.settings.typewriterDelayCharacter, this.settings.typewriterDelayItem);
 	}
-
-	listenForEnter = (key) => {
-		if (key.keyCode == 13) {
-			this.search()
-		}
-	}
-
-	async search(query = [this.searchInput.value], inBytes = false) {
-		if (!inBytes) {
-			this.searchIcon.src = this.originalSearchIcon;
-			this.searchIcon.classList.remove('jina-border-right');
-		}
-		console.log('query: ', query);
-		console.log('searching...');
-		let response;
-		try {
-			response = await window.JinaBox.search(query, 10, inBytes);
-			this.dropped = false;
-		}
-		catch (e) {
-			this.dropped = false;
-			return console.log('error');
-		}
-		console.log('response:', response);
-		let results = [];
-		let { docs } = response.search;
-		for (let i = 0; i < docs.length; ++i) {
-			let docResults = docs[i];
-			let { topkResults } = docResults;
-			for (let j = 0; j < topkResults.length; ++j) {
-				const res = topkResults[j];
-				results.push({ data: res.matchDoc.uri, score: res.score.value, contentType: res.matchDoc.uri.startsWith('data:image/') ? 'image' : 'text' });
-			}
-		}
-		this.results = results;
-		let html = '';
-		console.log('results before:', this.results);
-		this.results = this.results.sort((a, b) => { return b.score - a.score });
-		console.log('results after:', this.results);
-		html += `<p class="jina-floater-results-label">results for ${inBytes ? `${query.length} image input${query.length > 1 ? 's' : ''}` : `"${query}"`}</p>`;
-		this.results.map((result, idx) => {
-			html += `<div class="jina-floater-result" id="jina-floater-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
-		});
-		this.dropArea.innerHTML = html;
-		this.results.map((result, idx) => {
-			let resultElement = document.getElementById(`jina-floater-result-${idx}`);
-			resultElement.addEventListener('click', () => { this.search([result.data], result.data.startsWith('data:image/')) });
-		})
-	}
-
-	preventDefaults = (e) => {
-		e.preventDefault()
-		e.stopPropagation()
-	}
-	handleDrag = () => {
-		this.dragCounter++;
-		if (this.showBox) {
-			this.highlightArea();
-			this.highlightSearch();
-		}
-		else {
-			this.showLargeFloater();
-		}
-	}
-	handleDragLeave = () => {
-		this.dragCounter--;
-		if (this.dragCounter < 1) {
-			if (this.showBox) {
-				this.unhighlightArea();
-				this.unhighlightSearch();
-			}
-			else {
-				this.hideLargeFloater();
-			}
-			this.dragCounter = 0;
-		}
-	}
-
-	handleDrop = async (e) => {
-		console.log('handle drop files');
-		let dt = e.dataTransfer;
-		let imgsrc = dt.getData('URL');
-		this.handleDragLeave();
-		if (!this.showBox)
-			this.toggleShow()
-		if (imgsrc) {
-			if (imgsrc.startsWith('data:')) {
-				this.search([imgsrc], true);
-				this.searchIcon.src = imgsrc;
-				this.searchIcon.classList.add('jina-border-right');
-			}
-			else {
-				let dataURI;
-				try {
-					dataURI = await getDataUri(imgsrc);
-				}
-				catch (e) {
-					dataURI = imgsrc;
-				}
-				console.log('dataUri:', dataURI);
-				this.searchIcon.src = dataURI;
-				this.searchIcon.classList.add('jina-border-right');
-				this.search([imgsrc], true);
-			}
-		}
-		else {
-			let acceptedFiles = dt.files;
-			let processedFiles = [];
-			console.log('files: ', acceptedFiles)
-			for (let i = 0; i < acceptedFiles.length; ++i) {
-				const file = acceptedFiles[i];
-				let reader = new FileReader();
-				reader.addEventListener("load", () => {
-					const processed = reader.result;
-					processedFiles.push(processed);
-					if (processedFiles.length === acceptedFiles.length) {
-						this.search(processedFiles, true)
-						this.searchIcon.src = processedFiles[0];
-						this.searchIcon.classList.add('jina-border-right');
-					}
-					console.log('processed: ', processed);
-				}, false);
-				reader.readAsDataURL(file);
-			}
-		}
-	}
-
-	toggleShow = () => {
-		console.log('toggle show');
-		this.showBox = !this.showBox;
-		if (this.showBox) {
-			this.floaterBox.style.opacity = '1'
-			this.floaterBox.style.display = 'flex';
-			this.floaterBox.style.height = '500px'
-			document.querySelector('#jina-floater-icon img').src = _icons.closeDark;
-		}
-		else {
-			this.floaterBox.opacity = '0';
-			this.floaterBox.height = '0px';
-			this.floaterBox.style.display = 'none';
-			document.querySelector('#jina-floater-icon img').src = this.floaterIcon
-		}
-	}
-
-	showLargeFloater = () => {
-		this.jinaButton.classList.add('jina-floater-large')
-	}
-
-	hideLargeFloater = () => {
-		this.jinaButton.classList.remove('jina-floater-large')
-	}
-
-	highlightArea = () => {
-		this.dropArea.classList.add('jina-highlighted')
-	}
-	unhighlightArea = () => {
-		this.dropArea.classList.remove('jina-highlighted')
-	}
-
-	highlightSearch = () => {
-		this.searchBackground.classList.add('jina-bg-rainbow');
-		this.searchInput.classList.add('jina-highlighted')
-	}
-	unhighlightSearch = () => {
-		this.searchBackground.classList.remove('jina-bg-rainbow');
-		this.searchInput.classList.remove('jina-highlighted')
-	}
 }
 
 class SearchBar extends HTMLElement {
 	constructor() {
 		super();
+
+		this.search = async (query = [this.searchInput.value], inBytes = false) => {
+			console.log('query: ', query);
+			if (!inBytes || query.length > 1) {
+				console.log('removing search icon')
+				this.searchIcon.src = this.originalSearchIcon;
+				this.searchIcon.classList.remove('jina-border-right');
+			}
+
+			this.showLoading();
+			console.log('searching...');
+			let response;
+			let startTime = new Date();
+			try {
+				response = await window.JinaBox.search(query, 10, inBytes);
+				this.dropped = false;
+			}
+			catch (e) {
+				this.dropped = false;
+				console.log('error');
+				return this.showError(e);
+			}
+			let endTime = new Date();
+			let totalTime = Math.round((endTime - startTime) / 10) / 100;
+
+			console.log('response:', response);
+			let results = [];
+			let queries = [];
+			let totalResults = 0;
+			let { docs } = response.search;
+			for (let i = 0; i < docs.length; ++i) {
+				let docResults = docs[i];
+				let { topkResults, uri } = docResults;
+				queries.push(uri);
+				for (let j = 0; j < topkResults.length; ++j) {
+					const res = topkResults[j];
+					if (!results[i])
+						results[i] = [];
+					results[i].push({ data: res.matchDoc.uri, score: res.score.value, contentType: res.matchDoc.mimeType.startsWith('image') ? 'image' : 'text' });
+					totalResults++;
+				}
+			}
+			for (let i = 0; i < results.length; ++i) {
+				results[i] = results[i].sort((a, b) => { return b.score - a.score });
+			}
+			this.queries = queries;
+			this.results = results;
+			this.resultsMeta = { totalTime, totalResults };
+
+			this.showResults(0);
+		}
+
+		this.setResultsView = (view) => {
+			localStorage.setItem('jina-expander-results-view', view);
+			this.resultsView = view;
+			this.showResults();
+		}
+
+		this.listenForEnter = (key) => {
+			if (key.keyCode == 13) {
+				this.search()
+			}
+		}
+
+		this.preventDefaults = (e) =>{
+			e.preventDefault()
+			e.stopPropagation()
+		}
+
+		this.handleDrop = async (e) =>{
+			this.dropped = true;
+			console.log('handle drop files');
+			console.log('drop event:', e);
+			let dt = e.dataTransfer;
+			let imgsrc = dt.getData('URL')
+			console.log('imgsrc: ', imgsrc)
+			if (imgsrc) {
+				if (imgsrc.startsWith('data:')) {
+					this.search([imgsrc], true);
+					this.searchIcon.src = imgsrc;
+					this.searchIcon.classList.add('jina-border-right');
+				}
+				else {
+					let dataURI;
+					try {
+						dataURI = await getDataUri(imgsrc);
+					}
+					catch (e) {
+						dataURI = imgsrc;
+					}
+					console.log('dataUri:', dataURI);
+					this.searchIcon.src = dataURI;
+					this.searchIcon.classList.add('jina-border-right');
+					this.search([imgsrc], true);
+				}
+			}
+			else {
+				let acceptedFiles = dt.files;
+				let processedFiles = [];
+				console.log('files: ', acceptedFiles)
+				for (let i = 0; i < acceptedFiles.length; ++i) {
+					const file = acceptedFiles[i];
+					let reader = new FileReader();
+					reader.addEventListener("load", () => {
+						const processed = reader.result;
+						processedFiles.push(processed);
+						if (processedFiles.length === acceptedFiles.length) {
+							this.search(processedFiles, true)
+							if (processedFiles.length < 2) {
+								this.searchIcon.src = processedFiles[0];
+								this.searchIcon.classList.add('jina-border-right');
+							}
+						}
+						console.log('processed: ', processed);
+					}, false);
+					reader.readAsDataURL(file);
+				}
+			}
+		}
+
+		this.handleDrag = ()=> {
+			this.dragCounter++;
+			if (!this.highlighted) {
+				this.overlay.style.display = 'block';
+				this.overlay.style.opacity = '1';
+				this.searchInput.classList.add('jina-highlighted');
+				this.expander.style.height = '300px';
+				this.expander.style.opacity = 1;
+				this.expander.innerHTML = `
+				<div class="jina-dropdown-message jina-success">
+					<div class="jina-face"></div>
+					<div class="jina-shadow jina-scale"></div>
+					<h3 class="alert">Drop here to search</h3>
+				</div>
+				`
+				this.highlighted = true;
+			}
+		}
+
+		this.handleDragLeave = ()=> {
+			this.dragCounter--;
+			if (this.dragCounter < 1) {
+				this.searchInput.classList.remove('jina-highlighted');
+				if (!this.dropped) {
+					this.overlay.style.display = 'none';
+					this.overlay.style.opacity = '0';
+					this.expander.style.height = '0px';
+					this.expander.style.opacity = 0;
+					this.clearExpander();
+				}
+				this.dragCounter = 0;
+			}
+		}
+
+		this.showLoading = () =>{
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
+			this.expander.style.height = '300px';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			<div class="jina-sea">
+				<p class="title">Searching</p>
+				<span class="jina-wave"></span>
+				<span class="jina-wave"></span>
+				<span class="jina-wave"></span>
+			</div>
+			`
+		}
+
+		this.showError = (message = 'could not reach server') => {
+			this.expander.style.height = '300px';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			<div class="jina-dropdown-message jina-error">
+				<div class="jina-face jina-move"></div>
+				 <div class="jina-shadow jina-move"></div>
+				<h3 class="alert">Error!</h3>
+				<p>${message}</p>
+				<button id="jina-searchbar-error-ok">Ok</button>
+			</div>
+			`
+			this.errorButton = document.getElementById('jina-searchbar-error-ok')
+			this.errorButton.onclick = this.clearExpander;
+		}
+
+		this.showResults = (index = this.resultsIndex) => {
+			//TODO: settings > expander height
+			this.resultsIndex = index;
+			let resultsHTML = '';
+			let results = this.results;
+			let queries = this.queries;
+			let { totalResults, totalTime } = this.resultsMeta;
+
+			let toolbar = `
+			<div class="jina-results-toolbar">
+				<div class="jina-results-tabs">`;
+			if (queries.length > 1) {
+				for (let i = 0; i < queries.length; ++i) {
+					let uri = queries[i];
+					toolbar += `
+					<div class="jina-results-tab${index === i ? ' jina-active' : ''}" id="jina-results-tab-${i}">
+						<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
+					</div>`
+				}
+			}
+			toolbar += `
+				</div>
+				<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
+				<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
+			</div>`
+
+
+			resultsHTML += `<p class="jina-results-label">${totalResults} results in ${totalTime} seconds</p>`;
+
+			for (let i = 0; i < results[index].length; ++i) {
+				let result = results[index][i];
+				if (this.resultsView === 'grid')
+					resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
+				else
+					resultsHTML += `<div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+			}
+
+			if (this.settings.showResults) {
+				this.overlay.style.display = 'block';
+				this.overlay.style.opacity = '1';
+				this.expander.style.height = '500px';
+				this.expander.style.opacity = 1;
+				this.expander.innerHTML = `
+				${toolbar || '<div class="jina-expander-spacer"></div>'}
+				<div class="jina-expander-results-area">
+				${resultsHTML}
+				</div>
+				`;
+				if (queries.length > 1) {
+					for (let i = 0; i < queries.length; ++i) {
+						document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
+					}
+				}
+				document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+				document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+			}
+			else {
+				this.resultsArea = document.getElementById('jina-results-area')
+				this.resultsArea.innerHTML = html;
+				this.clearExpander()
+			}
+
+			results[index].map((result, idx) => {
+				let resultElement = document.getElementById(`jina-result-${idx}`);
+				resultElement.addEventListener('click', () => {
+					this.search([result.data], true)
+					this.searchIcon.src = result.data;
+					this.searchIcon.classList.add('jina-border-right');
+				});
+			})
+		}
+
+		this.clearExpander = async () => {
+			this.searchIcon.src = this.originalSearchIcon;
+			this.searchIcon.classList.remove('jina-border-right');
+			this.overlay.style.display = 'none';
+			this.overlay.style.opacity = '0';
+			this.dragCounter = 0;
+			this.searchInput.classList.remove('jina-highlighted');
+			this.expander.style.height = '0px';
+			this.expander.style.opacity = 0;
+			this.expander.style.transition = '.2s';
+			//TODO: settings > animation speed
+			await waitFor(.2);
+			this.expander.innerHTML = '';
+			this.highlighted = false;
+		}
 
 		const customSettings = JSON.parse(this.getAttribute('settings'));
 		this.settings = {
@@ -820,279 +1093,6 @@ class SearchBar extends HTMLElement {
 		const placeholders = JSON.parse(this.getAttribute('placeholders'));
 		typeWriter('#jina-search-input', placeholders || defaultPlaceholders);
 	}
-
-	//zzzzz
-	async search(query = [this.searchInput.value], inBytes = false) {
-		console.log('query: ', query);
-		if (!inBytes || query.length > 1) {
-			console.log('removing search icon')
-			this.searchIcon.src = this.originalSearchIcon;
-			this.searchIcon.classList.remove('jina-border-right');
-		}
-
-		this.showLoading();
-		console.log('searching...');
-		let response;
-		let startTime = new Date();
-		try {
-			response = await window.JinaBox.search(query, 10, inBytes);
-			this.dropped = false;
-		}
-		catch (e) {
-			this.dropped = false;
-			console.log('error');
-			return this.showError(e);
-		}
-		let endTime = new Date();
-		let totalTime = Math.round((endTime - startTime) / 10) / 100;
-
-		console.log('response:', response);
-		let results = [];
-		let queries = [];
-		let totalResults = 0;
-		let { docs } = response.search;
-		for (let i = 0; i < docs.length; ++i) {
-			let docResults = docs[i];
-			let { topkResults, uri } = docResults;
-			queries.push(uri);
-			for (let j = 0; j < topkResults.length; ++j) {
-				const res = topkResults[j];
-				if (!results[i])
-					results[i] = [];
-				results[i].push({ data: res.matchDoc.uri, score: res.score.value, contentType: res.matchDoc.mimeType.startsWith('image') ? 'image' : 'text' });
-				totalResults++;
-			}
-		}
-		for (let i = 0; i < results.length; ++i) {
-			results[i] = results[i].sort((a, b) => { return b.score - a.score });
-		}
-		this.queries = queries;
-		this.results = results;
-		this.resultsMeta = { totalTime, totalResults };
-
-		this.showResults(0);
-	}
-
-	setResultsView = (view) => {
-		localStorage.setItem('jina-expander-results-view', view);
-		this.resultsView = view;
-		this.showResults();
-	}
-
-	listenForEnter = (key) => {
-		if (key.keyCode == 13) {
-			this.search()
-		}
-	}
-
-	preventDefaults = (e) => {
-		e.preventDefault()
-		e.stopPropagation()
-	}
-
-	handleDrop = async (e) => {
-		this.dropped = true;
-		console.log('handle drop files');
-		console.log('drop event:', e);
-		let dt = e.dataTransfer;
-		let imgsrc = dt.getData('URL')
-		console.log('imgsrc: ', imgsrc)
-		if (imgsrc) {
-			if (imgsrc.startsWith('data:')) {
-				this.search([imgsrc], true);
-				this.searchIcon.src = imgsrc;
-				this.searchIcon.classList.add('jina-border-right');
-			}
-			else {
-				let dataURI;
-				try {
-					dataURI = await getDataUri(imgsrc);
-				}
-				catch (e) {
-					dataURI = imgsrc;
-				}
-				console.log('dataUri:', dataURI);
-				this.searchIcon.src = dataURI;
-				this.searchIcon.classList.add('jina-border-right');
-				this.search([imgsrc], true);
-			}
-		}
-		else {
-			let acceptedFiles = dt.files;
-			let processedFiles = [];
-			console.log('files: ', acceptedFiles)
-			for (let i = 0; i < acceptedFiles.length; ++i) {
-				const file = acceptedFiles[i];
-				let reader = new FileReader();
-				reader.addEventListener("load", () => {
-					const processed = reader.result;
-					processedFiles.push(processed);
-					if (processedFiles.length === acceptedFiles.length) {
-						this.search(processedFiles, true)
-						if (processedFiles.length < 2) {
-							this.searchIcon.src = processedFiles[0];
-							this.searchIcon.classList.add('jina-border-right');
-						}
-					}
-					console.log('processed: ', processed);
-				}, false);
-				reader.readAsDataURL(file);
-			}
-		}
-	}
-
-	handleDrag = () => {
-		this.dragCounter++;
-		if (!this.highlighted) {
-			this.overlay.style.display = 'block';
-			this.overlay.style.opacity = '1';
-			this.searchInput.classList.add('jina-highlighted');
-			this.expander.style.height = '300px';
-			this.expander.style.opacity = 1;
-			this.expander.innerHTML = `
-			<div class="jina-dropdown-message jina-success">
-    		<div class="jina-face"></div>
-    		<div class="jina-shadow jina-scale"></div>
-				<h3 class="alert">Drop here to search</h3>
-			</div>
-			`
-			this.highlighted = true;
-		}
-	}
-
-	handleDragLeave = () => {
-		this.dragCounter--;
-		if (this.dragCounter < 1) {
-			this.searchInput.classList.remove('jina-highlighted');
-			if (!this.dropped) {
-				this.overlay.style.display = 'none';
-				this.overlay.style.opacity = '0';
-				this.expander.style.height = '0px';
-				this.expander.style.opacity = 0;
-				this.clearExpander();
-			}
-			this.dragCounter = 0;
-		}
-	}
-
-	showLoading = () => {
-		this.overlay.style.display = 'block';
-		this.overlay.style.opacity = '1';
-		this.expander.style.height = '300px';
-		this.expander.style.opacity = 1;
-		this.expander.innerHTML = `
-		<div class="jina-sea">
-			<p class="title">Searching</p>
-			<span class="jina-wave"></span>
-			<span class="jina-wave"></span>
-			<span class="jina-wave"></span>
-		</div>
-		`
-	}
-
-	showError = (message = 'could not reach server') => {
-		this.expander.style.height = '300px';
-		this.expander.style.opacity = 1;
-		this.expander.innerHTML = `
-		<div class="jina-dropdown-message jina-error">
-    	<div class="jina-face jina-move"></div>
-   		<div class="jina-shadow jina-move"></div>
-			<h3 class="alert">Error!</h3>
-			<p>${message}</p>
-			<button id="jina-searchbar-error-ok">Ok</button>
-		</div>
-		`
-		this.errorButton = document.getElementById('jina-searchbar-error-ok')
-		this.errorButton.onclick = this.clearExpander;
-	}
-
-	showResults = (index = this.resultsIndex) => {
-		//TODO: settings > expander height
-		this.resultsIndex = index;
-		let resultsHTML = '';
-		let results = this.results;
-		let queries = this.queries;
-		let { totalResults, totalTime } = this.resultsMeta;
-
-		let toolbar = `
-		<div class="jina-results-toolbar">
-			<div class="jina-results-tabs">`;
-		if (queries.length > 1) {
-			for (let i = 0; i < queries.length; ++i) {
-				let uri = queries[i];
-				toolbar += `
-				<div class="jina-results-tab${index === i ? ' jina-active' : ''}" id="jina-results-tab-${i}">
-					<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
-				</div>`
-			}
-		}
-		toolbar += `
-			</div>
-			<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
-			<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
-		</div>`
-
-
-		resultsHTML += `<p class="jina-results-label">${totalResults} results in ${totalTime} seconds</p>`;
-
-		for (let i = 0; i < results[index].length; ++i) {
-			let result = results[index][i];
-			if (this.resultsView === 'grid')
-				resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
-			else
-				resultsHTML += `<div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
-		}
-
-		if (this.settings.showResults) {
-			this.overlay.style.display = 'block';
-			this.overlay.style.opacity = '1';
-			this.expander.style.height = '500px';
-			this.expander.style.opacity = 1;
-			this.expander.innerHTML = `
-			${toolbar || '<div class="jina-expander-spacer"></div>'}
-			<div class="jina-expander-results-area">
-			${resultsHTML}
-			</div>
-			`;
-			if (queries.length > 1) {
-				for (let i = 0; i < queries.length; ++i) {
-					document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
-				}
-			}
-			document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
-			document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
-		}
-		else {
-			this.resultsArea = document.getElementById('jina-results-area')
-			this.resultsArea.innerHTML = html;
-			this.clearExpander()
-		}
-
-		results[index].map((result, idx) => {
-			let resultElement = document.getElementById(`jina-result-${idx}`);
-			resultElement.addEventListener('click', () => {
-				this.search([result.data], true)
-				this.searchIcon.src = result.data;
-				this.searchIcon.classList.add('jina-border-right');
-			});
-		})
-	}
-
-	clearExpander = async () => {
-		this.searchIcon.src = this.originalSearchIcon;
-		this.searchIcon.classList.remove('jina-border-right');
-		this.overlay.style.display = 'none';
-		this.overlay.style.opacity = '0';
-		this.dragCounter = 0;
-		this.searchInput.classList.remove('jina-highlighted');
-		this.expander.style.height = '0px';
-		this.expander.style.opacity = 0;
-		this.expander.style.transition = '.2s';
-		//TODO: settings > animation speed
-		await waitFor(.2);
-		this.expander.innerHTML = '';
-		this.highlighted = false;
-	}
 }
 
 class Results extends HTMLElement {
@@ -1106,10 +1106,10 @@ class Results extends HTMLElement {
 		this.dropArea.addEventListener('drop', this.handleDrop);
 		this.dropArea.addEventListener('dragleave', this.handleDragLeave);
 	}
-	handleDrag = function () {
+	handleDrag() {
 		console.log('handle drag enter');
 	}
-	handleDragLeave = function () {
+	handleDragLeave() {
 		console.log('handle drag leave');
 	}
 }
@@ -1173,7 +1173,7 @@ function getDataUri(url) {
 	})
 }
 
-function typeWriter(selector_target, text_list, i = 0, text_list_i = 0, delay_next_char = 100, delay_next_item = 1000, ) {
+function typeWriter(selector_target, text_list, i = 0, text_list_i = 0, delay_next_char = 100, delay_next_item = 1000,) {
 	if (!i) {
 		document.querySelector(selector_target).placeholder = "";
 	}
