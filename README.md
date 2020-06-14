@@ -13,22 +13,18 @@ In HTML, include the minified script:
 
 ```html
 <script src="https://unpkg.com/jinabox.js"></script>
+<script>
+    jb = window.JinaBox
+    jb.init('http://0.0.0.0:65481/api/search');  // `http://0.0.0.0:65481/api/search` is the endpoint of the REST gateway of a Jina backend.
+
+</script>
 ```
 
-Create a container where the `jinabox` is to appear:
+Then, create a container where the `jinabox` is to appear:
 
 ```html
 <jinabox/>
 ```
-
-Finally, load the `jinabox`:
-
-```javascript
-jb = window.JinaBox
-jb.init('http://0.0.0.0:65481/api/search');
-```
-
-`http://0.0.0.0:65481/api/search` is the endpoint of the REST gateway of a Jina backend.
 
 ### Using with a module bundler
 
