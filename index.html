@@ -29,28 +29,27 @@
             <form id="configForm">
                 <h4>Configs</h4>
                 <div class="form-row">
-                    <div class="form-group col-md-8">
-                        <label for="exampleInputEmail1">Server endpoint</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                               placeholder="https://0.0.0.0:45678">
-                        <small id="emailHelp" class="form-text text-muted">which Jina REST Gateway exposes</small>
+                    <div class="form-group col-md-12">
+                        <label for="inputEndpoint">Server endpoint</label>
+                        <input type="url" class="form-control" id="inputEndpoint" placeholder="http://0.0.0.0:65481/api/search">
+                        <small id="urlHelp" class="form-text text-muted">which Jina REST Gateway exposes</small>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="inputTimeout">Timeout</label>
-                        <input type="number" class="form-control" id="inputTimeout" value=5000>
+                        <label for="inputTimeout">Timeout (ms)</label>
+                        <input type="number" class="form-control" id="inputTimeout">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="styleClassic" checked>
                         <label class="form-check-label" for="styleClassic">
-                            Show classic style
+                            Show searchbar
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="styleFloat" checked>
                         <label class="form-check-label" for="styleFloat">
-                            Show floating style
+                            Show floater
                         </label>
                     </div>
                 </div>
@@ -198,6 +197,26 @@
     function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.src);
     }
+
+    const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
+    const initialTimeout = localStorage.getItem('jina-timeout') || '';
+
+    const inputEndpoint = document.getElementById('inputEndpoint');
+    inputEndpoint.setAttribute('value',initialEndpoint||'');
+    inputEndpoint.addEventListener('input',function(e){
+        const url = e.target.value;
+        console.log('new url: ',url)
+        localStorage.setItem('jina-endpoint',url);
+        window.JinaBox.updateSettings({url});
+    })
+
+    const inputTimeout = document.getElementById('inputTimeout');
+    inputTimeout.setAttribute('value',initialTimeout||5000);
+    inputTimeout.addEventListener('input',function(e){
+        const timeout = e.target.value;
+        localStorage.setItem('jina-timeout',timeout);
+        window.JinaBox.updateSettings({timeout});
+    })
 </script>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
