@@ -41,14 +41,14 @@
                 </div>
                 <div class="form-group">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="styleClassic" checked>
-                        <label class="form-check-label" for="styleClassic">
+                        <input class="form-check-input" type="checkbox" id="showSearch" checked>
+                        <label class="form-check-label" for="showSearch">
                             Show searchbar
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="styleFloat" checked>
-                        <label class="form-check-label" for="styleFloat">
+                        <input class="form-check-input" type="checkbox" id="showFloater" checked>
+                        <label class="form-check-label" for="showFloater">
                             Show floater
                         </label>
                     </div>
@@ -162,14 +162,17 @@
                         </div>
                         <div id="browser-frame">
                             <div class="jina-container">
-                                <div class="header">
+                                <div class="header" id="searchbar-container">
                                     <jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>
                                 </div>
-                                <div class="content-body">
+                                <div class="content-body" id="results-container">
                                     <jina-results></jina-results>
                                 </div>
                             </div>
-                            <jina-floater></jina-floater>
+                            <div id="floater-container">
+                                <jina-floater></jina-floater>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -201,14 +204,22 @@
     const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
     const initialTimeout = localStorage.getItem('jina-timeout') || '';
 
+    const settings = {
+        url:initialEndpoint,
+        timeout: initialTimeout,
+        showSearch: true,
+        showFloater: true,
+        theme: 'persian'
+    };
+
     const inputEndpoint = document.getElementById('inputEndpoint');
     inputEndpoint.setAttribute('value',initialEndpoint||'');
     inputEndpoint.addEventListener('input',function(e){
         const url = e.target.value;
-        console.log('new url: ',url)
         localStorage.setItem('jina-endpoint',url);
         window.JinaBox.updateSettings({url});
-    })
+        settings.url = url;
+    });
 
     const inputTimeout = document.getElementById('inputTimeout');
     inputTimeout.setAttribute('value',initialTimeout||5000);
@@ -216,7 +227,26 @@
         const timeout = e.target.value;
         localStorage.setItem('jina-timeout',timeout);
         window.JinaBox.updateSettings({timeout});
-    })
+        settings.timeout = timeout;
+    });
+
+    document.getElementById('showSearch').addEventListener('change',function(e){
+        const checked = e.target.checked;
+        settings.showSearch = checked;
+        if(checked)
+            document.getElementById('searchbar-container').innerHTML =  `<jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>`
+        else
+            document.getElementById('searchbar-container').innerHTML =  ''
+    });
+
+    document.getElementById('showFloater').addEventListener('change',function(e){
+        const checked = e.target.checked;
+        settings.showFloater = checked;
+        if(checked)
+            document.getElementById('floater-container').innerHTML =  '<jina-floater></jina-floater>'
+        else
+            document.getElementById('floater-container').innerHTML =  ''
+    });
 </script>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
