@@ -20,7 +20,7 @@ jobs:
     - name: set git name
       run: git config --global user.name "Jina Dev Bot"
     - name: get current version
-      run: version=$(npm view jinabox-test version)
+      run: version=$(npm view jinabox version)
     - name: set version
       run: npm version $version
     - name: increment version
