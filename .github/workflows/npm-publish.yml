@@ -26,7 +26,7 @@ jobs:
         npm version $version
         npm version patch
     - name: publish
-      run: npm install && npm minify && npm publish
+      run: npm install && npm run minify && npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # You need to set this in your repo settings
     - name: run git status
