@@ -43,6 +43,5 @@
   "devDependencies": {
     "terser": "^4.7.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
