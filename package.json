@@ -6,8 +6,8 @@
   "unpkg": "dist/jinabox.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p dist && browserify library/jinabox.js > dist/jinabox-es2015.js --standalone 'jinabox' && babel dist/jinabox-es2015.js --out-file dist/jinabox.js --presets=@babel/preset-env",
-    "minify": "npm run build && uglifyjs dist/jinabox.js --compress --mangle > dist/jinabox.min.js"
+    "build": "mkdir -p dist && cp library/jinabox.js dist/jinabox.js",
+    "minify": "npm run build && terser library/jinabox.js --compress --mangle > dist/jinabox.min.js"
   },
   "files": [
     "dist/"
@@ -56,5 +56,8 @@
     "mocha": "^5.2.0",
     "sinon": "^9.0.2",
     "uglify-js": "^3.8.0"
+  },
+  "dependencies": {
+    "terser": "^4.7.0"
   }
 }

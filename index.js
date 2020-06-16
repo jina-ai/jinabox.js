@@ -18,7 +18,7 @@ ${settings.showFloater ?
 			: ''}
 <body>
 
-	<script src="https://unpkg.com/jinabox.js"></script>
+	<script src="https://unpkg.com/jinabox"></script>
 <script>
 JinaBox.init('${settings.url}'${settings.timeout?`,{timeout:${settings.timeout}}`:''});
 </script>
