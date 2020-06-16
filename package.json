@@ -10,7 +10,7 @@
     "minify": "npm run build && uglifyjs dist/jinabox.js > dist/jinabox.min.js"
   },
   "files": [
-    "dist/jinabox.min.js"
+    "dist/"
   ],
   "repository": {
     "type": "git",
