@@ -5,12 +5,14 @@
   "main": "library/jinabox.js",
   "unpkg": "dist/jinabox.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify": "npm run build && uglifyjs library/jinabox.js > dist/jinabox.min.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jina-ai/jina-box.git"
   },
+  "prepublishOnly": "npm run minify",
   "keywords": [
     "jina",
     "jinabox",
@@ -24,13 +26,16 @@
     "semantic search"
   ],
   "author": {
-        "name": "Jina AI Dev Team",
-        "email": "hello@jina.ai",
-        "url": "https://jina.ai/"
+    "name": "Jina AI Dev Team",
+    "email": "hello@jina.ai",
+    "url": "https://jina.ai/"
   },
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jina-ai/jina-box/issues"
   },
-  "homepage": "https://github.com/jina-ai/jinabox.js"
+  "homepage": "https://github.com/jina-ai/jinabox.js",
+  "devDependencies": {
+    "uglify-js": "^3.8.0"
+  }
 }
