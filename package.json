@@ -24,7 +24,8 @@
     "image search",
     "video search",
     "audio search",
-    "semantic search"
+    "semantic search",
+    "autocomplete"
   ],
   "author": {
     "name": "Jina AI Dev Team",
