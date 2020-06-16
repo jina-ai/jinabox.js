@@ -3,6 +3,7 @@
   "version": "0.1.10",
   "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
   "main": "library/jinabox.js",
+  "unpkg": "dist/jinabox.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
