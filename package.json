@@ -14,12 +14,21 @@
     "jina",
     "jinabox",
     "jina-box",
-    "neural search"
+    "neural search",
+    "search box",
+    "omnibox",
+    "image search",
+    "video search",
+    "audio search"
   ],
-  "author": "Jina AI Limited",
+  "author": {
+        "name": "Jina AI Dev Team",
+        "email": "hello@jina.ai",
+        "url": "https://jina.ai/"
+  },
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jina-ai/jina-box/issues"
   },
-  "homepage": "https://github.com/jina-ai/jina-box#readme"
+  "homepage": "https://github.com/jina-ai/jinabox.js"
 }
