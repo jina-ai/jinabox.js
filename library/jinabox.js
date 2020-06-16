@@ -513,14 +513,14 @@ let baseStyles = `
     opacity: 0;
 }
 .jina-results-toolbar {
-    margin-top: 3em;
+    margin-top: .5em;
     padding-right: .5em;
     padding-left: .5em;
     text-align: left;
-		display: flex;
-		flex-shrink: 0;
+	display: flex;
+	flex-shrink: 0;
     flex-direction: row;
-		border-bottom: 1px solid #cfd8dc;
+	border-bottom: 1px solid #cfd8dc;
 }
 .jina-results-tabs {
     overflow-x: auto;
@@ -650,7 +650,7 @@ class Floater extends HTMLElement {
             console.log('searching...');
             let response;
             try {
-                response = await window.JinaBox.search(query, 10, inBytes);
+                response = await window.JinaBox.search(query, 32, inBytes);
                 this.dropped = false;
             } catch (e) {
                 this.dropped = false;
@@ -907,7 +907,7 @@ class SearchBar extends HTMLElement {
             let response;
             let startTime = new Date();
             try {
-                response = await window.JinaBox.search(query, 10, inBytes);
+                response = await window.JinaBox.search(query, 32, inBytes);
                 this.dropped = false;
             } catch (e) {
                 this.dropped = false;
