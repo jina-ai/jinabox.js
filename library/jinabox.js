@@ -372,11 +372,11 @@ let baseStyles = `
     padding-top: 5em;
     padding-right: 2.5em;
     padding-left: 2.5em;
-    color: #fff;
     opacity: 0;
     font-size: 1px;
     transition: .2s;
     text-transform: uppercase;
+    letter-spacing: 3px;
 }
 .jina-floater-large .jina-floater-label {
     font-size: 1.25em;
@@ -399,29 +399,28 @@ let baseStyles = `
     background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);;
 }
 .jina-ready {
-    background: linear-gradient(to bottom right, #8e9eab 40%, #eef2f3 100%);
-    color: #fff;
+    background: #eef2f3;
+    color: #000;
 }
 .jina-theme-persian .jina-ready{
 	background: linear-gradient(to bottom right, #009999 40%, #32C8CD 100%);
+	color: #fff;
 }
 .jina-theme-pompelmo .jina-ready{
 	background: linear-gradient(to bottom right, #FF6666 40%, #ff8b8b 100%);
+	color: #fff;
 }
 .jina-theme-honeybee .jina-ready{
 	background: linear-gradient(to bottom right, #FFCC66 40%, #ffda8f 100%);
+	color: #fff;
 }
 
 .jina-dropdown-message h4 {
     font-weight: 100;
     letter-spacing: 3px;
     padding-top: 5px;
-    color: white;
     padding-bottom: 5px;
     text-transform: uppercase;
-}
-.jina-dropdown-message p {
-    color: white;
 }
 .jina-dropdown-message button {
 		font-family: Comfortaa;
