@@ -20,8 +20,7 @@ ${settings.showFloater ?
 
 	<script src="https://unpkg.com/jinabox.js"></script>
 <script>
-jb = window.JinaBox
-jb.init({url:'${settings.url}',timeout:${settings.timeout});
+JinaBox.init('${settings.url}',{timeout:${settings.timeout}});
 </script>
 `
 	document.getElementById('jinabox-code').innerText = code;
@@ -39,7 +38,11 @@ const settings = {
 	theme: 'persian'
 };
 
-this.renderCode();
+renderCode();
+
+const searchbarContainer = document.getElementById('searchbar-container');
+const floaterContainer = document.getElementById('floater-container');
+const resultsContainer = document.getElementById('results-container');
 
 const inputEndpoint = document.getElementById('inputEndpoint');
 inputEndpoint.setAttribute('value', initialEndpoint || '');
@@ -65,9 +68,9 @@ document.getElementById('showSearch').addEventListener('change', function (e) {
 	const checked = e.target.checked;
 	settings.showSearch = checked;
 	if (checked)
-		document.getElementById('searchbar-container').innerHTML = `<jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>`
+	searchbarContainer.innerHTML = `<jina-searchbar theme="${settings.theme}"/>`
 	else
-		document.getElementById('searchbar-container').innerHTML = ''
+		searchbarContainer.innerHTML = ''
 	renderCode()
 });
 
@@ -75,10 +78,22 @@ document.getElementById('showFloater').addEventListener('change', function (e) {
 	const checked = e.target.checked;
 	settings.showFloater = checked;
 	if (checked)
-		document.getElementById('floater-container').innerHTML = '<jina-floater></jina-floater>'
+		floaterContainer.innerHTML = `<jina-floater theme="${settings.theme}"></jina-floater>`
 	else
-		document.getElementById('floater-container').innerHTML = ''
+		floaterContainer.innerHTML = ''
 	renderCode()
 });
 
-JinaBox.init(initialEndpoint);
+const radios = document.querySelectorAll('.jina-theme-select');
+
+for(let i=0; i<radios.length;++i){
+	let radio = radios[i];
+	radio.onclick = function(){
+		settings.theme = radio.value;
+		floaterContainer.innerHTML = `<jina-floater theme="${settings.theme}"></jina-floater>`
+		searchbarContainer.innerHTML = `<jina-searchbar theme="${settings.theme}"/>`
+		renderCode();
+	}
+}
+
+JinaBox.init(initialEndpoint,{timeout:initialTimeout});
