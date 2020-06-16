@@ -1,6 +1,6 @@
 {
   "name": "jinabox",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
   "main": "library/jinabox.js",
   "unpkg": "dist/jinabox.min.js",
@@ -9,6 +9,9 @@
     "build": "mkdir -p dist && browserify library/jinabox.js > dist/jinabox-es2015.js --standalone 'jinabox' && babel dist/jinabox-es2015.js --out-file dist/jinabox.js --presets=@babel/preset-env",
     "minify": "npm run build && uglifyjs dist/jinabox.js > dist/jinabox.min.js"
   },
+  "files": [
+    "dist/jinabox.min.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jina-ai/jina-box.git"
