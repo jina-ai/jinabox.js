@@ -5,7 +5,7 @@
 
 `jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with a Jina backend.
 
-[Demo page](https://jinaboxjs.jina.ai)
+[Demo page](https://jina.ai/jinabox.js/)
 
 ## Quick Start
 
@@ -15,8 +15,7 @@ In HTML, include the minified script:
 <script src="https://unpkg.com/jinabox.js"></script>
 <script>
     jb = window.JinaBox
-    jb.init('http://0.0.0.0:65481/api/search');  // `http://0.0.0.0:65481/api/search` is the endpoint of the REST gateway of a Jina backend.
-
+    jb.init('http://0.0.0.0:65481/api/search');  // http://0.0.0.0:65481/api/search is the endpoint of the REST gateway of a Jina backend.
 </script>
 ```
 
@@ -25,6 +24,8 @@ Then, create a container where the `jinabox` is to appear:
 ```html
 <jinabox/>
 ```
+
+Run [one of our examples](https://learn.jina.ai) and play! 
 
 ### Using with a module bundler
 
