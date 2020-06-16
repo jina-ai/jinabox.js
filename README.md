@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/jina-ai/jina"><img src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox-logo.svg" alt="Jinabox.js banner" width="60%"></a>
+  <a href="https://github.com/jina-ai/jina"><img src="https://github.com/jina-ai/jinabox.js/blob/master/img/jinabox-logo.svg" alt="Jinabox.js banner" width="60%"></a>
 </p>
 
 [![npm](https://img.shields.io/npm/v/jinabox)](https://www.npmjs.com/package/jinabox)
