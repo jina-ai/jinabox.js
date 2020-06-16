@@ -71,3 +71,10 @@
 pre, code {
     white-space: pre-line;
 }
+
+.config-container{
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: .5em;
+    height: 400px;
+}

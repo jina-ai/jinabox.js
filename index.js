@@ -20,7 +20,7 @@ ${settings.showFloater ?
 
 	<script src="https://unpkg.com/jinabox.js"></script>
 <script>
-JinaBox.init('${settings.url}',{timeout:${settings.timeout}});
+JinaBox.init('${settings.url}'${settings.timeout?`,{timeout:${settings.timeout}}`:''});
 </script>
 `
 	document.getElementById('jinabox-code').innerText = code;
