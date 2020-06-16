@@ -17,17 +17,16 @@ jobs:
         node-version: 14
         registry-url: 'https://registry.npmjs.org'
     - name: set git email
-      run: git config --global user.email "dev-bot@jina.ai"
-    - name: set git name
-      run: git config --global user.name "Jina Dev Bot"
+      run: |
+        git config --global user.email "dev-bot@jina.ai"
+        git config --global user.name "Jina Dev Bot"
     - name: get current version
-      run: version=$(npm view jinabox version)
-    - name: set version
-      run: npm version $version
-    - name: increment version
-      run: npm version patch
+      run: |
+        version=$(npm view jinabox version)
+        npm version $version
+        npm version patch
     - name: publish
-      run: npm publish
+      run: npm install && npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # You need to set this in your repo settings
     - name: run git status

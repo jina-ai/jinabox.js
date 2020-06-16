@@ -6,7 +6,8 @@
   "unpkg": "dist/jinabox.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "minify": "npm run build && uglifyjs library/jinabox.js > dist/jinabox.min.js"
+    "build": "mkdir -p dist && browserify library/jinabox.js > dist/jinabox-es2015.js --standalone 'jinabox' && babel dist/jinabox-es2015.js --out-file dist/jinabox.js --presets=@babel/preset-env",
+    "minify": "npm run build && uglifyjs dist/jinabox.js > dist/jinabox.min.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,20 @@
   },
   "homepage": "https://github.com/jina-ai/jinabox.js",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "eslint": "^4.0.0",
+    "eslint-config-apostrophe": "^3.1.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "mocha": "^5.2.0",
+    "sinon": "^9.0.2",
     "uglify-js": "^3.8.0"
   }
 }
