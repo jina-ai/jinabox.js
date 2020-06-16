@@ -18,7 +18,7 @@ let baseStyles = `
 .jina-bg-default {
     position: relative;
     border-radius: 100px;
-    border-color: #009999;
+    border-color: #dbdbdb;
     overflow: hidden;
     border-style: solid;
     border-width: 1px;
@@ -68,14 +68,15 @@ let baseStyles = `
 .jina-search-input::placeholder {
     opacity: .5;
     font-weight: 700;
-		font-size: .75em;
-		line-height:1.5;
+    font-size: .75em;
+    line-height:1.5;
 }
+
 .jina-sea {
     width: 300px;
     height: 300px;
     background-color: whitesmoke;
-    background-image: linear-gradient(#009999, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
+    background-image: linear-gradient(#8e9eab, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
     position: relative;
 }
 .jina-theme-persian .jina-sea{
@@ -104,7 +105,7 @@ let baseStyles = `
     left: -100px;
     width: 500px;
     height: 500px;
-    background: #009999;
+    background: #8e9eab;
     border-radius: 35%;
     filter: opacity(0.4);
     animation: jina-drift linear infinite;
@@ -220,9 +221,14 @@ let baseStyles = `
     border: none;
     outline: none;
     padding: .5em;
-		padding-left: 2.5rem;
-		margin: 0px;
-		line-height: 1;
+    padding-left: 2.5rem;
+    margin: 0px;
+    line-height: 1;
+    border-width: 1px;
+	box-shadow: inset 0 0.0625em 0.125em rgba(10,10,10,0.05);
+}
+.jina-search-input {
+    border-color: #d5ac2c;
 }
 .jina-floater-search-container {
     padding: .5em;
@@ -282,6 +288,10 @@ let baseStyles = `
 	border-color: #FFCC66;
 }
 
+.jina-theme-persian input :focus {
+    border-color: #d5ac2c;
+}
+
 .jina-search-icon {
     height: 1.25rem;
     position: absolute;
@@ -318,10 +328,10 @@ let baseStyles = `
     display: inline-block;
 }
 .jina-expander {
-		font-family: Comfortaa;
-		background: white;
+    font-family: Comfortaa;
+    background: white;
     position: absolute;
-    top: 2px;
+    top: 2.5em;
     width: 100%;
     border-radius: 1.1em;
     padding-top: 0em;
@@ -389,7 +399,7 @@ let baseStyles = `
     background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);;
 }
 .jina-ready {
-    background: linear-gradient(to bottom right, #009999 40%, #32C8CD 100%);
+    background: linear-gradient(to bottom right, #8e9eab 40%, #eef2f3 100%);
     color: #fff;
 }
 .jina-theme-persian .jina-ready{
