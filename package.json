@@ -19,7 +19,8 @@
     "omnibox",
     "image search",
     "video search",
-    "audio search"
+    "audio search",
+    "semantic search"
   ],
   "author": {
         "name": "Jina AI Dev Team",
