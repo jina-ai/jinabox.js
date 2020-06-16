@@ -3,6 +3,7 @@ on:
   push:
     paths:
     - 'library/**'
+    - 'package.json'
 jobs:
   npm-publish:
     name: npm-publish
