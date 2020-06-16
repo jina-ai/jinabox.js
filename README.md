@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox-logo.svg" alt="Jinabox.js banner" width="60%">
+  <a href="https://github.com/jina-ai/jina"><img src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox-logo.svg" alt="Jinabox.js banner" width="60%"></a>
 </p>
 
 [![npm](https://img.shields.io/npm/v/jinabox)](https://www.npmjs.com/package/jinabox)
@@ -7,9 +7,10 @@
 [![Jina](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-badge.svg?raw=true  "We fully commit to open-source")](https://jina.ai)
 [![Jina Box](https://github.com/jina-ai/jina/blob/master/.github/badges/license-badge.svg?raw=true  "Jina is licensed under Apache-2.0")](#license)
 
-`jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with a Jina backend.
+`jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with [a Jina backend](https://github.com/jina-ai/jina).
 
-[Demo page](https://jina.ai/jinabox.js/)
+- [Demo page](https://jina.ai/jinabox.js/)
+- [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
 
 ## Quick Start
 
