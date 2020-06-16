@@ -1,4 +1,6 @@
-# jinabox.js
+<p align="center">
+  <img src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox-logo.svg" alt="Jinabox.js banner" width="60%">
+</p>
 
 [![npm](https://img.shields.io/npm/v/jinabox)](https://www.npmjs.com/package/jinabox)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/jinabox)](http://unpkg.com/jinabox)
