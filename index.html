@@ -182,7 +182,7 @@
                             <button type="button" class="btn btn-primary" data-clipboard-target="#jinabox-code">
                                 Copy to Clipboard
                             </button>
-                            <pre><code class="html" id="#jinabox-code">
+                            <pre><code class="html" id="jinabox-code">
                                     &lt;script src=&quot;https://unpkg.com/jinabox.js&quot;&gt;&lt;/script&gt;
                                     &lt;script&gt;
                                     jb = window.JinaBox
@@ -196,9 +196,27 @@
         </div>
     </div>
 </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+<script src="./library/jinabox.js" type="text/javascript"></script>
 <script>
     function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.src);
+    }
+
+    function renderCode(){
+        const code = 'test'
+        document.getElementById('jinabox-code').innerText = code;
     }
 
     const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
@@ -219,6 +237,7 @@
         localStorage.setItem('jina-endpoint',url);
         window.JinaBox.updateSettings({url});
         settings.url = url;
+        renderCode();
     });
 
     const inputTimeout = document.getElementById('inputTimeout');
@@ -247,23 +266,9 @@
         else
             document.getElementById('floater-container').innerHTML =  ''
     });
-</script>
-</body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
-<script src="./library/jinabox.js" type="text/javascript"></script>
-<script>
+
     jb = window.JinaBox
-    jb.init('http://0.0.0.0:65481/api/search');
+    jb.init(initialEndpoint);
 </script>
 <script>
     hljs.initHighlightingOnLoad();

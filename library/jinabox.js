@@ -202,6 +202,12 @@ let baseStyles = `
     cursor: pointer;
     transition: .1s;
 }
+.jina-result.jina-text-result{
+	text-align: left;
+	padding: .25em;
+	padding-left: .5em;
+	padding-right: .5em;
+}
 .jina-grid-container {
     display: inline-block;
     margin: none;
@@ -275,7 +281,7 @@ let baseStyles = `
 }
 .jina-expander-results-area {
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-bottom: .5em;
     flex: fill;
 }
@@ -807,19 +813,27 @@ class SearchBar extends HTMLElement {
 			let results = [];
 			let queries = [];
 			let totalResults = 0;
+			let queriesContainMedia = false;
+			let resultsContainText = false;
 			let { docs } = response.search;
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
-				let { topkResults, uri } = docResults;
-				queries.push(uri);
+				let { topkResults, uri, mimeType } = docResults;
+				if (docResults.mimeType !== 'text/plain')
+					queriesContainMedia = true;
+				queries.push({ uri, mimeType });
+
 				for (let j = 0; j < topkResults.length; ++j) {
 					const res = topkResults[j];
 					if (!results[i])
 						results[i] = [];
+					if (docResults.mimeType === 'text/plain')
+						resultsContainText = true;
 					results[i].push({
+						mimeType: res.matchDoc.mimeType,
 						data: res.matchDoc.uri,
+						text: res.matchDoc.text,
 						score: res.score.value,
-						contentType: res.matchDoc.mimeType.startsWith('image') ? 'image' : 'text'
 					});
 					totalResults++;
 				}
@@ -831,7 +845,7 @@ class SearchBar extends HTMLElement {
 			}
 			this.queries = queries;
 			this.results = results;
-			this.resultsMeta = { totalTime, totalResults };
+			this.resultsMeta = { totalTime, totalResults, resultsContainText, queriesContainMedia };
 
 			this.showResults(0);
 		}
@@ -972,34 +986,39 @@ class SearchBar extends HTMLElement {
 			//TODO: settings > expander height
 			this.resultsIndex = index;
 			let resultsHTML = '';
+			let toolbar;
 			let results = this.results;
 			let queries = this.queries;
-			let { totalResults, totalTime } = this.resultsMeta;
+			let { totalResults, totalTime, resultsContainText, queriesContainMedia } = this.resultsMeta;
 
-			let toolbar = `
-			<div class="jina-results-toolbar">
-				<div class="jina-results-tabs">`;
-			for (let i = 0; i < queries.length; ++i) {
-				let uri = queries[i];
+			if (queries.length > 1 || queriesContainMedia) {
+				toolbar = `
+				<div class="jina-results-toolbar">
+					<div class="jina-results-tabs">`;
+
+				if (queriesContainMedia)
+					for (let i = 0; i < queries.length; ++i) {
+						let { uri } = queries[i];
+						toolbar += `
+						<div class="jina-results-tab${index === i ? ' jina-active' : ''}" id="jina-results-tab-${i}">
+							<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
+						</div>`
+					}
 				toolbar += `
-					<div class="jina-results-tab${index === i ? ' jina-active' : ''}" id="jina-results-tab-${i}">
-						<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
-					</div>`
+					</div>
+					<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
+					<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
+				</div>`
 			}
-			toolbar += `
-				</div>
-				<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
-				<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">
-			</div>`
 
 			resultsHTML += `<p class="jina-results-label">${totalResults} results in ${totalTime} seconds</p>`;
 
 			for (let i = 0; i < results[index].length; ++i) {
 				let result = results[index][i];
-				if (this.resultsView === 'grid')
-					resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
+				if (this.resultsView === 'grid' && toolbar)
+					resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.mimeType.startsWith('text') ? result.text : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
 				else
-					resultsHTML += `<div class="jina-result" id="jina-result-${i}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
+					resultsHTML += `<div class="jina-result${result.mimeType.startsWith('text') ? ' jina-text-result' : ''}" id="jina-result-${i}">${result.mimeType.startsWith('text') ? result.text : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
 			}
 
 			if (this.settings.showResults) {
@@ -1008,11 +1027,11 @@ class SearchBar extends HTMLElement {
 				this.expander.style.height = '500px';
 				this.expander.style.opacity = 1;
 				this.expander.innerHTML = `
-		${toolbar || '<div class="jina-expander-spacer"></div>'}
-		<div class="jina-expander-results-area">
-		${resultsHTML}
-		</div>
-		`;
+				${toolbar || '<div class="jina-expander-spacer"></div>'}
+				<div class="jina-expander-results-area">
+					${resultsHTML}
+				</div>
+				`;
 				if (toolbar) {
 					for (let i = 0; i < queries.length; ++i) {
 						document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
@@ -1029,9 +1048,15 @@ class SearchBar extends HTMLElement {
 			results[index].map((result, idx) => {
 				let resultElement = document.getElementById(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
-					this.search([result.data], true)
-					this.searchIcon.src = result.data;
-					this.searchIcon.classList.add('jina-border-right');
+					if (result.mimeType.startsWith('text')){
+						this.searchInput.value = result.text;
+						this.search()
+					}
+					else {
+						this.search([result.data], true);
+						this.searchIcon.src = result.data;
+						this.searchIcon.classList.add('jina-border-right');
+					}
 				});
 			})
 		}
@@ -1039,6 +1064,7 @@ class SearchBar extends HTMLElement {
 		this.clearExpander = async () => {
 			this.searchIcon.src = this.originalSearchIcon;
 			this.searchIcon.classList.remove('jina-border-right');
+			this.searchInput.value = '';
 			this.overlay.style.display = 'none';
 			this.overlay.style.opacity = '0';
 			this.dragCounter = 0;
@@ -1133,7 +1159,7 @@ window.JinaSettings = {
 }
 
 window.JinaBox = {
-	init: function (url,settings) {
+	init: function (url, settings) {
 		window.JinaSettings = {
 			...window.JinaSettings,
 			...settings,
@@ -1143,7 +1169,7 @@ window.JinaBox = {
 	},
 	search: async function (data, top_k = 10) {
 		return new Promise(function (resolve, reject) {
-			const {url,timeout} = window.JinaSettings;
+			const { url, timeout } = window.JinaSettings;
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
@@ -1158,7 +1184,7 @@ window.JinaBox = {
 			xhr.send(JSON.stringify({ data, top_k, mode: 'search' }));
 		})
 	},
-	updateSettings: function(settings){
+	updateSettings: function (settings) {
 		window.JinaSettings = {
 			...window.JinaSettings,
 			...settings
