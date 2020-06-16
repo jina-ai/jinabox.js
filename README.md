@@ -12,7 +12,7 @@
 In HTML, include the minified script:
 
 ```html
-<script src="https://unpkg.com/jinabox.js"></script>
+<script src="https://unpkg.com/jinabox"></script>
 <script>
     jb = window.JinaBox
     jb.init('http://0.0.0.0:65481/api/search');  // http://0.0.0.0:65481/api/search is the endpoint of the REST gateway of a Jina backend.
@@ -30,9 +30,9 @@ Run [one of our examples](https://learn.jina.ai) and play!
 ### Using with a module bundler
 
 ```bash
-npm install --save jinabox.js
+npm install --save jinabox
 # or
-yarn add jinabox.js
+yarn add jinabox
 ```
 
 ## Features
