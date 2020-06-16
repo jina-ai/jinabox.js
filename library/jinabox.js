@@ -764,8 +764,7 @@ class Floater extends HTMLElement {
                     reader.readAsDataURL(file);
                 }
             }
-        }
-
+				}
         this.toggleShow = () => {
             console.log('toggle show');
             this.showBox = !this.showBox;
@@ -981,8 +980,8 @@ class SearchBar extends HTMLElement {
             this.dropped = true;
             console.log('handle drop files');
             console.log('drop event:', e);
-            let dt = e.dataTransfer;
-            let imgsrc = dt.getData('URL')
+						let dt = e.dataTransfer;
+            let imgsrc = dt.getData('URL');
             console.log('imgsrc: ', imgsrc)
             if (imgsrc) {
                 if (imgsrc.startsWith('data:')) {
@@ -1205,7 +1204,7 @@ class SearchBar extends HTMLElement {
 			<div class="jina-expander" id="jina-search-expander"></div>
 			<div id="jina-searchbar-background-container" class="jina-bg-default">
 				<div class="jina-search-container">
-					<img src="${this.originalSearchIcon}" class="jina-search-icon" id="jina-search-icon" />
+					<img src="${this.originalSearchIcon}" class="jina-search-icon" id="jina-search-icon" onerror="this.src='${this.originalSearchIcon}'" />
 					<input placeholder="type or drop to search" class="jina-search-input jina-contained" id="jina-search-input" autocomplete="off">
 				</div>
 			</div>
@@ -1287,7 +1286,15 @@ window.JinaBox = {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", url);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = () => resolve(JSON.parse(xhr.responseText))
+            xhr.onload = () => {
+							try{
+								const data = JSON.parse(xhr.responseText);
+								resolve(data);
+							}
+							catch{
+								reject(`request failed at ${url}`);
+							}
+						}
             xhr.onerror = function (e) {
                 console.log('xhr error:', e);
                 reject(`request failed at ${url}`);

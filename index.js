@@ -1,5 +1,6 @@
-function drag(ev) {
+function handleFileDrag(ev) {
 	ev.dataTransfer.setData("text", ev.target.src);
+	console.log('ev')
 }
 
 function renderCode() {

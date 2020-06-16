@@ -216,10 +216,10 @@
                          src="https://38.media.tumblr.com/67cba86efe8ec823c93f43557bfefc82/tumblr_mle651CUqL1rtg76ko1_250.gif"/>
                 </div>
                 <div class="tab-pane fade" id="nav-audio" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <audio controls src="https://www.w3schools.com/html/horse.ogg"> Your browser does not support
+                    <audio controls src="https://www.w3schools.com/html/horse.ogg" draggable="true" ondragstart="handleFileDrag(event)"> Your browser does not support
                         the<code>audio</code> element.
                     </audio>
-                    <audio controls src="https://interactive-examples.mdn.mozilla.net/media/examples/t-rex-roar.mp3">
+                    <audio controls src="https://interactive-examples.mdn.mozilla.net/media/examples/t-rex-roar.mp3" draggable="true" ondragstart="handleFileDrag(event)">
                         Your browser does not support the<code>audio</code> element.
                     </audio>
                 </div>
@@ -296,7 +296,7 @@
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
-<script src="dist/jinabox.min.js" type="text/javascript"></script>
+<script src="library/jinabox.js" type="text/javascript"></script>
 <script src="index.js" type="text/javascript"></script>
 <script>
     hljs.initHighlightingOnLoad();
