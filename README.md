@@ -9,7 +9,7 @@
 
 `jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with [a Jina backend](https://github.com/jina-ai/jina).
 
-<img align="right" width="350px" src="https://github.com/jina-ai/jina/blob/master/.github/jinabox.gif?raw=true " />
+<img align="right" width="350px" src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox.gif?raw=true " />
 
 - [Demo page](https://jina.ai/jinabox.js/)
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
