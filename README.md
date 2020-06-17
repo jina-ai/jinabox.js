@@ -9,8 +9,17 @@
 
 `jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with [a Jina backend](https://github.com/jina-ai/jina).
 
+<img align="right" width="350px" src="https://github.com/jina-ai/jina/blob/master/.github/jinabox.gif?raw=true " />
+
 - [Demo page](https://jina.ai/jinabox.js/)
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Supported MIME types](#supported-mime-types)
+- [Configuration](#configuration)
+- [Browser support](#browser-support)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ## Quick Start
 
@@ -40,6 +49,8 @@ Run one of those prebuilt backend:
 - [Southpark](https://github.com/jina-ai/examples/tree/master/southpark-search) (real text data): `docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark`
 - [MP4 mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder video data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.mp4 search`
 - [Wav mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder audio data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.sound search` 
+
+Now you can drag anything from anywhere (local/browser/webpage) to it and conduct the search.
 
 Ready to learn Jina? [Read our 101 tutorials](https://101.jina.ai).
 
