@@ -57,6 +57,14 @@ yarn add jinabox
 | [`video`](https://www.iana.org/assignments/media-types/media-types.xhtml#video) | drag-and-drop, webcam | `<video>`  containers in list/grid view | Video data or files, such as MP4 movies (`video/mp4`). |
 | [`audio`](https://www.iana.org/assignments/media-types/media-types.xhtml#audio) | drag-and-drop, webcam, mic | `<audio>`  containers in list view | Audio or music data. Examples include `audio/mpeg`, `audio/vorbis`. |
 
+## Configuration
+
+| Settings | Description |
+| --- | --- |
+| `theme` | Color theme: `persian`, `pompelmo`, `honeybee`, none |
+| `typewriterEffect` | Enable typewriter effect on the placeholder |
+| `typewriterDelayItem` | Time (ms) delays between every placeholder |
+| `typewriterDelayCharacter` | Time (ms) delays between every character |
 
 ## Browser support
 
