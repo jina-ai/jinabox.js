@@ -75,7 +75,7 @@ let baseStyles = `
 .jina-sea {
     width: 300px;
     height: 300px;
-    background-color: whitesmoke;
+    background-color: white;
     background-image: linear-gradient(#8e9eab, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
     position: relative;
 }
@@ -240,9 +240,10 @@ let baseStyles = `
     border: 1px solid white;
     border-radius: .5em;
     margin: .5em;
+		margin-top: 0px;
     height: 100%;
-    overflow-y: auto;
     transition: .2s;
+		overflow: hidden;
 }
 .jina-floater-file-input {
     display: none;
@@ -399,6 +400,7 @@ let baseStyles = `
     color: white;
 }
 .jina-dropdown-message {
+		text-align: center;
     font-family: Comfortaa;
     padding-top: 9em;
     padding-bottom: 3em;
@@ -636,6 +638,9 @@ let baseStyles = `
     -ms-user-select: none;
     user-select: none;
 }
+.jina-scrollable{
+	overflow-y: auto;
+}
 `
 
 let stylesElement = document.createElement('style');
@@ -659,60 +664,224 @@ class Floater extends HTMLElement {
 	constructor() {
 		super();
 
-		this.listenForEnter = (key) => {
-			if (key.keyCode == 13) {
-				this.search()
-			}
-		}
-
 		this.search = async (query = [this.searchInput.value], inBytes = false) => {
-			if (!inBytes) {
+			console.log('query: ', query);
+			if (!inBytes || query.length > 1) {
+				console.log('removing search icon')
 				this.searchIcon.src = this.originalSearchIcon;
 				this.searchIcon.classList.remove('jina-border-right');
 			}
-			console.log('query: ', query);
+
+			this.showLoading();
+			await waitFor(2)
 			console.log('searching...');
 			let response;
+			let startTime = new Date();
 			try {
 				response = await window.JinaBox.search(query, 10, inBytes);
 				this.dropped = false;
 			} catch (e) {
 				this.dropped = false;
-				return console.log('error');
+				console.log('error');
+				return this.showError(e);
 			}
+			let endTime = new Date();
+			let totalTime = Math.round((endTime - startTime) / 10) / 100;
 			console.log('response:', response);
 			let results = [];
+			let queries = [];
+			let totalResults = 0;
+			let queriesContainMedia = false;
+			let resultsContainText = false;
+			let onlyImages = true;
 			let { docs } = response.search;
+			let { code, description } = response.status || {};
+			if (code == 'ERROR')
+				return this.showError(description);
+
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
-				let { topkResults } = docResults;
+				let { topkResults, uri, mimeType } = docResults;
+				if (docResults.mimeType !== 'text/plain')
+					queriesContainMedia = true;
+				queries.push({ uri, mimeType });
+
 				for (let j = 0; j < topkResults.length; ++j) {
 					const res = topkResults[j];
-					results.push({
+					if (!results[i])
+						results[i] = [];
+					if (res.matchDoc.mimeType === 'text/plain')
+						resultsContainText = true;
+					if (!res.matchDoc.mimeType.startsWith('image'))
+						onlyImages = false;
+
+					results[i].push({
+						mimeType: res.matchDoc.mimeType,
 						data: res.matchDoc.uri,
+						text: res.matchDoc.text,
 						score: res.score.value,
-						contentType: res.matchDoc.uri.startsWith('data:image/') ? 'image' : 'text'
 					});
+					totalResults++;
 				}
 			}
+			for (let i = 0; i < results.length; ++i) {
+				results[i] = results[i].sort((a, b) => {
+					return b.score - a.score
+				});
+			}
+			this.queries = queries;
 			this.results = results;
-			let html = '';
-			console.log('results before:', this.results);
-			this.results = this.results.sort((a, b) => {
-				return b.score - a.score
-			});
-			console.log('results after:', this.results);
-			html += `<p class="jina-floater-results-label">results for ${inBytes ? `${query.length} image input${query.length > 1 ? 's' : ''}` : `"${query}"`}</p>`;
-			this.results.map((result, idx) => {
-				html += `<div class="jina-floater-result" id="jina-floater-result-${idx}">${result.contentType === 'text' ? result.data : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
-			});
-			this.dropArea.innerHTML = html;
-			this.results.map((result, idx) => {
-				let resultElement = document.getElementById(`jina-floater-result-${idx}`);
+			this.resultsMeta = { totalTime, totalResults, resultsContainText, queriesContainMedia, onlyImages };
+
+			this.showResults(0);
+		}
+
+		this.showError = (message = 'could not reach server') => {
+			this.dropArea.innerHTML = `
+			<div class="jina-dropdown-message jina-error unselectable">
+    		<div class="jina-face jina-roll"><div class="eye"></div><div class="eye right"></div><div class="mouth sad"></div>
+        	</div>
+   			<div class="jina-shadow jina-move"></div>
+				<h4 class="alert">Error!</h4>
+				<p>${message}</p>
+				<button id="jina-floater-error-ok">Ok</button>
+			</div>
+		`
+			this.errorButton = document.getElementById('jina-floater-error-ok')
+			this.errorButton.onclick = this.clearDropArea;
+		}
+
+		this.showLoading = () => {
+			this.dropArea.innerHTML = `
+			<div class="jina-sea">
+				<p class="title">Searching</p>
+				<span class="jina-wave"></span>
+				<span class="jina-wave"></span>
+				<span class="jina-wave"></span>
+			</div>
+		`
+		}
+
+		this.clearDropArea = () => {
+			this.dropArea.classList.remove('jina-scrollable');
+			this.dropArea.innerHTML = `
+			<input type="file" id="jina-floater-file-input" class="jina-floater-file-input" multiple>
+				<h3 class="jina-floater-instructions">Drop here to search</h3>
+				`
+		}
+
+		this.showResults = (index = this.resultsIndex) => {
+			//TODO: settings > expander height
+			this.resultsIndex = index;
+			let resultsHTML = '';
+			let toolbar;
+			let results = this.results;
+			let queries = this.queries;
+			let { totalResults, totalTime, onlyImages, queriesContainMedia } = this.resultsMeta;
+
+			if (queries.length > 1 || queriesContainMedia) {
+				toolbar = `
+				<div class="jina-results-toolbar">
+					<div class="jina-results-tabs">`;
+
+				if (queriesContainMedia)
+					for (let i = 0; i < queries.length; ++i) {
+						toolbar += this.renderPreviewTab(queries[i], i, index === i);
+					}
+				if (onlyImages)
+					toolbar += `
+					</div>
+					<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
+					<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">`
+
+				toolbar += '</div></div>'
+			}
+
+			resultsHTML += `<p class="jina-results-label">${totalResults} results in ${totalTime} seconds</p>`;
+
+			for (let i = 0; i < results[index].length; ++i) {
+				let result = results[index][i];
+				result.index = i;
+				resultsHTML += this.renderResult(result);
+			}
+
+			this.dropArea.innerHTML = `
+				${toolbar || ''}
+				<div class="jina-expander-results-area">
+					${resultsHTML}
+				</div>
+				`;
+			if (toolbar) {
+				for (let i = 0; i < queries.length; ++i) {
+					document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
+				}
+				if (onlyImages) {
+					document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+					document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+				}
+			}
+
+			results[index].map((result, idx) => {
+				let resultElement = document.getElementById(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
-					this.search([result.data], result.data.startsWith('data:image/'))
+					if (result.mimeType.startsWith('text')) {
+						this.searchInput.value = result.text;
+						this.search()
+					} else {
+						this.search([result.data], true);
+						this.searchIcon.src = result.data;
+						this.searchIcon.classList.add('jina-border-right');
+					}
 				});
 			})
+		}
+
+		this.renderResult = (result) => {
+			if (result.mimeType.startsWith('text')) {
+				return `<div class="jina-result jina-text-result" id="jina-result-${result.index}">${result.text}</div>`
+			}
+			else if (result.mimeType.startsWith('image')) {
+				if (this.resultsView === 'grid')
+					return `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
+				else
+					return `<div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
+			}
+			else if (result.mimeType.startsWith('audio')) {
+				return `<div class="jina-result" id="jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
+			}
+			else if (result.mimeType.startsWith('video')) {
+				return `<div class="jina-result" id="jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
+			}
+		}
+
+		this.renderPreviewTab = (query, i, active) => {
+			const { uri, mimeType } = query
+			return `
+			<div class="jina-results-tab${active ? ' jina-active' : ''}" id="jina-results-tab-${i}">
+			${
+				(mimeType.startsWith('image')) ?
+					`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
+					:
+					(mimeType.startsWith('video')) ?
+						`<video class="jina-results-tab-video" src="${uri}" autoplay muted loop></video>`
+						:
+						(mimeType.startsWith('audio')) ?
+							`<audio controls class="jina-results-tab-audio" src="${uri}"></audio>`
+							: ''
+				}
+			</div>`
+		}
+
+		this.setResultsView = (view) => {
+			localStorage.setItem('jina-floater-results-view', view);
+			this.resultsView = view;
+			this.showResults();
+		}
+
+		this.listenForEnter = (key) => {
+			if (key.keyCode == 13) {
+				this.search()
+			}
 		}
 
 		this.preventDefaults = (e) => {
@@ -744,12 +913,12 @@ class Floater extends HTMLElement {
 		}
 
 		this.handleDrop = async (e) => {
+			this.dropped = true;
 			console.log('handle drop files');
+			console.log('drop event:', e);
 			let dt = e.dataTransfer;
 			let imgsrc = dt.getData('URL');
-			this.handleDragLeave();
-			if (!this.showBox)
-				this.toggleShow()
+			console.log('imgsrc: ', imgsrc)
 			if (imgsrc) {
 				if (imgsrc.startsWith('data:')) {
 					this.search([imgsrc], true);
@@ -779,8 +948,12 @@ class Floater extends HTMLElement {
 						processedFiles.push(processed);
 						if (processedFiles.length === acceptedFiles.length) {
 							this.search(processedFiles, true)
-							this.searchIcon.src = processedFiles[0];
-							this.searchIcon.classList.add('jina-border-right');
+							if (processedFiles.length < 2) {
+								if(!this.showBox)
+									this.toggleShow()
+								this.searchIcon.src = processedFiles[0];
+								this.searchIcon.classList.add('jina-border-right');
+							}
 						}
 						console.log('processed: ', processed);
 					}, false);
@@ -788,6 +961,7 @@ class Floater extends HTMLElement {
 				}
 			}
 		}
+
 		this.toggleShow = () => {
 			console.log('toggle show');
 			this.showBox = !this.showBox;
@@ -795,6 +969,7 @@ class Floater extends HTMLElement {
 				this.floaterBox.classList.add('jina-floater-box-visible');
 				document.querySelector('#jina-floater-icon img').src = this.closeIcon;
 			} else {
+				this.clearDropArea();
 				this.floaterBox.classList.remove('jina-floater-box-visible');
 				document.querySelector('#jina-floater-icon img').src = this.floaterIcon;
 			}
@@ -906,6 +1081,8 @@ class Floater extends HTMLElement {
 		this.searchInput.addEventListener('focus', this.highlightSearch);
 		this.searchInput.addEventListener('blur', this.unhighlightSearch);
 
+		this.resultsView = localStorage.getItem('jina-floater-results-view') || 'list';
+
 		console.log('settings: ', this.settings)
 		if (this.settings.typewriterEffect) {
 			const placeholders = JSON.parse(this.getAttribute('placeholders'));
@@ -948,10 +1125,10 @@ class SearchBar extends HTMLElement {
 			let resultsContainText = false;
 			let onlyImages = true;
 			let { docs } = response.search;
-			let {code,description} = response.status || {};
-			if(code=='ERROR')
+			let { code, description } = response.status || {};
+			if (code == 'ERROR')
 				return this.showError(description);
-				
+
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
 				let { topkResults, uri, mimeType } = docResults;
@@ -1137,7 +1314,7 @@ class SearchBar extends HTMLElement {
 
 				if (queriesContainMedia)
 					for (let i = 0; i < queries.length; ++i) {
-						toolbar += this.renderPreviewTab(queries[i],i,index===i);
+						toolbar += this.renderPreviewTab(queries[i], i, index === i);
 					}
 				if (onlyImages)
 					toolbar += `
@@ -1171,7 +1348,7 @@ class SearchBar extends HTMLElement {
 					for (let i = 0; i < queries.length; ++i) {
 						document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
 					}
-					if (onlyImages){
+					if (onlyImages) {
 						document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
 						document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
 					}
@@ -1215,23 +1392,22 @@ class SearchBar extends HTMLElement {
 			}
 		}
 
-		this.renderPreviewTab = (query,i,active) => {
-			const {uri,mimeType} = query
-			return`
-			<div class="jina-results-tab${active? ' jina-active' : ''}" id="jina-results-tab-${i}">
+		this.renderPreviewTab = (query, i, active) => {
+			const { uri, mimeType } = query
+			return `
+			<div class="jina-results-tab${active ? ' jina-active' : ''}" id="jina-results-tab-${i}">
 			${
-				(mimeType.startsWith('image'))?
-				`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
-				:
-				(mimeType.startsWith('video'))?
-				`<video class="jina-results-tab-video" src="${uri}" autoplay muted loop></video>`
-				:
-				(mimeType.startsWith('audio'))?
-				`<audio controls class="jina-results-tab-audio" src="${uri}"></audio>`
-				:''
-			}
+				(mimeType.startsWith('image')) ?
+					`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
+					:
+					(mimeType.startsWith('video')) ?
+						`<video class="jina-results-tab-video" src="${uri}" autoplay muted loop></video>`
+						:
+						(mimeType.startsWith('audio')) ?
+							`<audio controls class="jina-results-tab-audio" src="${uri}"></audio>`
+							: ''
+				}
 			</div>`
-
 		}
 
 		this.clearExpander = async () => {
