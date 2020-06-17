@@ -563,6 +563,19 @@ let baseStyles = `
     margin-bottom: .25em;
     border-radius: .25em;
 }
+
+.jina-results-tab-audio{
+	width: 2em;
+	height: 2em;
+  border-radius: .25em;
+}
+
+.jina-results-tab-video{
+	width: 2em;
+	height: 2em;
+  border-radius: .25em;
+}
+
 .jina-results-action-button {
 		box-sizing: border-box;
     cursor: pointer;
@@ -1120,11 +1133,7 @@ class SearchBar extends HTMLElement {
 
 				if (queriesContainMedia)
 					for (let i = 0; i < queries.length; ++i) {
-						let { uri } = queries[i];
-						toolbar += `
-						<div class="jina-results-tab${index === i ? ' jina-active' : ''}" id="jina-results-tab-${i}">
-							<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>
-						</div>`
+						toolbar += this.renderPreviewTab(queries[i],i,index===i);
 					}
 				if (onlyImages)
 					toolbar += `
@@ -1158,8 +1167,10 @@ class SearchBar extends HTMLElement {
 					for (let i = 0; i < queries.length; ++i) {
 						document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
 					}
-					document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
-					document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+					if (onlyImages){
+						document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+						document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+					}
 				}
 			} else {
 				this.resultsArea = document.getElementById('jina-results-area')
@@ -1198,6 +1209,25 @@ class SearchBar extends HTMLElement {
 			else if (result.mimeType.startsWith('video')) {
 				return `<div class="jina-result" id="jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
 			}
+		}
+
+		this.renderPreviewTab = (query,i,active) => {
+			const {uri,mimeType} = query
+			return`
+			<div class="jina-results-tab${active? ' jina-active' : ''}" id="jina-results-tab-${i}">
+			${
+				(mimeType.startsWith('image'))?
+				`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
+				:
+				(mimeType.startsWith('video'))?
+				`<video class="jina-results-tab-video" src="${uri}" autoplay muted loop></video>`
+				:
+				(mimeType.startsWith('audio'))?
+				`<audio controls class="jina-results-tab-audio" src="${uri}"></audio>`
+				:''
+			}
+			</div>`
+
 		}
 
 		this.clearExpander = async () => {
