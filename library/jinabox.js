@@ -1182,12 +1182,15 @@ class SearchBar extends HTMLElement {
 			})
 		}
 
-		this.renderResult = (result, view) => {
+		this.renderResult = (result) => {
 			if (result.mimeType.startsWith('text')) {
 				return `<div class="jina-result jina-text-result" id="jina-result-${result.index}">${result.text}</div>`
 			}
 			else if (result.mimeType.startsWith('image')) {
-				return `<div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
+				if (this.resultsView === 'grid')
+					return `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
+				else
+					return `<div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
 			}
 			else if (result.mimeType.startsWith('audio')) {
 				return `<div class="jina-result" id="jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
@@ -1195,12 +1198,6 @@ class SearchBar extends HTMLElement {
 			else if (result.mimeType.startsWith('video')) {
 				return `<div class="jina-result" id="jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
 			}
-
-			// 		if (this.resultsView === 'grid' && toolbar)
-			// 		resultsHTML += `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${i}">${result.mimeType.startsWith('text') ? result.text : `<img src="${result.data}" class="jina-result-image"/>`}</div></div>`;
-			// else
-			// 		resultsHTML += `<div class="jina-result${result.mimeType.startsWith('text') ? ' jina-text-result' : ''}" id="jina-result-${i}">${result.mimeType.startsWith('text') ? result.text : `<img src="${result.data}" class="jina-result-image"/>`}</div>`;
-
 		}
 
 		this.clearExpander = async () => {
