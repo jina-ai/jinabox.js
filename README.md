@@ -62,6 +62,14 @@ yarn add jinabox
 
 `jinabox.js` runs on modern browsers supporting Web Audio, including Firefox, Chrome, Safari (desktop and mobile) and Opera.
 
+
+## Troubleshooting
+
+### SSL error on my localhost
+
+Try `http://localhost:65481/api/search`, make sure to use `http` and `localhost`, instead of `0.0.0.0`.
+
+
 ## License
 
 Copyright (c) 2020 Jina AI Limited. All rights reserved.

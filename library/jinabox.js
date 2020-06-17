@@ -530,10 +530,10 @@ let baseStyles = `
     padding-right: .5em;
     padding-left: .5em;
     text-align: left;
-		display: flex;
-		flex-shrink: 0;
+	display: flex;
+	flex-shrink: 0;
     flex-direction: row;
-		border-bottom: 1px solid #cfd8dc;
+	border-bottom: 1px solid #cfd8dc;
 }
 .jina-results-tabs {
     overflow-x: auto;
