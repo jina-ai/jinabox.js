@@ -948,6 +948,10 @@ class SearchBar extends HTMLElement {
 			let resultsContainText = false;
 			let onlyImages = true;
 			let { docs } = response.search;
+			let {code,description} = response.status || {};
+			if(code=='ERROR')
+				return this.showError(description);
+				
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
 				let { topkResults, uri, mimeType } = docResults;
