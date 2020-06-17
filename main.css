@@ -10,7 +10,7 @@
 #browser-frame {
     position: relative;
     height: 92.5%;
-    overflow: auto;
+    overflow: hidden;
     padding: 50px;
 }
 

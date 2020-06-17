@@ -244,6 +244,11 @@ let baseStyles = `
     height: 100%;
     transition: .2s;
 		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+}
+.jina-floater-results-container .jina-results-toolbar{
+	padding-top: 0px;
 }
 .jina-floater-file-input {
     display: none;
@@ -291,6 +296,10 @@ let baseStyles = `
 }
 .jina-highlighted {
     border-color: #009999;
+}
+.jina-highlighted .jina-floater-instructions{
+	color: white;
+	opacity: 1;
 }
 
 .jina-theme-persian .jina-highlighted {
@@ -699,31 +708,37 @@ class Floater extends HTMLElement {
 			if (code == 'ERROR')
 				return this.showError(description);
 
-			for (let i = 0; i < docs.length; ++i) {
-				let docResults = docs[i];
-				let { topkResults, uri, mimeType } = docResults;
-				if (docResults.mimeType !== 'text/plain')
-					queriesContainMedia = true;
-				queries.push({ uri, mimeType });
-
-				for (let j = 0; j < topkResults.length; ++j) {
-					const res = topkResults[j];
-					if (!results[i])
-						results[i] = [];
-					if (res.matchDoc.mimeType === 'text/plain')
-						resultsContainText = true;
-					if (!res.matchDoc.mimeType.startsWith('image'))
-						onlyImages = false;
-
-					results[i].push({
-						mimeType: res.matchDoc.mimeType,
-						data: res.matchDoc.uri,
-						text: res.matchDoc.text,
-						score: res.score.value,
-					});
-					totalResults++;
+			try{
+				for (let i = 0; i < docs.length; ++i) {
+					let docResults = docs[i];
+					let { topkResults, uri, mimeType } = docResults;
+					if (docResults.mimeType !== 'text/plain')
+						queriesContainMedia = true;
+					queries.push({ uri, mimeType });
+	
+					for (let j = 0; j < topkResults.length; ++j) {
+						const res = topkResults[j];
+						if (!results[i])
+							results[i] = [];
+						if (res.matchDoc.mimeType === 'text/plain')
+							resultsContainText = true;
+						if (!res.matchDoc.mimeType.startsWith('image'))
+							onlyImages = false;
+	
+						results[i].push({
+							mimeType: res.matchDoc.mimeType,
+							data: res.matchDoc.uri,
+							text: res.matchDoc.text,
+							score: res.score.value,
+						});
+						totalResults++;
+					}
 				}
 			}
+			catch(e){
+				return this.showError('Could not get results')
+			}
+			
 			for (let i = 0; i < results.length; ++i) {
 				results[i] = results[i].sort((a, b) => {
 					return b.score - a.score
@@ -919,6 +934,10 @@ class Floater extends HTMLElement {
 			let dt = e.dataTransfer;
 			let imgsrc = dt.getData('URL');
 			console.log('imgsrc: ', imgsrc)
+			if(!this.showBox){
+				console.log('toggling')
+				this.toggleShow()
+			}
 			if (imgsrc) {
 				if (imgsrc.startsWith('data:')) {
 					this.search([imgsrc], true);
@@ -949,8 +968,6 @@ class Floater extends HTMLElement {
 						if (processedFiles.length === acceptedFiles.length) {
 							this.search(processedFiles, true)
 							if (processedFiles.length < 2) {
-								if(!this.showBox)
-									this.toggleShow()
 								this.searchIcon.src = processedFiles[0];
 								this.searchIcon.classList.add('jina-border-right');
 							}
@@ -964,6 +981,7 @@ class Floater extends HTMLElement {
 
 		this.toggleShow = () => {
 			console.log('toggle show');
+			this.hideLargeFloater();
 			this.showBox = !this.showBox;
 			if (this.showBox) {
 				this.floaterBox.classList.add('jina-floater-box-visible');
@@ -1038,7 +1056,7 @@ class Floater extends HTMLElement {
 			<div class="jina-floater-search-container">
 				<div id="jina-floater-background-search-container" class="jina-bg-default">
 					<div class="jina-search-container">
-						<img src="${searchIcon}" class="jina-search-icon" id="jina-floater-search-icon" />
+						<img src="${searchIcon}" class="jina-search-icon" id="jina-floater-search-icon" onerror="this.src='${this.originalSearchIcon}'"/>
 						<input placeholder="type or drop to search" class="jina-search-input jina-contained" id="jina-floater-search-box" autocomplete="off">
 					</div>
 				</div>
