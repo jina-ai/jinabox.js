@@ -24,18 +24,29 @@ In HTML, include the minified script:
 </script>
 ```
 
-Then, create a container where the `jinabox` is to appear:
+Then, create a container where the searchbar/floater is to appear:
 
 ```html
-<jinabox/>
+<jina-searchbar/>
+
+<!--or-->
+
+<jina-floater/>
 ```
 
-Run [one of our examples](https://learn.jina.ai) and play! 
+Run one of those prebuilt backend:
+
+- [Pokedex](https://github.com/jina-ai/examples/tree/master/pokedex-with-bit) (real image data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.bitsearch-pokedex search`
+- [Southpark](https://github.com/jina-ai/examples/tree/master/southpark-search) (real text data): `docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark`
+- [MP4 mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder video data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.mp4 search`
+- [Wav mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder audio data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.sound search` 
+
+Ready to learn Jina? [Read our 101 tutorials](https://101.jina.ai).
 
 ### Using with a module bundler
 
 ```bash
-npm install --save jinabox
+npm install jinabox
 # or
 yarn add jinabox
 ```
