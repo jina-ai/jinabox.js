@@ -662,7 +662,7 @@ document.body.appendChild(stylesElement);
 let defaultPlaceholders = ['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'];
 
 let defaultSettings = {
-	resultsInDropdown: true,
+	resultsLocation: 'dropdown',
 	typewriterEffect: false,
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
@@ -1394,7 +1394,7 @@ class SearchBar extends HTMLElement {
 				resultsHTML += this.renderResult(result);
 			}
 
-			if (this.settings.resultsInDropdown) {
+			if (this.settings.resultsLocation === 'dropdown') {
 				this.overlay.style.display = 'block';
 				this.overlay.style.opacity = '1';
 				this.expander.style.height = '500px';

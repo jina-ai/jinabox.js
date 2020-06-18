@@ -22,7 +22,7 @@ const settings = {
 };
 
 const defaultComponentSettings = {
-	showResults: true,
+	resultsLocation: 'dropdown',
 	typewriterEffect: false,
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
@@ -92,6 +92,7 @@ function renderPlaceholders(){
 function renderCode() {
 	floaterContainer.innerHTML = floaterContainer.innerHTML;
 	searchbarContainer.innerHTML = searchbarContainer.innerHTML;
+	resultsContainer.innerHTML = resultsContainer.innerHTML;
 	console.log('rendering...')
 	const code = `
 	<body>
@@ -102,9 +103,11 @@ ${settings.showSearch ?
 	${settings.typewriterEffect ? `\ntypewriterEffect="true"` : ''}\
 	${settings.typewriterDelayCharacter!=defaultComponentSettings.typewriterDelayCharacter ? `\ntypewriterDelayCharacter=${settings.typewriterDelayCharacter}` : ''}\
 	${settings.typewriterDelayItem!=defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
-	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}>
+	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
+	${settings.resultsLocation=='external' ?'\nresultsLocation="external"':''}\>
 </jina-searchbar>\n`
-        : ''}\
+				: ''}\
+${settings.resultsLocation=='external' ?'\n<jina-results></jina-results>':''}
 ${settings.showFloater ?
 			`\n<jina-floater\
 	${settings.theme != defaultComponentSettings.theme ? `\ntheme="${settings.theme}"` : ''}\
@@ -189,6 +192,18 @@ for (let i = 0; i < themes.length; ++i) {
 		document.getElementById('main-floater').setAttribute('theme', settings.theme);
 		renderCode();
 	}
+}
+
+document.querySelector('#resultsDropdown').onclick = function(){
+	settings.resultsLocation = 'dropdown';
+	document.getElementById('main-searchbar').setAttribute('resultsLocation', 'dropdown');
+	renderCode()
+}
+
+document.querySelector('#resultsComponent').onclick = function(){
+	settings.resultsLocation = 'external';
+	document.getElementById('main-searchbar').setAttribute('resultsLocation', 'external');
+	renderCode()
 }
 
 document.getElementById('useTypewriter').addEventListener('change', function (e) {
