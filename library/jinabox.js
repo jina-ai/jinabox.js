@@ -1406,7 +1406,7 @@ class SearchBar extends HTMLElement {
 				</div>
 				`;
 			} else {
-				this.resultsArea = document.getElementById('jina-results-area')
+				this.resultsArea = document.getElementById(this.settings.resultsAreaId||'jina-results-area')
 				this.resultsArea.innerHTML  = `
 				${toolbar || ''}
 				<div class="jina-expander-results-area">
