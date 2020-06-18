@@ -708,7 +708,7 @@ class Floater extends HTMLElement {
 			let response;
 			let startTime = new Date();
 			try {
-				response = await window.JinaBox.search(query, 10, inBytes);
+				response = await window.JinaBox.search(query, 16, inBytes);
 				this.dropped = false;
 			} catch (e) {
 				this.dropped = false;
@@ -1167,7 +1167,7 @@ class SearchBar extends HTMLElement {
 			let response;
 			let startTime = new Date();
 			try {
-				response = await window.JinaBox.search(query, 10, inBytes);
+				response = await window.JinaBox.search(query, 16, inBytes);
 				this.dropped = false;
 			} catch (e) {
 				this.dropped = false;
@@ -1580,7 +1580,7 @@ window.JinaBox = {
 		}
 		console.log('initialized with ', url);
 	},
-	search: async function (data, top_k = 10) {
+	search: async function (data, top_k = 16) {
 		return new Promise(function (resolve, reject) {
 			const { url, timeout } = window.JinaSettings;
 			var xhr = new XMLHttpRequest();

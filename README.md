@@ -9,10 +9,17 @@
 
 `jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with [a Jina backend](https://github.com/jina-ai/jina).
 
+
 - [Demo page](https://jina.ai/jinabox.js/)
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Supported MIME types](#supported-mime-types)
+- [Configuration](#configuration)
 
 ## Quick Start
+
+<img align="right" width="350px" src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox.gif?raw=true " />
 
 In HTML, include the minified script:
 
@@ -24,18 +31,31 @@ In HTML, include the minified script:
 </script>
 ```
 
-Then, create a container where the `jinabox` is to appear:
+Then, create a container where the searchbar/floater is to appear:
 
 ```html
-<jinabox/>
+<jina-searchbar/>
+
+<!--or-->
+
+<jina-floater/>
 ```
 
-Run [one of our examples](https://learn.jina.ai) and play! 
+Run one of those prebuilt backend:
+
+- [Pokedex](https://github.com/jina-ai/examples/tree/master/pokedex-with-bit) (real image data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.bitsearch-pokedex search`
+- [Southpark](https://github.com/jina-ai/examples/tree/master/southpark-search) (real text data): `docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark`
+- [MP4 mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder video data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.mp4 search`
+- [Wav mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder audio data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.sound search` 
+
+Now you can drag anything from anywhere (local/browser/webpage) to it and conduct the search.
+
+Ready to learn Jina? [Read our 101 tutorials](https://101.jina.ai).
 
 ### Using with a module bundler
 
 ```bash
-npm install --save jinabox
+npm install jinabox
 # or
 yarn add jinabox
 ```
@@ -57,6 +77,14 @@ yarn add jinabox
 | [`video`](https://www.iana.org/assignments/media-types/media-types.xhtml#video) | drag-and-drop, webcam | `<video>`  containers in list/grid view | Video data or files, such as MP4 movies (`video/mp4`). |
 | [`audio`](https://www.iana.org/assignments/media-types/media-types.xhtml#audio) | drag-and-drop, webcam, mic | `<audio>`  containers in list view | Audio or music data. Examples include `audio/mpeg`, `audio/vorbis`. |
 
+## Configuration
+
+| Settings | Description |
+| --- | --- |
+| `theme` | Color theme: `persian`, `pompelmo`, `honeybee`, none |
+| `typewriterEffect` | Enable typewriter effect on the placeholder |
+| `typewriterDelayItem` | Time (ms) delays between every placeholder |
+| `typewriterDelayCharacter` | Time (ms) delays between every character |
 
 ## Browser support
 

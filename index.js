@@ -100,7 +100,7 @@ ${settings.showSearch ?
 	${settings.typewriterDelayItem!=defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}>
 </jina-searchbar>\n`
-			: ''}\
+        : ''}\
 ${settings.showFloater ?
 			`\n<jina-floater\
 	${settings.theme != defaultComponentSettings.theme ? `\ntheme="${settings.theme}"` : ''}\
@@ -109,7 +109,7 @@ ${settings.showFloater ?
 	${settings.typewriterDelayItem!=defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}>
 	</jina-floater>\n`
-			: ''}
+        : ''}
 <body>
 
 	<script src="https://unpkg.com/jinabox"></script>
@@ -117,7 +117,7 @@ ${settings.showFloater ?
 JinaBox.init('${settings.url}'${settings.timeout ? `,{timeout:${settings.timeout}}` : ''});
 </script>
 `
-	document.getElementById('jinabox-code').innerText = code;
+    document.getElementById('jinabox-code').innerText = code;
 }
 
 renderCode();
@@ -125,21 +125,21 @@ renderCode();
 const inputEndpoint = document.getElementById('inputEndpoint');
 inputEndpoint.setAttribute('value', initialEndpoint || '');
 inputEndpoint.addEventListener('input', function (e) {
-	const url = e.target.value;
-	localStorage.setItem('jina-endpoint', url);
-	window.JinaBox.updateSettings({ url });
-	settings.url = url;
-	renderCode();
+    const url = e.target.value;
+    localStorage.setItem('jina-endpoint', url);
+    window.JinaBox.updateSettings({url});
+    settings.url = url;
+    renderCode();
 });
 
 const inputTimeout = document.getElementById('inputTimeout');
 inputTimeout.setAttribute('value', initialTimeout || 5000);
 inputTimeout.addEventListener('input', function (e) {
-	const timeout = e.target.value;
-	localStorage.setItem('jina-timeout', timeout);
-	window.JinaBox.updateSettings({ timeout });
-	settings.timeout = timeout;
-	renderCode()
+    const timeout = e.target.value;
+    localStorage.setItem('jina-timeout', timeout);
+    window.JinaBox.updateSettings({timeout});
+    settings.timeout = timeout;
+    renderCode()
 });
 
 document.getElementById('showSearch').addEventListener('change', function (e) {

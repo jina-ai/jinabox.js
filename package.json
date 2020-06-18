@@ -1,6 +1,6 @@
 {
   "name": "jinabox",
-  "version": "0.1.19",
+  "version": "0.1.21",
   "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
   "main": "library/jinabox.js",
   "unpkg": "dist/jinabox.min.js",
