@@ -1602,7 +1602,7 @@ window.JinaBox = {
 			}
 			xhr.timeout = timeout;
 			xhr.ontimeout = () => reject('Search Timeout');
-			xhr.send(JSON.stringify({ data, top_k, mode: 'search' }));
+			xhr.send(JSON.stringify({ data, top_k:parseInt(top_k), mode: 'search' }));
 		})
 	},
 	updateSettings: function (settings) {
