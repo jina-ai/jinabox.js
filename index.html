@@ -80,15 +80,15 @@
                         <div class="form-check">
                             <input class="form-check-input jina-theme-select" type="radio" name="exampleRadios"
                                    id="colorDefault"
-                                   value="default">
+                                   value="default" checked>
                             <label class="form-check-label" for="colorDefault">
-                                Default color
+                                Default
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input jina-theme-select" type="radio" name="exampleRadios"
                                    id="colorPersian"
-                                   value="persian" checked>
+                                   value="persian">
                             <label class="form-check-label" for="colorPersian">
                                 Persian
                             </label>
@@ -119,25 +119,22 @@
                             </label>
                         </div>
                         <small class="form-text text-muted">Placeholders to rotate between:</small>
-                        <ul>
-                            <li>type or drag anything to search</li>
-                            <li>powered by Jina</li>
-                            <li>unleash your curiosity and happy searching</li>
+                        <ul id="typewriterPlaceholders">
                         </ul>
                         <div class="col-md-12 mb-2 pl-0">
-                            <input type="url" class="form-control" id="inputEndpoint" placeholder="add placeholder">
+                            <input class="form-control" id="placeholderInput" placeholder="add placeholder">
                         </div>
                         <small for="inputTimeout">Placeholder delay (ms)</small>
                         <div class="col-md-4 pl-0 mb-2">
-                            <input type="number" class="form-control" id="inputTimeout" step=1000>
+                            <input type="number" class="form-control" id="placeholderDelayInput" step=500>
                         </div>
                         <small for="inputTimeout">Keystroke delay (ms)</small>
                         <div class="col-md-4 pl-0 mb-2">
-                            <input type="number" class="form-control" id="inputTimeout" step=1000>
+                            <input type="number" class="form-control" id="placeholderKeystrokeDelayInput" step=10>
                         </div>
 
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Searchbar icon</label> <img id="config-jina-searchbar-icon" class="config-icon"/>
                         <div class="form-check">
                             <input class="form-check-input jina-searchbar-select" type="radio" name="searchbarRadios"
@@ -206,7 +203,7 @@
                                 Custom
                             </label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
             </form>
@@ -289,14 +286,14 @@
                         <div id="browser-frame">
                             <div class="jina-container">
                                 <div class="header" id="searchbar-container">
-                                    <jina-searchbar placeholders='["custom placeholder 1","custom placeholder 2"]'/>
+                                    <jina-searchbar id="main-searchbar"/>
                                 </div>
                                 <div class="content-body" id="results-container">
-                                    <jina-results></jina-results>
+                                    <jina-results id="main-results"></jina-results>
                                 </div>
                             </div>
                             <div id="floater-container">
-                                <jina-floater></jina-floater>
+                                <jina-floater id="main-floater"></jina-floater>
                             </div>
 
                         </div>

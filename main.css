@@ -78,3 +78,18 @@ pre, code {
     padding-right: .5em;
     height: 400px;
 }
+
+#typewriterPlaceholders{
+    padding-left: .5em;
+}
+
+#typewriterPlaceholders li{
+    list-style: none;
+    margin-bottom: .25em;
+}
+
+.placeholder-remove-icon{
+    font-size: .75em;
+    margin-right: 1em;
+    cursor: pointer;
+}

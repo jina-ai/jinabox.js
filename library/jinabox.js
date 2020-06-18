@@ -663,7 +663,7 @@ let defaultSettings = {
 	typewriterEffect: false,
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
-	theme: 'persian',
+	theme: 'default',
 	searchIcon: 'color',
 	floaterIcon: 'color',
 	globalDrag: true,
@@ -672,6 +672,27 @@ let defaultSettings = {
 class Floater extends HTMLElement {
 	constructor() {
 		super();
+
+		this.typeWriter = (text_list, i = 0, text_list_i = 0, delay_next_char = 100, delay_next_item = 1000) => {
+			// console.log('floater typewriter ',new Date());
+			if (!i) {
+				this.searchInput.placeholder = "";
+			}
+			let txt = text_list[text_list_i];
+			if (i < txt.length) {
+				this.searchInput.placeholder += txt.charAt(i);
+				i++;
+				setTimeout(this.typeWriter, delay_next_char, text_list, i, text_list_i, delay_next_char, delay_next_item);
+			} else {
+				text_list_i++;
+				if (typeof text_list[text_list_i] === "undefined") {
+					setTimeout(this.typeWriter, delay_next_item, text_list, 0, 0, delay_next_char, delay_next_item);
+				} else {
+					i = 0;
+					setTimeout(this.typeWriter, delay_next_item, text_list, i, text_list_i, delay_next_char, delay_next_item);
+				}
+			}
+		}
 
 		this.search = async (query = [this.searchInput.value], inBytes = false) => {
 			console.log('query: ', query);
@@ -1104,7 +1125,7 @@ class Floater extends HTMLElement {
 		console.log('settings: ', this.settings)
 		if (this.settings.typewriterEffect) {
 			const placeholders = JSON.parse(this.getAttribute('placeholders'));
-			typeWriter('#jina-floater-search-box', placeholders || defaultPlaceholders, 0, 0, this.settings.typewriterDelayCharacter, this.settings.typewriterDelayItem);
+			this.typeWriter(placeholders || defaultPlaceholders, 0, 0, this.settings.typewriterDelayCharacter, this.settings.typewriterDelayItem);
 		}
 	}
 }
@@ -1112,6 +1133,26 @@ class Floater extends HTMLElement {
 class SearchBar extends HTMLElement {
 	constructor() {
 		super();
+
+		this.typeWriter = (text_list, i = 0, text_list_i = 0, delay_next_char = 100, delay_next_item = 1000) => {
+			if (!i) {
+				this.searchInput.placeholder = "";
+			}
+			let txt = text_list[text_list_i];
+			if (i < txt.length) {
+				this.searchInput.placeholder += txt.charAt(i);
+				i++;
+				setTimeout(this.typeWriter, delay_next_char, text_list, i, text_list_i, delay_next_char, delay_next_item);
+			} else {
+				text_list_i++;
+				if (typeof text_list[text_list_i] === "undefined") {
+					setTimeout(this.typeWriter, delay_next_item, text_list, 0, 0, delay_next_char, delay_next_item);
+				} else {
+					i = 0;
+					setTimeout(this.typeWriter, delay_next_item, text_list, i, text_list_i, delay_next_char, delay_next_item);
+				}
+			}
+		}
 
 		this.search = async (query = [this.searchInput.value], inBytes = false) => {
 			console.log('query: ', query);
@@ -1497,7 +1538,7 @@ class SearchBar extends HTMLElement {
 
 		if (this.settings.typewriterEffect) {
 			const placeholders = JSON.parse(this.getAttribute('placeholders'));
-			typeWriter('#jina-search-input', placeholders || defaultPlaceholders);
+			this.typeWriter(placeholders || defaultPlaceholders, 0, 0, this.settings.typewriterDelayCharacter, this.settings.typewriterDelayItem);
 		}
 	}
 }
@@ -1602,26 +1643,6 @@ function getDataUri(url) {
 		}
 		xhr.send();
 	})
-}
-
-function typeWriter(selector_target, text_list, i = 0, text_list_i = 0, delay_next_char = 100, delay_next_item = 1000,) {
-	if (!i) {
-		document.querySelector(selector_target).placeholder = "";
-	}
-	txt = text_list[text_list_i];
-	if (i < txt.length) {
-		document.querySelector(selector_target).placeholder += txt.charAt(i);
-		i++;
-		setTimeout(typeWriter, delay_next_char, selector_target, text_list, i, text_list_i, delay_next_char, delay_next_item);
-	} else {
-		text_list_i++;
-		if (typeof text_list[text_list_i] === "undefined") {
-			setTimeout(typeWriter, delay_next_item, selector_target, text_list, 0, 0, delay_next_char, delay_next_item);
-		} else {
-			i = 0;
-			setTimeout(typeWriter, delay_next_item, selector_target, text_list, i, text_list_i, delay_next_char, delay_next_item);
-		}
-	}
 }
 
 
