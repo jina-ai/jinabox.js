@@ -662,7 +662,7 @@ document.body.appendChild(stylesElement);
 let defaultPlaceholders = ['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'];
 
 let defaultSettings = {
-	resultsInDropdown: false,
+	resultsInDropdown: true,
 	typewriterEffect: false,
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
