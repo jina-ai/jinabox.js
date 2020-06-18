@@ -1,13 +1,17 @@
 const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
-const initialTimeout = localStorage.getItem('jina-timeout') || '';
 
 const searchbarContainer = document.getElementById('searchbar-container');
 const resultsContainer = document.getElementById('results-container');
 const floaterContainer = document.getElementById('floater-container');
 
+const defaultInitSettings = {
+	timeout: 5000,
+	top_k: 16
+}
+
 const settings = {
 	url: initialEndpoint,
-	timeout: initialTimeout,
+	timeout: '',
 	resultsAreaId: false,
 	showSearch: true,
 	showFloater: true,
@@ -114,7 +118,9 @@ ${settings.showFloater ?
 
 	<script src="https://unpkg.com/jinabox"></script>
 <script>
-JinaBox.init('${settings.url}'${settings.timeout ? `,{timeout:${settings.timeout}}` : ''});
+JinaBox.init('${settings.url}'${(settings.timeout || settings.top_k) ? `,{\
+	${settings.timeout?`timeout:${settings.timeout},`:''}\
+	${settings.top_k?`top_k:${settings.top_k}`:''}}` : ''});
 </script>
 `
     document.getElementById('jinabox-code').innerText = code;
@@ -133,12 +139,20 @@ inputEndpoint.addEventListener('input', function (e) {
 });
 
 const inputTimeout = document.getElementById('inputTimeout');
-inputTimeout.setAttribute('value', initialTimeout || 5000);
+inputTimeout.setAttribute('value', defaultInitSettings.timeout);
 inputTimeout.addEventListener('input', function (e) {
     const timeout = e.target.value;
-    localStorage.setItem('jina-timeout', timeout);
     window.JinaBox.updateSettings({timeout});
     settings.timeout = timeout;
+    renderCode()
+});
+
+const inputTopk = document.getElementById('inputTopk');
+inputTopk.setAttribute('value', defaultInitSettings.top_k);
+inputTopk.addEventListener('input', function (e) {
+    const top_k = e.target.value;
+    window.JinaBox.updateSettings({top_k});
+    settings.top_k = top_k;
     renderCode()
 });
 

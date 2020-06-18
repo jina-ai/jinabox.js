@@ -1569,6 +1569,7 @@ window.customElements.define('jina-results', Results);
 window.JinaSettings = {
 	timeout: 5000,
 	url: false,
+	top_k: 16
 }
 
 window.JinaBox = {
@@ -1580,9 +1581,9 @@ window.JinaBox = {
 		}
 		console.log('initialized with ', url);
 	},
-	search: async function (data, top_k = 16) {
+	search: async function (data) {
 		return new Promise(function (resolve, reject) {
-			const { url, timeout } = window.JinaSettings;
+			const { url, timeout,top_k } = window.JinaSettings;
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
@@ -1599,7 +1600,6 @@ window.JinaBox = {
 				console.log('xhr error:', e);
 				reject(`request failed at ${url}`);
 			}
-			//TODO: add to settings
 			xhr.timeout = timeout;
 			xhr.ontimeout = () => reject('Search Timeout');
 			xhr.send(JSON.stringify({ data, top_k, mode: 'search' }));
