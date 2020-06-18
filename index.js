@@ -11,7 +11,7 @@ const defaultInitSettings = {
 
 const settings = {
 	url: initialEndpoint,
-	timeout: '',
+	timeout: defaultInitSettings.timeout,
 	resultsAreaId: false,
 	showSearch: true,
 	showFloater: true,
