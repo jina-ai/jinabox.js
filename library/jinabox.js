@@ -339,7 +339,8 @@ let baseStyles = `
     font-family: Comfortaa;
     margin-top: 1em;
     margin-left: .5em;
-    opacity: .5;
+		opacity: .5;
+		z-index: 1;
 }
 .jina-search-container {
     position: relative;
@@ -369,7 +370,8 @@ let baseStyles = `
     max-height: 65vh;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
     display: flex;
-    flex-direction: column;
+		flex-direction: column;
+		z-index: 2;
 }
 .jina-expander-results-area {
     overflow-x: hidden;
@@ -660,14 +662,13 @@ document.body.appendChild(stylesElement);
 let defaultPlaceholders = ['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'];
 
 let defaultSettings = {
-	showResults: true,
+	resultsInDropdown: false,
 	typewriterEffect: false,
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
 	theme: 'default',
 	searchIcon: 'color',
 	floaterIcon: 'color',
-	globalDrag: true,
 }
 
 class Floater extends HTMLElement {
@@ -1393,7 +1394,7 @@ class SearchBar extends HTMLElement {
 				resultsHTML += this.renderResult(result);
 			}
 
-			if (this.settings.showResults) {
+			if (this.settings.resultsInDropdown) {
 				this.overlay.style.display = 'block';
 				this.overlay.style.opacity = '1';
 				this.expander.style.height = '500px';
@@ -1404,19 +1405,25 @@ class SearchBar extends HTMLElement {
 					${resultsHTML}
 				</div>
 				`;
-				if (toolbar) {
-					for (let i = 0; i < queries.length; ++i) {
-						document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
-					}
-					if (onlyImages) {
-						document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
-						document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
-					}
-				}
 			} else {
 				this.resultsArea = document.getElementById('jina-results-area')
-				this.resultsArea.innerHTML = html;
+				this.resultsArea.innerHTML  = `
+				${toolbar || ''}
+				<div class="jina-expander-results-area">
+					${resultsHTML}
+				</div>
+				`;
 				this.clearExpander()
+			}
+
+			if (toolbar) {
+				for (let i = 0; i < queries.length; ++i) {
+					document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
+				}
+				if (onlyImages) {
+					document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+					document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+				}
 			}
 
 			results[index].map((result, idx) => {
