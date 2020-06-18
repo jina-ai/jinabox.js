@@ -729,14 +729,14 @@ class Floater extends HTMLElement {
 			if (code == 'ERROR')
 				return this.showError(description);
 
-			try{
+			try {
 				for (let i = 0; i < docs.length; ++i) {
 					let docResults = docs[i];
 					let { topkResults, uri, mimeType } = docResults;
 					if (docResults.mimeType !== 'text/plain')
 						queriesContainMedia = true;
 					queries.push({ uri, mimeType });
-	
+
 					for (let j = 0; j < topkResults.length; ++j) {
 						const res = topkResults[j];
 						if (!results[i])
@@ -745,7 +745,7 @@ class Floater extends HTMLElement {
 							resultsContainText = true;
 						if (!res.matchDoc.mimeType.startsWith('image'))
 							onlyImages = false;
-	
+
 						results[i].push({
 							mimeType: res.matchDoc.mimeType,
 							data: res.matchDoc.uri,
@@ -756,10 +756,10 @@ class Floater extends HTMLElement {
 					}
 				}
 			}
-			catch(e){
+			catch (e) {
 				return this.showError('Could not get results')
 			}
-			
+
 			for (let i = 0; i < results.length; ++i) {
 				results[i] = results[i].sort((a, b) => {
 					return b.score - a.score
@@ -955,7 +955,7 @@ class Floater extends HTMLElement {
 			let dt = e.dataTransfer;
 			let imgsrc = dt.getData('URL');
 			console.log('imgsrc: ', imgsrc)
-			if(!this.showBox){
+			if (!this.showBox) {
 				console.log('toggling')
 				this.toggleShow()
 			}
@@ -1583,7 +1583,7 @@ window.JinaBox = {
 	},
 	search: async function (data) {
 		return new Promise(function (resolve, reject) {
-			const { url, timeout,top_k } = window.JinaSettings;
+			const { url, timeout, top_k } = window.JinaSettings;
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
@@ -1602,7 +1602,7 @@ window.JinaBox = {
 			}
 			xhr.timeout = timeout;
 			xhr.ontimeout = () => reject('Search Timeout');
-			xhr.send(JSON.stringify({ data, top_k:parseInt(top_k), mode: 'search' }));
+			xhr.send(JSON.stringify({ data, top_k: parseInt(top_k), mode: 'search' }));
 		})
 	},
 	updateSettings: function (settings) {
