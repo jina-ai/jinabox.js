@@ -23,7 +23,7 @@ jobs:
     - name: get current version
       run: |
         version=$(npm view jinabox version)
-        npm version $version
+        npm version $version --allow-same-version
         npm version patch
     - name: publish
       run: npm install && npm run minify && npm publish
