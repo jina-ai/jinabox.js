@@ -258,7 +258,8 @@ let baseStyles = `
     margin: .1em;
     border-radius: .25em;
     cursor: pointer;
-    transition: .1s;
+		transition: .1s;
+		text-align: center;
 }
 
 .jina-result-video{
