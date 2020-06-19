@@ -34,7 +34,7 @@ Just go to https://jina.ai/jinabox.js/ in your browser to open up the search int
 
 ### Set Server Endpoint
 
-Based on the Docker port you are exposing (i.e. 65481 or 45678 in above Docker images), set jinabox's server endpoint to:
+Based on the Docker port you are exposing (i.e. `65481` or `45678` in above Docker images), set jinabox's server endpoint to:
 ```
 http://localhost:<port_number>/api/search
 ```
@@ -82,47 +82,47 @@ Ready to learn Jina? [Read our 101 tutorials](https://101.jina.ai).
 
 ```bash
 npm install jinabox
-# or
+```
+or
+```
 yarn add jinabox
 ```
 
 ## Features
 
-- An easy-to-use web component for Jina search backend
-- Allow users to drag and drop multi-modal data as queries to search
-- Webcam and microphone support (in progress, contribution welcome! ❤️)
+- Easy-to-use web component for Jina search backend
+- Users can drag and drop multi-modal data as search queries
+- Webcam and microphone support (in progress, contributions welcome! ❤️)
 - Visualize search results in a dropdown list or separate container
 - Highly customizable
 
 ## Supported MIME types
 
-| MIME type | Input (Query) | Output (Result) | Description | 
-| --- | --- | --- | --- |
-| [`text`](https://www.iana.org/assignments/media-types/media-types.xhtml#text) | typing | list only | Text-only data including any human-readable content, source code, or textual data such as comma-separated value (CSV) formatted data. Examples include `text/plain`, `text/csv`, and `text/html`. |
-| [`image`](https://www.iana.org/assignments/media-types/media-types.xhtml#image) | drag-and-drop | `<img>` containers in list/grid view | Image or graphical data including both bitmap and vector still images as well as animated versions of still image formats such as animated GIF or APNG. Common examples are `image/jpeg`, `image/png`, and `image/svg+xml`. |
-| [`video`](https://www.iana.org/assignments/media-types/media-types.xhtml#video) | drag-and-drop, webcam | `<video>`  containers in list/grid view | Video data or files, such as MP4 movies (`video/mp4`). |
-| [`audio`](https://www.iana.org/assignments/media-types/media-types.xhtml#audio) | drag-and-drop, webcam, mic | `<audio>`  containers in list view | Audio or music data. Examples include `audio/mpeg`, `audio/vorbis`. |
+| MIME type                                                                       | Input (Query)              | Output (Result)                         | Description                                                                                                                                                                                                                  |
+| ---                                                                             | ---                        | ---                                     | ---                                                                                                                                                                                                                          |
+| [`text`](https://www.iana.org/assignments/media-types/media-types.xhtml#text)   | Typing                     | List only                               | Text-only data including any human-readable content, source code, or textual data such as comma-separated value (CSV) formatted data. Examples include `text/plain`, `text/csv`, and `text/html`.                         |
+| [`image`](https://www.iana.org/assignments/media-types/media-types.xhtml#image) | Drag-and-drop              | `<img>` Containers in list/grid view    | Image or graphical data including both bitmap and vector still images as well as animated versions of still image formats like animated GIF or APNG. Common examples are `image/jpeg`, `image/png`, and `image/svg+xml`. |
+| [`video`](https://www.iana.org/assignments/media-types/media-types.xhtml#video) | Drag-and-drop, webcam      | `<video>`  containers in list/grid view | Video data or files, such as MP4 movies (`video/mp4`).                                                                                                                                                                       |
+| [`audio`](https://www.iana.org/assignments/media-types/media-types.xhtml#audio) | Drag-and-drop, webcam, mic | `<audio>`  containers in list view      | Audio or music data. Examples include `audio/mpeg`, `audio/vorbis`.                                                                                                                                                          |
 
 ## Configuration
 
-| Settings | Description |
-| --- | --- |
-| `theme` | Color theme: `persian`, `pompelmo`, `honeybee`, none |
-| `typewriterEffect` | Enable typewriter effect on the placeholder |
-| `typewriterDelayItem` | Time (ms) delays between every placeholder |
-| `typewriterDelayCharacter` | Time (ms) delays between every character |
+| Settings                   | Description                                          |
+| ---                        | ---                                                  |
+| `theme`                    | Color theme: `persian`, `pompelmo`, `honeybee`, none |
+| `typewriterEffect`         | Enable typewriter effect on the placeholder          |
+| `typewriterDelayItem`      | Time (ms) delay between every placeholder            |
+| `typewriterDelayCharacter` | Time (ms) delay between each character               |
 
 ## Browser Support
 
 `jinabox.js` runs on modern browsers supporting Web Audio, including Firefox, Chrome, Safari (desktop and mobile) and Opera.
-
 
 ## Troubleshooting
 
 ### SSL Error on Localhost
 
 Try `http://localhost:65481/api/search`, make sure to use `http` and `localhost`, instead of `0.0.0.0`.
-
 
 ## License
 
