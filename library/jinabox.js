@@ -254,7 +254,6 @@ let baseStyles = `
     display: none;
 }
 .jina-floater-result, .jina-result {
-    background: white;
     margin: .1em;
     border-radius: .25em;
     cursor: pointer;
@@ -1592,6 +1591,9 @@ window.JinaBox = {
 	search: async function (data) {
 		return new Promise(function (resolve, reject) {
 			const { url, timeout, top_k } = window.JinaSettings;
+			if(!url){
+				return reject('Invalid URL');	
+			}
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
