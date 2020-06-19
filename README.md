@@ -10,14 +10,40 @@
 `jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with [a Jina backend](https://github.com/jina-ai/jina).
 
 
-- [Demo page](https://jina.ai/jinabox.js/)
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
-- [Quick Start](#quick-start)
+- [Jinabox in Action](#jinabox.js-in-action)
+- [Jinabox in Your Project](#jinabox.js-in-your-project)
 - [Features](#features)
 - [Supported MIME types](#supported-mime-types)
 - [Configuration](#configuration)
 
-## Quick Start
+## jinabox.js in Action
+
+### Spin up a Jina Docker Image
+
+Based on what you want to search, run one of our example Jina backends:
+
+- [Pokedex](https://github.com/jina-ai/examples/tree/master/pokedex-with-bit) (real image data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.bitsearch-pokedex search`
+- [Southpark](https://github.com/jina-ai/examples/tree/master/southpark-search) (real text data): `docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark`
+- [MP4 mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder video data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.mp4 search`
+- [Wav mock](https://github.com/jina-ai/examples/tree/master/io-mock-app) (placeholder audio data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.iomock.sound search` 
+
+### Open jinabox.js in your Browser
+
+Just go to https://jina.ai/jinabox.js/ in your browser to open up the search interface.
+
+### Set Server Endpoint
+
+Based on the Docker port you are exposing (i.e. 65481 or 45678 in above Docker images), set jinabox's server endpoint to:
+```
+http://localhost:<port_number>/api/search
+```
+
+### Start Searching!
+
+Drag and drop images, video, or audio, or type in text to search.
+
+## jinabox.js in Your Project
 
 <img align="right" width="350px" src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox.gif?raw=true " />
 
@@ -31,7 +57,7 @@ In HTML, include the minified script:
 </script>
 ```
 
-Then, create a container where the searchbar/floater is to appear:
+Then create a container where the searchbar/floater is to appear:
 
 ```html
 <jina-searchbar/>
@@ -41,7 +67,7 @@ Then, create a container where the searchbar/floater is to appear:
 <jina-floater/>
 ```
 
-Run one of those prebuilt backend:
+Run one of our prebuilt backends:
 
 - [Pokedex](https://github.com/jina-ai/examples/tree/master/pokedex-with-bit) (real image data): `docker run -p 65481:65481 -e "JINA_PORT=65481" jinaai/hub.app.bitsearch-pokedex search`
 - [Southpark](https://github.com/jina-ai/examples/tree/master/southpark-search) (real text data): `docker run -p 45678:45678 jinaai/hub.app.distilbert-southpark`
@@ -62,11 +88,11 @@ yarn add jinabox
 
 ## Features
 
-- an easy-to-use web component for Jina search backend; 
-- allow user to drag-and-drop multi-modal data as queries to search;
-- webcam and mic support (in progress, contribution welcome! ❤️);
-- visualize the search results in a dropdown list or a separate container;
-- highly customizable.
+- An easy-to-use web component for Jina search backend
+- Allow users to drag and drop multi-modal data as queries to search
+- Webcam and microphone support (in progress, contribution welcome! ❤️)
+- Visualize search results in a dropdown list or separate container
+- Highly customizable
 
 ## Supported MIME types
 
@@ -86,14 +112,14 @@ yarn add jinabox
 | `typewriterDelayItem` | Time (ms) delays between every placeholder |
 | `typewriterDelayCharacter` | Time (ms) delays between every character |
 
-## Browser support
+## Browser Support
 
 `jinabox.js` runs on modern browsers supporting Web Audio, including Firefox, Chrome, Safari (desktop and mobile) and Opera.
 
 
 ## Troubleshooting
 
-### SSL error on my localhost
+### SSL Error on Localhost
 
 Try `http://localhost:65481/api/search`, make sure to use `http` and `localhost`, instead of `0.0.0.0`.
 
