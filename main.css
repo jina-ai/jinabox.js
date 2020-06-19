@@ -93,3 +93,7 @@ pre, code {
     margin-right: 1em;
     cursor: pointer;
 }
+
+.form-control::placeholder{
+    opacity: .5;
+}
