@@ -7,7 +7,7 @@
 [![Jina](https://github.com/jina-ai/jina/blob/master/.github/badges/jina-badge.svg?raw=true  "We fully commit to open-source")](https://jina.ai)
 [![Jina Box](https://github.com/jina-ai/jina/blob/master/.github/badges/license-badge.svg?raw=true  "Jina is licensed under Apache-2.0")](#license)
 
-`jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audios or all kinds of data with [a Jina backend](https://github.com/jina-ai/jina).
+`jinabox.js` is a lightweight, customizable omnibox. You can use it for searching text, images, videos, audio or any kind of data with [a Jina backend](https://github.com/jina-ai/jina).
 
 
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
