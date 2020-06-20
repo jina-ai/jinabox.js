@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/jina-ai/jina"><img src="https://github.com/jina-ai/jinabox.js/blob/master/img/jinabox-logo.svg" alt="Jinabox.js banner" width="60%"></a>
+  <a href="https://www.youtube.com/watch?v=1mSxdSbgjc8"><img src="https://github.com/jina-ai/jinabox.js/blob/master/img/jinabox-logo.svg" alt="Jinabox.js banner" width="60%"></a>
 </p>
 
 [![npm](https://img.shields.io/npm/v/jinabox)](https://www.npmjs.com/package/jinabox)
@@ -43,7 +43,7 @@ Drag and drop images, video, or audio, or type in text to search.
 
 ## jinabox.js in Your Project
 
-<img align="right" width="350px" src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox.gif?raw=true " />
+<a href="https://www.youtube.com/watch?v=1mSxdSbgjc8"><img align="right" width="350px" src="https://github.com/jina-ai/jinabox.js/blob/master/.github/jinabox.gif?raw=true " /></a>
 
 In HTML, include the minified script:
 
