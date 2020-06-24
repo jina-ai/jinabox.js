@@ -322,6 +322,7 @@ let baseStyles = `
     top: .5rem;
     left: .65rem;
 		padding-right: .25rem;
+		cursor: pointer;
 }
 .jina-border-right {
     border-right: 1px solid #009999;
@@ -651,6 +652,22 @@ let baseStyles = `
 }
 .jina-scrollable{
 	overflow-y: auto;
+}
+.jina-select{
+	padding: .5em;
+	margin-bottom: .5em;
+}
+.jina-upload-button{
+	background-color: #009999;
+	border: none;
+	padding: .5em;
+	color: white;
+	border-radius: .5em;
+	margin: .5em;
+	display: block;
+	outline: none !important;
+	margin-left: auto;
+	margin-right: auto;
 }
 `
 
@@ -1291,6 +1308,29 @@ class SearchBar extends HTMLElement {
 			}
 		}
 
+		this.handleUpload = (e) => {
+			let acceptedFiles = e.target.files;
+			let processedFiles = [];
+			console.log('files: ', acceptedFiles)
+			for (let i = 0; i < acceptedFiles.length; ++i) {
+				const file = acceptedFiles[i];
+				let reader = new FileReader();
+				reader.addEventListener("load", () => {
+					const processed = reader.result;
+					processedFiles.push(processed);
+					if (processedFiles.length === acceptedFiles.length) {
+						this.search(processedFiles, true)
+						if (processedFiles.length < 2) {
+							this.searchIcon.src = processedFiles[0];
+							this.searchIcon.classList.add('jina-border-right');
+						}
+					}
+					console.log('processed: ', processed);
+				}, false);
+				reader.readAsDataURL(file);
+			}
+		}
+
 		this.handleDrag = () => {
 			this.dragCounter++;
 			if (!this.highlighted) {
@@ -1324,6 +1364,80 @@ class SearchBar extends HTMLElement {
 				}
 				this.dragCounter = 0;
 			}
+		}
+
+		this.showInputOptions = async () => {
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
+			this.expander.style.height = 'auto';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			<div>
+				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
+				<button class="jina-upload-button" id="jina-expander-file-input-trigger">Upload Files</button>
+				<label>Video Input</label>
+				<select class="jina-select">
+					<option value="1">none selected</option>
+    			<option value="1">Audi</option>
+    			<option value="2">BMW</option>
+    			<option value="3">Citroen</option>
+    			<option value="4">Ford</option>
+    			<option value="5">Honda</option>
+   				<option value="6">Jaguar</option>
+    			<option value="7">Land Rover</option>
+    			<option value="8">Mercedes</option>
+    			<option value="9">Mini</option>
+    			<option value="10">Nissan</option>
+    			<option value="11">Toyota</option>
+    			<option value="12">Volvo</option>
+				</select>
+				<label>Audio Input</label>
+				<select class="jina-select">
+					<option value="1">none selected</option>
+    			<option value="1">Audi</option>
+    			<option value="2">BMW</option>
+    			<option value="3">Citroen</option>
+    			<option value="4">Ford</option>
+    			<option value="5">Honda</option>
+   				<option value="6">Jaguar</option>
+    			<option value="7">Land Rover</option>
+    			<option value="8">Mercedes</option>
+    			<option value="9">Mini</option>
+    			<option value="10">Nissan</option>
+    			<option value="11">Toyota</option>
+    			<option value="12">Volvo</option>
+				</select>
+			</div>
+		`;
+			document.getElementById('jina-expander-file-input-trigger').onclick = function () { document.getElementById('jina-expander-file-input').click() };
+			document.getElementById('jina-expander-file-input').addEventListener('change', this.handleUpload)
+		}
+
+		this.getMediaDevices = async () => {
+			let deviceInfos = await navigator.mediaDevices.enumerateDevices()
+			console.log('enumerate before:', deviceInfos);
+			await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+			deviceInfos = await navigator.mediaDevices.enumerateDevices();
+			console.log('enumerate after:', deviceInfos);
+			let options = {
+				video: [],
+				audio: []
+			}
+			for (var i = 0; i !== deviceInfos.length; ++i) {
+				var deviceInfo = deviceInfos[i];
+				var option = {}
+				option.value = deviceInfo.deviceId;
+				if (deviceInfo.kind === 'audioinput') {
+					option.text = deviceInfo.label ||
+						'Microphone ' + (options.audio.length + 1);
+					options.audio.push(option);
+				} else if (deviceInfo.kind === 'videoinput') {
+					option.text = deviceInfo.label || 'Camera ' +
+						(options.video.length + 1);
+					options.video.push(option);
+				}
+			}
+			return options;
 		}
 
 		this.showLoading = () => {
@@ -1405,8 +1519,8 @@ class SearchBar extends HTMLElement {
 				</div>
 				`;
 			} else {
-				this.resultsArea = document.getElementById(this.settings.resultsAreaId||'jina-results-area')
-				this.resultsArea.innerHTML  = `
+				this.resultsArea = document.getElementById(this.settings.resultsAreaId || 'jina-results-area')
+				this.resultsArea.innerHTML = `
 				${toolbar || ''}
 				<div class="jina-expander-results-area">
 					${resultsHTML}
@@ -1540,6 +1654,7 @@ class SearchBar extends HTMLElement {
 		this.expander.addEventListener('drop', this.handleDrop);
 
 		this.searchInput.addEventListener('keydown', this.listenForEnter);
+		this.searchIcon.addEventListener('click', this.showInputOptions);
 
 		this.resultsView = localStorage.getItem('jina-expander-results-view') || 'list';
 
@@ -1591,8 +1706,8 @@ window.JinaBox = {
 	search: async function (data) {
 		return new Promise(function (resolve, reject) {
 			const { url, timeout, top_k } = window.JinaSettings;
-			if(!url){
-				return reject('Invalid URL');	
+			if (!url) {
+				return reject('Invalid URL');
 			}
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", url);
