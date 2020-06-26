@@ -657,7 +657,10 @@ let baseStyles = `
 	padding: .5em;
 	margin-bottom: .5em;
 }
-.jina-upload-button{
+.jina-small{
+	font-size: .75em;
+}
+.jina-action-button{
 	background-color: #009999;
 	border: none;
 	padding: .5em;
@@ -668,6 +671,54 @@ let baseStyles = `
 	outline: none !important;
 	margin-left: auto;
 	margin-right: auto;
+}
+.jina-media-controls{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding-bottom: 20px;
+}
+.jina-media-button{
+	border: none;
+	outline: none !important;
+	width: 5em;
+	height: 5em;
+	border-radius: 50%;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	margin: .5em;
+}
+.jina-input-controls{
+	margin-top: 0px;
+	padding-top: 0px;
+}
+.jina-media-cancel-button{
+	position: absolute;
+	background: white;
+	margin: .5em;
+	border-radius: 50%;
+	padding: .5em;
+	border: none !important;
+	outline: none !important;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	opacity: .75;
+	z-index: 2;
+}
+.jina-media-search-button-container{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	font-size: 1.5em;
+	text-align: center;
+}
+.jina-media-search-button{
+	border: none;
+	border-radius: 5em;
+	outline: none !important;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+	margin: .5em;
 }
 `
 
@@ -682,6 +733,8 @@ let defaultSettings = {
 	typewriterEffect: false,
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
+	userMediaHeight: 500,
+	userMediaWidth: 300,
 	theme: 'default',
 	searchIcon: 'color',
 	floaterIcon: 'color',
@@ -805,10 +858,10 @@ class Floater extends HTMLElement {
 			this.errorButton.onclick = this.clearDropArea;
 		}
 
-		this.showLoading = () => {
+		this.showLoading = (message = "Searching") => {
 			this.dropArea.innerHTML = `
 			<div class="jina-sea">
-				<p class="title">Searching</p>
+				<p class="title">${message}</p>
 				<span class="jina-wave"></span>
 				<span class="jina-wave"></span>
 				<span class="jina-wave"></span>
@@ -1374,80 +1427,192 @@ class SearchBar extends HTMLElement {
 			this.expander.innerHTML = `
 			<div>
 				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
-				<button class="jina-upload-button" id="jina-expander-file-input-trigger">Upload Files</button>
-				<label>Video Input</label>
-				<select class="jina-select">
-					<option value="1">none selected</option>
-    			<option value="1">Audi</option>
-    			<option value="2">BMW</option>
-    			<option value="3">Citroen</option>
-    			<option value="4">Ford</option>
-    			<option value="5">Honda</option>
-   				<option value="6">Jaguar</option>
-    			<option value="7">Land Rover</option>
-    			<option value="8">Mercedes</option>
-    			<option value="9">Mini</option>
-    			<option value="10">Nissan</option>
-    			<option value="11">Toyota</option>
-    			<option value="12">Volvo</option>
-				</select>
-				<label>Audio Input</label>
-				<select class="jina-select">
-					<option value="1">none selected</option>
-    			<option value="1">Audi</option>
-    			<option value="2">BMW</option>
-    			<option value="3">Citroen</option>
-    			<option value="4">Ford</option>
-    			<option value="5">Honda</option>
-   				<option value="6">Jaguar</option>
-    			<option value="7">Land Rover</option>
-    			<option value="8">Mercedes</option>
-    			<option value="9">Mini</option>
-    			<option value="10">Nissan</option>
-    			<option value="11">Toyota</option>
-    			<option value="12">Volvo</option>
-				</select>
+				<button class="jina-action-button" id="jina-expander-file-input-trigger">Upload Files</button>
+				<button class="jina-action-button" id="jina-expander-capture-media-button">Take Photo/Video</button>
+				<button class="jina-action-button" id="jina-expander-live-media-button">Live Audio/Video Search</button>
 			</div>
 		`;
 			document.getElementById('jina-expander-file-input-trigger').onclick = function () { document.getElementById('jina-expander-file-input').click() };
-			document.getElementById('jina-expander-file-input').addEventListener('change', this.handleUpload)
+			document.getElementById('jina-expander-file-input').addEventListener('change', this.handleUpload);
+			document.getElementById('jina-expander-capture-media-button').addEventListener('click', this.showCaptureScreen);
+		}
+
+		this.showCaptureScreen = async () => {
+			this.showLoading('Accessing Camera')
+			if (this.mediaStream) {
+				this.mediaStream.getTracks().forEach(track => {
+					track.stop();
+				});
+			}
+
+			const constraints = { audio: false, video: { width: this.settings.userMediaWidth, height: this.settings.userMediaHeight } };
+			this.mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+			console.log('audio tracks: ', this.mediaStream.getAudioTracks());
+			console.log('video tracks: ', this.mediaStream.getVideoTracks());
+
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
+			this.expander.style.height = 'auto';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			<div>
+				<canvas id="jina-media-capture-canvas">
+				</canvas>
+				<div class="jina-input-controls">
+				<img src="assets/camera.svg"/>
+				<select class="jina-select jina-small" id="jina-video-select">
+				</select>
+				<img src="assets/mic.svg"/>
+				<select class="jina-select jina-small" id="jina-audio-select">
+				</select>
+				</div>
+				<div class="jina-media-preview-container">
+					<video id="jina-capture-preview" autoplay muted/>
+				</div>
+				<div class="jina-media-controls" id="jina-media-controls">
+				<button class="jina-media-button" id="jina-take-photo-button"><img src="assets/camera.svg"></button>
+				<button class="jina-media-button" id="jina-record-video-button"><img src="assets/video.svg"></button>
+				</div>
+			</div>
+			`
+			this.audioSelect = document.getElementById('jina-audio-select');
+			this.videoSelect = document.getElementById('jina-video-select');
+			document.getElementById('jina-media-capture-canvas').width = 0;
+			document.getElementById('jina-media-capture-canvas').height = 0;
+
+			this.audioSelect.selectedIndex = [...this.audioSelect.options].findIndex(option => option.text === stream.getAudioTracks()[0].label);
+			this.videoSelect.selectedIndex = [...this.videoSelect.options].findIndex(option => option.text === stream.getVideoTracks()[0].label);
+			document.getElementById('jina-capture-preview').srcObject = this.mediaStream;
+			await this.getMediaDevices();
+
+			document.getElementById('jina-take-photo-button').onclick = this.capturePhoto;
+			document.getElementById('jina-record-video-button').onclick = this.startMediaRecord;
+		}
+
+		this.showReviewMedia = async () => {
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
+			this.expander.style.height = 'auto';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			<div>
+				<button class="jina-media-cancel-button" id="jina-media-cancel-button">
+				<img src="assets/x.svg">
+				</button>
+				${this.recordedMedia.type === 'video' ?
+					`<video src="${this.recordedMedia.src}" width="${this.settings.userMediaWidth}" height="${this.settings.userMediaHeight}" autoplay loop></video>` :
+					`<img src="${this.recordedMedia.src}" width="${this.settings.userMediaWidth}" height="${this.settings.userMediaHeight}">`
+				}
+				<div class="jina-media-search-button-container">
+				<button class="jina-media-search-button" id="jina-media-search-button">
+				search <img src="assets/arrow-right.svg">
+				</button
+				</div>
+			</div>
+			`
+			document.getElementById('jina-media-search-button').onclick = () => this.search([this.recordedMedia.dataURI]);
+			document.getElementById('jina-media-cancel-button').onclick = this.showCaptureScreen;
 		}
 
 		this.getMediaDevices = async () => {
-			let deviceInfos = await navigator.mediaDevices.enumerateDevices()
-			console.log('enumerate before:', deviceInfos);
-			await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-			deviceInfos = await navigator.mediaDevices.enumerateDevices();
-			console.log('enumerate after:', deviceInfos);
-			let options = {
-				video: [],
-				audio: []
-			}
+			let deviceInfos = await navigator.mediaDevices.enumerateDevices();
+			console.log('deviceInfos: ', deviceInfos)
 			for (var i = 0; i !== deviceInfos.length; ++i) {
 				var deviceInfo = deviceInfos[i];
-				var option = {}
+				var option = document.createElement('option');
 				option.value = deviceInfo.deviceId;
 				if (deviceInfo.kind === 'audioinput') {
-					option.text = deviceInfo.label ||
-						'Microphone ' + (options.audio.length + 1);
-					options.audio.push(option);
+					option.text = deviceInfo.label || 'Microphone ' + (this.audioSelect.length + 1);
+					this.audioSelect.appendChild(option);
 				} else if (deviceInfo.kind === 'videoinput') {
-					option.text = deviceInfo.label || 'Camera ' +
-						(options.video.length + 1);
-					options.video.push(option);
+					option.text = deviceInfo.label || 'Camera ' + (this.videoSelect.length + 1);
+					this.videoSelect.appendChild(option);
 				}
 			}
-			return options;
 		}
 
-		this.showLoading = () => {
+		this.capturePhoto = async () => {
+			let canvas = document.getElementById('jina-media-capture-canvas');
+			let context = canvas.getContext('2d');
+			canvas.width = this.settings.userMediaWidth;
+			canvas.height = this.settings.userMediaHeight;
+			context.drawImage(document.getElementById('jina-capture-preview'), 0, 0, this.settings.userMediaWidth, this.settings.userMediaHeight);
+
+			let data = canvas.toDataURL('image/jpeg');
+			document.getElementById('jina-media-capture-canvas').width = 0;
+			document.getElementById('jina-media-capture-canvas').height = 0;
+			console.log('data:', data);
+			this.recordedMedia = {
+				src: data,
+				dataURI: data,
+				type: 'image'
+			}
+			this.showReviewMedia()
+		}
+
+		this.startMediaRecord = async () => {
+			this.recordedBlobs = [];
+			let options = { mimeType: 'video/mp4' };
+			if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+				console.error(`${options.mimeType} is not supported`);
+				options = { mimeType: '' };
+			}
+
+			try {
+				this.mediaRecorder = new MediaRecorder(this.mediaStream, options);
+			} catch (e) {
+				console.error('Exception while creating MediaRecorder:', e);
+				errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;
+				return;
+			}
+
+			console.log('Created MediaRecorder', this.mediaRecorder, 'with options', options);
+			//create button UI
+			this.mediaRecorder.onstop = (event) => {
+				console.log('Recorder stopped: ', event);
+				console.log('Recorded Blobs: ', this.recordedBlobs);
+				const data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
+				let reader = new FileReader();
+				reader.addEventListener("load", () => {
+					const processed = reader.result;
+					this.recordedMedia = {
+						src: window.URL.createObjectURL(data),
+						type: 'video',
+						dataURI: processed,
+					}
+					this.showReviewMedia()
+					console.log('processed: ', processed);
+				}, false);
+				reader.readAsDataURL(data);
+			};
+			this.mediaRecorder.ondataavailable = (event) => {
+				if (event.data && event.data.size > 0) {
+					this.recordedBlobs.push(event.data);
+				}
+			}
+			this.mediaRecorder.start();
+			// setTimeout(this.stopMediaRecord,1000);
+
+			console.log('MediaRecorder started', this.mediaRecorder);
+			document.getElementById('jina-media-controls').innerHTML = `
+			<button class="jina-media-button" id="jina-stop-record-button"><img src="assets/square.svg"></button>
+			`;
+			document.getElementById('jina-stop-record-button').onclick = this.stopMediaRecord;
+		}
+
+		this.stopMediaRecord = () => {
+			console.log('stopping media recording')
+			this.mediaRecorder.stop();
+		}
+
+		this.showLoading = (message = "Searching") => {
 			this.overlay.style.display = 'block';
 			this.overlay.style.opacity = '1';
 			this.expander.style.height = 'auto';
 			this.expander.style.opacity = 1;
 			this.expander.innerHTML = `
 			<div class="jina-sea">
-				<p class="title">Searching</p>
+				<p class="title">${message}</p>
 				<span class="jina-wave"></span>
 				<span class="jina-wave"></span>
 				<span class="jina-wave"></span>
