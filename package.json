@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "mkdir -p dist",
+    "build:rollup": "rollup -c",
     "minify": "npm run build && terser library/jinabox.js -c toplevel,sequences=false,drop_console=true --mangle > dist/jinabox.min.js"
   },
   "files": [
@@ -41,7 +42,16 @@
   },
   "homepage": "https://github.com/jina-ai/jinabox.js",
   "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@rollup/plugin-node-resolve": "^8.1.0",
+    "rollup": "^2.18.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-postcss": "^3.1.2",
+    "rollup-plugin-terser": "^6.1.0",
     "terser": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/runtime": "^7.10.3"
+  }
 }
