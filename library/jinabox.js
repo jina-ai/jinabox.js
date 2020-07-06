@@ -656,6 +656,7 @@ let baseStyles = `
 .jina-select{
 	padding: .5em;
 	margin-bottom: .5em;
+	max-width: 50%;
 }
 .jina-small{
 	font-size: .75em;
@@ -681,22 +682,42 @@ let baseStyles = `
 .jina-media-button{
 	border: none;
 	outline: none !important;
-	width: 5em;
-	height: 5em;
+	width: 4em;
+	height: 4em;
 	border-radius: 50%;
 	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
 	margin: .5em;
+	opacity: .75;
+	transition: .2s;
+}
+.jina-media-button:hover{
+	opacity: 1;
 }
 .jina-input-controls{
-	margin-top: 0px;
-	padding-top: 0px;
+	padding-top: .5em;
+}
+.jina-input-controls .jina-select{
+	width: 100%;
 }
 .jina-media-cancel-button{
 	position: absolute;
 	background: white;
 	margin: .5em;
+	left: 0;
 	border-radius: 50%;
 	padding: .5em;
+	border: none !important;
+	outline: none !important;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	opacity: .75;
+	z-index: 2;
+}
+.jina-media-live-button{
+	position: absolute;
+	background: white;
+	margin: .5em;
+	right: 0;
+	border-radius: .25em;
 	border: none !important;
 	outline: none !important;
 	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
@@ -719,6 +740,43 @@ let baseStyles = `
 	padding-left: 1.5em;
 	padding-right: 1.5em;
 	margin: .5em;
+}
+.jina-live-container {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	flex: 1;
+}
+.jina-live-results-area{
+	height: 100%;
+	max-height: 500px;
+	overflow-y: auto;
+}
+.jina-live-header{
+	display: inline-grid;
+	grid-template-columns: 33% 33% 33%;
+	width: 100%;
+	padding-top: .5em;
+	padding-bottom: .5em;
+}
+.jina-live-button{
+	border-radius: 50%;
+	width: 2.5em;
+	height: 2.5em;
+	margin-left: .5em;
+	margin-right: .5em;
+	background: whitesmoke;
+	border: none;
+	outline: none !important;
+}
+.jina-live-preview{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 1em;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	border-radius: .5em;
+	transition: .2s;
 }
 `
 
@@ -1233,7 +1291,10 @@ class SearchBar extends HTMLElement {
 				this.searchIcon.classList.remove('jina-border-right');
 			}
 
-			this.showLoading();
+			console.log('searchType:',this.searchType);
+			if (this.searchType !== 'live')
+				this.showLoading();
+
 			console.log('searching...');
 			let response;
 			let startTime = new Date();
@@ -1428,25 +1489,33 @@ class SearchBar extends HTMLElement {
 			<div>
 				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
 				<button class="jina-action-button" id="jina-expander-file-input-trigger">Upload Files</button>
-				<button class="jina-action-button" id="jina-expander-capture-media-button">Take Photo/Video</button>
-				<button class="jina-action-button" id="jina-expander-live-media-button">Live Audio/Video Search</button>
+				<button class="jina-action-button" id="jina-expander-capture-media-button">Visual Search</button>
+				<button class="jina-action-button" id="jina-expander-capture-screen-button">Audio Search</button>
 			</div>
 		`;
 			document.getElementById('jina-expander-file-input-trigger').onclick = function () { document.getElementById('jina-expander-file-input').click() };
 			document.getElementById('jina-expander-file-input').addEventListener('change', this.handleUpload);
 			document.getElementById('jina-expander-capture-media-button').addEventListener('click', this.showCaptureScreen);
+			document.getElementById('jina-expander-capture-screen-button').addEventListener('click', this.showCaptureScreen);
 		}
 
 		this.showCaptureScreen = async () => {
-			this.showLoading('Accessing Camera')
-			if (this.mediaStream) {
-				this.mediaStream.getTracks().forEach(track => {
-					track.stop();
-				});
+
+			try {
+				if (this.videoSource === 'screen') {
+					this.showLoading('Accessing Screen Media');
+					this.mediaStream = await this.getScreenMediaStream();
+				}
+				else {
+					this.showLoading('Accessing Device Media');
+					this.mediaStream = await this.getUserMediaStream();
+				}
+			}
+			catch (e) {
+				return this.showError('Could not access media. Please ensure permission is granted.')
 			}
 
-			const constraints = { audio: false, video: { width: this.settings.userMediaWidth, height: this.settings.userMediaHeight } };
-			this.mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+
 			console.log('audio tracks: ', this.mediaStream.getAudioTracks());
 			console.log('video tracks: ', this.mediaStream.getVideoTracks());
 
@@ -1458,16 +1527,24 @@ class SearchBar extends HTMLElement {
 			<div>
 				<canvas id="jina-media-capture-canvas">
 				</canvas>
+				
 				<div class="jina-input-controls">
-				<img src="assets/camera.svg"/>
-				<select class="jina-select jina-small" id="jina-video-select">
-				</select>
-				<img src="assets/mic.svg"/>
-				<select class="jina-select jina-small" id="jina-audio-select">
-				</select>
+					<div>
+						<img src="assets/camera.svg"/>
+						<select class="jina-select jina-small" id="jina-video-select">
+						</select>
+					</div>
+					<div>
+						<img src="assets/mic.svg"/>
+						<select class="jina-select jina-small" id="jina-audio-select">
+						</select>
+					</div>
 				</div>
 				<div class="jina-media-preview-container">
-					<video id="jina-capture-preview" autoplay muted/>
+					<button class="jina-media-live-button" id="jina-media-live-button">
+					Live Search
+					</button>
+					<video id="jina-capture-preview" autoplay muted width="100%" style="display: block;"/>
 				</div>
 				<div class="jina-media-controls" id="jina-media-controls">
 				<button class="jina-media-button" id="jina-take-photo-button"><img src="assets/camera.svg"></button>
@@ -1475,21 +1552,165 @@ class SearchBar extends HTMLElement {
 				</div>
 			</div>
 			`
+			let capturePreview = document.getElementById('jina-capture-preview');
 			this.audioSelect = document.getElementById('jina-audio-select');
 			this.videoSelect = document.getElementById('jina-video-select');
-			document.getElementById('jina-media-capture-canvas').width = 0;
-			document.getElementById('jina-media-capture-canvas').height = 0;
+			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
+			this.captureCanvas.width = 0;
+			this.captureCanvas.height = 0;
+			this.captureCanvas.style.display = 'none';
 
-			this.audioSelect.selectedIndex = [...this.audioSelect.options].findIndex(option => option.text === stream.getAudioTracks()[0].label);
-			this.videoSelect.selectedIndex = [...this.videoSelect.options].findIndex(option => option.text === stream.getVideoTracks()[0].label);
+			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureScreen);
+			this.videoSelect.onchange = () => this.updateStreamSource(this.showCaptureScreen);
+
 			document.getElementById('jina-capture-preview').srcObject = this.mediaStream;
 			await this.getMediaDevices();
 
-			document.getElementById('jina-take-photo-button').onclick = this.capturePhoto;
-			document.getElementById('jina-record-video-button').onclick = this.startMediaRecord;
+			if (this.audioSource) {
+				this.audioSelect.selectedIndex = [...this.audioSelect.options].findIndex(option => option.value === this.audioSource);
+			}
+			if (this.videoSource) {
+				this.videoSelect.selectedIndex = [...this.videoSelect.options].findIndex(option => option.value === this.videoSource);
+			}
+
+			if (this.videoSource === 'screen') {
+				document.getElementById('jina-take-photo-button').onclick = () => this.capturePhoto(capturePreview.videoWidth, capturePreview.videoHeight);
+				document.getElementById('jina-record-video-button').onclick = () => this.startMediaRecord(capturePreview.videoWidth, capturePreview.videoHeight);
+			}
+			else {
+				document.getElementById('jina-take-photo-button').onclick = () => this.capturePhoto();
+				document.getElementById('jina-record-video-button').onclick = () => this.startMediaRecord();
+			}
+			document.getElementById('jina-media-live-button').onclick = this.showLiveSearch;
+		}
+
+		this.showLiveSearch = async () => {
+
+			console.log('audio tracks: ', this.mediaStream.getAudioTracks());
+			console.log('video tracks: ', this.mediaStream.getVideoTracks());
+
+			this.overlay.style.display = 'block';
+			this.overlay.style.opacity = '1';
+			this.expander.style.height = 'auto';
+			this.expander.style.opacity = 1;
+			this.expander.innerHTML = `
+			<div class="jina-live-container">
+				<canvas id="jina-media-capture-canvas">
+				</canvas>
+				<div class="jina-live-header">
+					<div class="jina-live-header-item" style="text-align: left;">
+						<button class="jina-live-button" id="jina-live-cancel-button">
+							<img src="assets/x.svg">
+						</button>
+					</div>
+					<div class="jina-live-header-item" style="margin-top: .5em">
+						Live Search
+					</div>
+					<div class="jina-live-header-item" style="text-align: right;">
+						<button class="jina-live-button" id="jina-live-toggle-button">
+							<img src="assets/pause.svg">
+						</button>
+					</div>
+				</div>
+				<div class="jina-live-results-area" id="jina-live-results-area"></div>
+				<video id="jina-capture-preview" class="jina-live-preview" autoplay muted width="33%"/>
+			</div>
+			`
+			let capturePreview = document.getElementById('jina-capture-preview');
+			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
+			this.captureCanvas.width = 0;
+			this.captureCanvas.height = 0;
+			this.captureCanvas.style.display = 'none';
+
+			document.getElementById('jina-live-cancel-button').onclick = this.showCaptureScreen;
+
+			document.getElementById('jina-capture-preview').srcObject = this.mediaStream;
+			this.searchType = 'live'
+
+			if (this.videoSource === 'screen') {
+				this.startLiveSearch(capturePreview.videoWidth, capturePreview.videoHeight)
+				document.getElementById('jina-live-toggle-button').onclick = () => this.toggleLiveSearch(capturePreview.videoWidth, capturePreview.videoHeight);
+			}
+			else {
+				this.startLiveSearch();
+				document.getElementById('jina-live-toggle-button').onclick = this.toggleLiveSearch;
+			}
+		}
+
+		this.getUserMediaStream = () => {
+			this.clearMedia();
+
+			const constraints = {
+				audio: false,
+
+				// audio: {
+				// 	deviceId: this.audioSource ? { exact: this.audioSource } : undefined
+				// },
+				video: {
+					deviceId: this.videoSource ? { exact: this.videoSource } : undefined,
+					width: this.settings.userMediaWidth,
+					height: this.settings.userMediaHeight
+				}
+			};
+			return navigator.mediaDevices.getUserMedia(constraints);
+		}
+
+		this.getScreenMediaStream = async () => {
+			this.clearMedia();
+
+			let audio = true;
+			console.log('audio: ', audio);
+			if (navigator.getDisplayMedia) {
+				console.log('displayMedia option 1')
+				return navigator.getDisplayMedia({ video: true, audio });
+			} else if (navigator.mediaDevices.getDisplayMedia) {
+				console.log('displayMedia option 2')
+				return navigator.mediaDevices.getDisplayMedia({ video: true, audio });
+			} else {
+				console.log('displayMedia option 3')
+				return await navigator.mediaDevices.getUserMedia({ video: { mediaSource: 'screen' }, audio });
+			}
+		}
+
+		this.updateStreamSource = async (next) => {
+			this.clearMedia();
+			this.audioSource = this.audioSelect.value;
+			this.videoSource = this.videoSelect.value;
+			if (next == this.showCaptureScreen)
+				return next();
+
+			try {
+				if (this.videoSource === 'screen') {
+					this.showLoading('Accessing Screen Media');
+					this.mediaStream = await this.getScreenMediaStream();
+				}
+				else {
+					this.showLoading('Accessing Device Media');
+					this.mediaStream = await this.getUserMediaStream();
+				}
+			}
+			catch (e) {
+				return this.showError('Could not access media. Please ensure permission is granted.')
+			}
+			return next()
+		}
+
+
+		this.clearMedia = () => {
+			if (this.liveInterval)
+				clearInterval(this.liveInterval);
+
+			if (this.mediaStream) {
+				this.mediaStream.getTracks().forEach(track => {
+					track.stop();
+				});
+			}
 		}
 
 		this.showReviewMedia = async () => {
+			this.clearMedia();
+			const { type, src } = this.recordedMedia;
+			console.log('recorded media:', this.recordedMedia);
 			this.overlay.style.display = 'block';
 			this.overlay.style.opacity = '1';
 			this.expander.style.height = 'auto';
@@ -1499,9 +1720,9 @@ class SearchBar extends HTMLElement {
 				<button class="jina-media-cancel-button" id="jina-media-cancel-button">
 				<img src="assets/x.svg">
 				</button>
-				${this.recordedMedia.type === 'video' ?
-					`<video src="${this.recordedMedia.src}" width="${this.settings.userMediaWidth}" height="${this.settings.userMediaHeight}" autoplay loop></video>` :
-					`<img src="${this.recordedMedia.src}" width="${this.settings.userMediaWidth}" height="${this.settings.userMediaHeight}">`
+				${type === 'video' ?
+					`<video src="${src}" width="100%" autoplay loop style="display: block;"></video>` :
+					`<img src="${src}" width="100%">`
 				}
 				<div class="jina-media-search-button-container">
 				<button class="jina-media-search-button" id="jina-media-search-button">
@@ -1518,8 +1739,8 @@ class SearchBar extends HTMLElement {
 			let deviceInfos = await navigator.mediaDevices.enumerateDevices();
 			console.log('deviceInfos: ', deviceInfos)
 			for (var i = 0; i !== deviceInfos.length; ++i) {
-				var deviceInfo = deviceInfos[i];
-				var option = document.createElement('option');
+				let deviceInfo = deviceInfos[i];
+				let option = document.createElement('option');
 				option.value = deviceInfo.deviceId;
 				if (deviceInfo.kind === 'audioinput') {
 					option.text = deviceInfo.label || 'Microphone ' + (this.audioSelect.length + 1);
@@ -1529,28 +1750,39 @@ class SearchBar extends HTMLElement {
 					this.videoSelect.appendChild(option);
 				}
 			}
+			let option = document.createElement('option');
+			option.value = 'screen';
+			option.text = 'Screen Capture';
+			this.videoSelect.appendChild(option);
 		}
 
-		this.capturePhoto = async () => {
-			let canvas = document.getElementById('jina-media-capture-canvas');
-			let context = canvas.getContext('2d');
-			canvas.width = this.settings.userMediaWidth;
-			canvas.height = this.settings.userMediaHeight;
-			context.drawImage(document.getElementById('jina-capture-preview'), 0, 0, this.settings.userMediaWidth, this.settings.userMediaHeight);
+		this.capturePhoto = async (width = this.settings.userMediaWidth, height = this.settings.userMediaHeight) => {
+			console.log('captureCanvas2: ', this.captureCanvas);
+			this.captureCanvas.width = width;
+			this.captureCanvas.height = height;
+			this.captureCanvas.style.display = 'block';
+			let context = this.captureCanvas.getContext('2d');
+			context.drawImage(document.getElementById('jina-capture-preview'), 0, 0, width, height);
 
-			let data = canvas.toDataURL('image/jpeg');
-			document.getElementById('jina-media-capture-canvas').width = 0;
-			document.getElementById('jina-media-capture-canvas').height = 0;
+			let data = this.captureCanvas.toDataURL('image/jpeg');
+			this.captureCanvas.width = 0;
+			this.captureCanvas.height = 0;
+			this.captureCanvas.style.display = 'none';
 			console.log('data:', data);
 			this.recordedMedia = {
 				src: data,
 				dataURI: data,
-				type: 'image'
+				type: 'image',
+				width,
+				height
 			}
-			this.showReviewMedia()
+			if (this.searchType === 'live')
+				this.search([data])
+			else
+				this.showReviewMedia()
 		}
 
-		this.startMediaRecord = async () => {
+		this.startMediaRecord = async (width = this.settings.userMediaWidth, height = this.settings.userMediaHeight) => {
 			this.recordedBlobs = [];
 			let options = { mimeType: 'video/mp4' };
 			if (!MediaRecorder.isTypeSupported(options.mimeType)) {
@@ -1579,6 +1811,8 @@ class SearchBar extends HTMLElement {
 						src: window.URL.createObjectURL(data),
 						type: 'video',
 						dataURI: processed,
+						width,
+						height
 					}
 					this.showReviewMedia()
 					console.log('processed: ', processed);
@@ -1598,6 +1832,27 @@ class SearchBar extends HTMLElement {
 			<button class="jina-media-button" id="jina-stop-record-button"><img src="assets/square.svg"></button>
 			`;
 			document.getElementById('jina-stop-record-button').onclick = this.stopMediaRecord;
+			document.getElementById('jina-media-live-button').style.display = 'none';
+		}
+
+		this.startLiveSearch = async (width = this.settings.userMediaWidth, height = this.settings.userMediaHeight) => {
+			this.capturePhoto(width, height)
+			this.liveInterval = setInterval(() => this.capturePhoto(width, height), 3000);
+		}
+
+		this.toggleLiveSearch = (width, height) => {
+			if (this.liveInterval) {
+				clearInterval(this.liveInterval)
+				document.querySelector('#jina-live-toggle-button img').setAttribute('src','assets/play.svg');
+				this.liveInterval = false;
+			}
+			else {
+				document.querySelector('#jina-live-toggle-button img').setAttribute('src','assets/pause.svg');
+				if (width && height)
+					this.startLiveSearch(width, height);
+				else
+					this.startLiveSearch();
+			}
 		}
 
 		this.stopMediaRecord = () => {
@@ -1672,7 +1927,15 @@ class SearchBar extends HTMLElement {
 				resultsHTML += this.renderResult(result);
 			}
 
-			if (this.settings.resultsLocation === 'dropdown') {
+			if (this.searchType === 'live') {
+				document.getElementById('jina-live-results-area').innerHTML = `
+				${toolbar || ''}
+				<div class="jina-expander-results-area">
+					${resultsHTML}
+				</div>
+				`;
+			}
+			else if (this.settings.resultsLocation === 'dropdown') {
 				this.overlay.style.display = 'block';
 				this.overlay.style.opacity = '1';
 				this.expander.style.height = '500px';
@@ -1756,6 +2019,7 @@ class SearchBar extends HTMLElement {
 		}
 
 		this.clearExpander = async () => {
+			this.clearMedia();
 			this.searchIcon.src = this.originalSearchIcon;
 			this.searchIcon.classList.remove('jina-border-right');
 			this.searchInput.value = '';
