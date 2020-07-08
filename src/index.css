@@ -1,0 +1,780 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap');
+@keyframes jina-bg-rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+.jina-bg-default {
+    position: relative;
+    border-radius: 100px;
+    border-color: #dbdbdb;
+    overflow: hidden;
+    border-style: solid;
+    border-width: 1px;
+}
+.jina-theme-persian .jina-bg-default{
+	border-color: #009999;
+}
+.jina-theme-pompelmo .jina-bg-default{
+	border-color: #FF6666;
+}
+.jina-theme-honeybee .jina-bg-default{
+	border-color: #FFCC66;
+}
+.jina-bg-rainbow {
+    position: relative;
+    z-index: 0;
+    border-radius: 50px;
+    overflow-y: hidden;
+    padding: 1px;
+}
+.jina-bg-rainbow:before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -450%;
+    width: 200%;
+    height: 1000%;
+    background-color: #399953;
+    background-repeat: no-repeat;
+    background-size: 50% 50%, 50% 50%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
+    animation: jina-bg-rotate 4s linear infinite;
+}
+.jina-bg-rainbow:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 1px;
+    top: 1px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    background: white;
+    border-radius: 50px;
+}
+.jina-search-input::placeholder {
+    opacity: .5;
+    font-weight: 700;
+    font-size: .75em;
+    line-height:1.5;
+}
+
+.jina-sea {
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    background-image: linear-gradient(#8e9eab, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
+    position: relative;
+}
+.jina-theme-persian .jina-sea{
+	background-image: linear-gradient(#009999, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
+}
+.jina-theme-pompelmo .jina-sea{
+	background-image: linear-gradient(#ff6666, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
+}
+.jina-theme-honeybee .jina-sea{
+	background-image: linear-gradient(#ffcc66, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
+}
+
+.jina-sea .title {
+    color: white;
+    font-size: 24px;
+    font-family: Comfortaa;
+    text-align: center;
+    line-height: 250px;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+}
+.jina-sea .jina-wave {
+    position: absolute;
+    top: -250px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    background: #8e9eab;
+    border-radius: 35%;
+    filter: opacity(0.4);
+    animation: jina-drift linear infinite;
+    transform-origin: 50% 48%;
+}
+.jina-theme-persian .jina-sea .jina-wave{
+	background: #009999;
+}
+.jina-theme-pompelmo .jina-sea .jina-wave{
+	background: #ff6666;
+}
+.jina-theme-honeybee .jina-sea .jina-wave{
+	background: #ffcc66;
+}
+
+.jina-sea .jina-wave:nth-of-type(1) {
+    animation-duration: 5s;
+}
+.jina-sea .jina-wave:nth-of-type(2) {
+    animation-duration: 7s;
+}
+.jina-sea .jina-wave:nth-of-type(3) {
+    animation-duration: 9s;
+    background-color: #009999;
+    filter: opacity(0.1);
+}
+.jina-theme-persian .jina-sea .jina-wave:nth-of-type(3) {
+	background: #009999 !important;
+}
+.jina-theme-pompelmo .jina-sea .jina-wave:nth-of-type(3) {
+	background: #ff6666 !important;
+}
+.jina-theme-honeybee .jina-sea .jina-wave:nth-of-type(3) {
+	background: #ffcc66 !important;
+}
+
+@keyframes jina-drift {
+    from {
+        transform: rotate(360deg);
+    }
+}
+.jina-floater-container {
+    font-family: Comfortaa;
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+}
+.jina-floater {
+    background: white;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
+.jina-theme-persian .jina-floater{
+	background: #009999;
+}
+.jina-theme-pompelmo .jina-floater {
+	background: #ff6666;
+}
+.jina-theme-honeybee .jina-floater {
+	background: #ffcc66;
+}
+.jina-floater-icon {
+    width: 1.5em;
+    height: 1.5em;
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    transition: .2s;
+}
+.jina-floater {
+    transition: .2s;
+}
+.jina-floater-large {
+    width: 14em;
+    height: 14em;
+    transition: .2s;
+}
+.jina-floater-large .jina-floater-icon {
+    left: 6em;
+    top: 3em;
+}
+.jina-floater-box {
+    position: fixed;
+    background: white;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    bottom: 6em;
+    right: 2em;
+    height: 0px;
+    max-height: 65vh;
+    width: 300px;
+    border-radius: 1em;
+    flex-direction: column;
+    align-items: stretch;
+    font-family: Comfortaa;
+    opacity: 0;
+    transition: all .2s ease-out;
+    display: flex;
+    visibility: hidden;
+}
+.jina-floater-box-visible {
+	opacity: 1;
+    visibility: visible;
+    height: 500px;
+}
+.jina-search-input {
+    font-family: Comfortaa;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    padding: .5em;
+    padding-left: 2.5rem;
+    margin: 0px;
+    line-height: 1;
+    border-width: 1px;
+	box-shadow: inset 0 0.0625em 0.125em rgba(10,10,10,0.05);
+}
+.jina-search-input {
+    border-color: #d5ac2c;
+}
+.jina-floater-search-container {
+    padding: .5em;
+    border-radius: .5em .5em 0em 0em;
+    position: relative;
+}
+.jina-floater-results-container {
+    align-content: flex-end;
+    border: 1px solid white;
+    border-radius: .5em;
+    margin: .5em;
+		margin-top: 0px;
+    height: 100%;
+    transition: .2s;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+}
+.jina-floater-results-container .jina-results-toolbar{
+	padding-top: 0px;
+}
+.jina-floater-file-input {
+    display: none;
+}
+.jina-floater-result, .jina-result {
+    margin: .1em;
+    border-radius: .25em;
+    cursor: pointer;
+		transition: .1s;
+		text-align: center;
+}
+
+.jina-result-video{
+	outline: none;
+	width: 100%;
+	max-height: 300px;
+	padding: .5em;
+}
+
+.jina-result-audio{
+	outline: none;
+	padding: .5em;
+	max-width: 100%;
+}
+
+.jina-result.jina-text-result{
+	text-align: left;
+	padding: .25em;
+	padding-left: .5em;
+	padding-right: .5em;
+}
+.jina-grid-container {
+    display: inline-block;
+    margin: none;
+    width: 33%;
+}
+.jina-floater-result:hover, .jina-result:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.jina-results-area {
+    font-family: Comfortaa;
+    padding: .5em;
+    height: 100%;
+    overflow-y: auto;
+}
+.jina-highlighted {
+    border-color: #009999;
+}
+.jina-highlighted .jina-floater-instructions{
+	color: white;
+	opacity: 1;
+}
+
+.jina-theme-persian .jina-highlighted {
+	border-color: #009999;
+}
+.jina-theme-pompelmo .jina-highlighted {
+	border-color: #FF6666;
+}
+.jina-theme-honeybee .jina-highlighted {
+	border-color: #FFCC66;
+}
+
+.jina-theme-persian input :focus {
+    border-color: #d5ac2c;
+}
+
+.jina-search-icon {
+    height: 1.25rem;
+    position: absolute;
+    top: .5rem;
+    left: .65rem;
+		padding-right: .25rem;
+		cursor: pointer;
+}
+.jina-border-right {
+    border-right: 1px solid #009999;
+}
+.jina-floater-instructions {
+    text-align: center;
+    opacity: .5;
+	margin-top: 40%;
+}
+.jina-results-label {
+    font-size: .75em;
+    text-align: left;
+    padding-left: .5em;
+    font-family: Comfortaa;
+    margin-top: 1em;
+    margin-left: .5em;
+		opacity: .5;
+		z-index: 1;
+}
+.jina-search-container {
+    position: relative;
+}
+.jina-persian {
+    border-color: #009999;
+}
+.jina-searchbar-container {
+    width: 300px;
+    position: relative;
+    display: inline-block;
+}
+.jina-expander {
+    font-family: Comfortaa;
+    background: white;
+    position: absolute;
+    top: 2.5em;
+    width: 100%;
+    border-radius: 1.1em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+    text-align: center;
+    opacity: 0;
+    height: 0px;
+    transition: .2s;
+    overflow: hidden;
+    max-height: 65vh;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+	flex-direction: column;
+	z-index: 2;
+}
+.jina-expander-results-area {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: .5em;
+    flex: fill;
+}
+.jina-expander-close {
+    cursor: pointer;
+    color: white;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    background: #009999;
+}
+.jina-contained {
+    width: 100%;
+    box-sizing: border-box;
+}
+.jina-floater-label {
+    font-family: Comfortaa;
+    text-align: center;
+    padding-top: 5em;
+    padding-right: 2.5em;
+    padding-left: 2.5em;
+    opacity: 0;
+    font-size: 1px;
+    transition: .2s;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+.jina-floater-large .jina-floater-label {
+    font-size: 1.25em;
+    opacity: 1;
+}
+.jina-expander-label {
+    font-family: Comfortaa;
+    text-align: center;
+    color: white;
+}
+.jina-dropdown-message {
+		text-align: center;
+    font-family: Comfortaa;
+    padding-top: 9em;
+    padding-bottom: 3em;
+    padding-right: .5em;
+    padding-left: .5em;
+    height: 100%;
+}
+.jina-error {
+    background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);;
+}
+.jina-ready {
+    background: #eef2f3;
+    color: #000;
+}
+.jina-theme-persian .jina-ready{
+	background: linear-gradient(to bottom right, #009999 40%, #32C8CD 100%);
+	color: #fff;
+}
+.jina-theme-pompelmo .jina-ready{
+	background: linear-gradient(to bottom right, #FF6666 40%, #ff8b8b 100%);
+	color: #fff;
+}
+.jina-theme-honeybee .jina-ready{
+	background: linear-gradient(to bottom right, #FFCC66 40%, #ffda8f 100%);
+	color: #fff;
+}
+
+.jina-dropdown-message h4 {
+    font-weight: 100;
+    letter-spacing: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+.jina-dropdown-message button {
+		font-family: Comfortaa;
+		background: whitesmoke;
+    padding: .5em;
+    font-size: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+}
+.jina-face {
+    position: absolute;
+    width: 4em;
+    height: 4em;
+    background: white;
+    border-radius: 50%;
+    top: 4em;
+    left: 37.5%;
+    z-index: 2;
+    animation: jina-animation-bounce 1s ease-in infinite;
+}
+.jina-shadow {
+    position: absolute;
+    width: 3.75em;
+    height: .75em;
+    opacity: .5;
+    background: #777777;
+    left: 7.25em;
+    top: 8em;
+    border-radius: 50%;
+    z-index: 1;
+}
+.jina-scale {
+    animation: jina-animation-scale 1s ease-in infinite;
+}
+.jina-move {
+    animation: jina-animation-move 3s ease-in-out infinite;
+}
+.jina-roll {
+  animation: jina-animation-roll 3s ease-in-out infinite;
+}
+@keyframes jina-animation-scale {
+    50% {
+        transform: scale(0.9);
+    }
+}
+@keyframes jina-animation-move {
+    0% {
+        left: 25%;
+    }
+    50% {
+        left: 60%;
+    }
+    100% {
+        left: 25%;
+    }
+}
+@keyframes jina-animation-roll {
+  0% {
+    transform: rotate(0deg);
+    left: 25%;
+  }
+  50% {
+    left: 60%;
+    transform: rotate(168deg);
+  }
+  100% {
+    transform: rotate(0deg);
+    left: 25%;
+  }
+}
+@keyframes jina-animation-bounce {
+    50% {
+        transform: translateY(-15px);
+    }
+}
+.jina-expander-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .5);
+    display: none;
+    opacity: 0;
+}
+.jina-results-toolbar {
+		padding-top: .75em;
+    padding-right: .5em;
+    padding-left: .5em;
+    text-align: left;
+	display: flex;
+	flex-shrink: 0;
+    flex-direction: row;
+	border-bottom: 1px solid #cfd8dc;
+}
+.jina-results-tabs {
+    overflow-x: auto;
+		flex: 1;
+		display: block;
+}
+.jina-results-tab {
+    display: inline-block;
+    margin: .15em;
+    cursor: pointer;
+    border-bottom: 2px solid #cfd8dc;
+}
+.jina-results-tab.jina-active {
+    border-bottom-color: #009999;
+}
+.jina-theme-persian .jina-results-tab.jina-active{
+	border-bottom-color: #009999;
+}
+.jina-theme-pompelmo .jina-results-tab.jina-active{
+	border-bottom-color: #FF6666;
+}
+.jina-theme-honeybee .jina-results-tab.jina-active{
+	border-bottom-color: #FFCC66;
+}
+
+.jina-results-tab-img {
+    width: 2em;
+    height: 2em;
+    margin-bottom: .25em;
+    border-radius: .25em;
+}
+
+.jina-results-tab-audio{
+	width: 2em;
+	height: 2em;
+  border-radius: .25em;
+}
+
+.jina-results-tab-video{
+	width: 2em;
+	height: 2em;
+  border-radius: .25em;
+}
+
+.jina-results-action-button {
+		box-sizing: border-box;
+    cursor: pointer;
+    width: 1.85em;
+    height: 1.85em;
+    border-radius: 5px;
+  	padding: .25em;
+}
+.jina-results-action-button.jina-active {
+    background-color: rgba(0, 153, 153, 0.25);
+}
+.jina-theme-persian .jina-results-action-button.jina-active {
+	background-color: rgba(0, 153, 153, 0.25);
+}
+.jina-theme-pompelmo .jina-results-action-button.jina-active {
+	background-color: rgba(255, 102, 102, 0.25);;
+}
+.jina-theme-honeybee .jina-results-action-button.jina-active {
+	background-color: rgba(255, 204, 102, 0.25);
+}
+
+.eye {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #777777;
+  border-radius: 50%;
+  top: 40%;
+  left: 20%;
+}
+.right {
+  left: 68%;
+}
+.mouth {
+  position: absolute;
+  top: 43%;
+  left: 41%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.happy {
+  border: 2px solid;
+  border-color: transparent #777777 #777777 transparent;
+  transform: rotate(45deg);
+}
+.sad {
+  top: 49%;
+  border: 2px solid;
+  border-color: #777777 transparent transparent #777777;
+  transform: rotate(45deg);
+}
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.jina-scrollable{
+	overflow-y: auto;
+}
+.jina-select{
+	padding: .5em;
+	margin-bottom: .5em;
+	max-width: 50%;
+}
+.jina-small{
+	font-size: .75em;
+}
+.jina-action-button{
+	background-color: #009999;
+	border: none;
+	padding: .5em;
+	color: white;
+	border-radius: .5em;
+	margin: .5em;
+	display: block;
+	outline: none !important;
+	margin-left: auto;
+	margin-right: auto;
+}
+.jina-media-controls{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding-bottom: 20px;
+}
+.jina-media-button{
+	border: none;
+	outline: none !important;
+	width: 4em;
+	height: 4em;
+	border-radius: 50%;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	margin: .5em;
+	opacity: .75;
+	transition: .2s;
+}
+.jina-media-button:hover{
+	opacity: 1;
+}
+.jina-input-controls{
+	padding-top: .5em;
+}
+.jina-input-controls .jina-select{
+	width: 100%;
+}
+.jina-media-cancel-button{
+	position: absolute;
+	background: white;
+	margin: .5em;
+	left: 0;
+	border-radius: 50%;
+	padding: .5em;
+	border: none !important;
+	outline: none !important;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	opacity: .75;
+	z-index: 2;
+}
+.jina-media-live-button{
+	position: absolute;
+	background: white;
+	margin: .5em;
+	right: 0;
+	border-radius: .25em;
+	border: none !important;
+	outline: none !important;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	opacity: .75;
+	z-index: 2;
+}
+.jina-media-search-button-container{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	font-size: 1.5em;
+	text-align: center;
+}
+.jina-media-search-button{
+	border: none;
+	border-radius: 5em;
+	outline: none !important;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+	margin: .5em;
+}
+.jina-live-container {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	flex: 1;
+}
+.jina-live-results-area{
+	height: 100%;
+	max-height: 500px;
+	overflow-y: auto;
+}
+.jina-live-header{
+	display: inline-grid;
+	grid-template-columns: 33% 33% 33%;
+	width: 100%;
+	padding-top: .5em;
+	padding-bottom: .5em;
+}
+.jina-live-button{
+	border-radius: 50%;
+	width: 2.5em;
+	height: 2.5em;
+	margin-left: .5em;
+	margin-right: .5em;
+	background: whitesmoke;
+	border: none;
+	outline: none !important;
+}
+.jina-live-preview{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 1em;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	border-radius: .5em;
+	transition: .2s;
+}
+.jina-media-container{
+    text-align: center;;
+}
+.jina-input-options button{
+    font-size: 1em;
+    cursor: pointer;
+}
+.jina-floater-box button{
+    cursor: pointer;
+    font-size: 1em;
+}

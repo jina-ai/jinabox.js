@@ -1,4 +1,4 @@
-const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
+window.onload = function(){const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
 
 const searchbarContainer = document.getElementById('searchbar-container');
 const resultsContainer = document.getElementById('results-container');
@@ -226,4 +226,6 @@ JinaBox.init(settings.url, { timeout: settings.timeout });
 function handleFileDrag(ev) {
 	ev.dataTransfer.setData("text", ev.target.src);
 	console.log('ev')
+}
+
 }
