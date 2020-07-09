@@ -229,12 +229,12 @@
     border: 1px solid white;
     border-radius: .5em;
     margin: .5em;
-		margin-top: 0px;
+	margin-top: 0px;
     height: 100%;
     transition: .2s;
-		overflow: hidden;
-		display: flex;
-		flex-direction: column;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 .jina-floater-results-container .jina-results-toolbar{
 	padding-top: 0px;
@@ -246,8 +246,8 @@
     margin: .1em;
     border-radius: .25em;
     cursor: pointer;
-		transition: .1s;
-		text-align: center;
+	transition: .1s;
+	text-align: center;
 }
 
 .jina-result-image{

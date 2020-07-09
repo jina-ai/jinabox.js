@@ -239,16 +239,18 @@ class JinaBoxSearchComponent extends HTMLElement {
 				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
 				<button class="jina-action-button" id="jina-expander-file-input-trigger">Upload Files</button>
 				<button class="jina-action-button" id="jina-expander-capture-media-button">Visual Search</button>
-				<button class="jina-action-button" id="jina-expander-capture-screen-button">Audio Search</button>
+				<button class="jina-action-button" id="jina-expander-capture-audio-button">Audio Search</button>
 			</div>
 		`;
 			document.getElementById('jina-expander-file-input-trigger').onclick = function () { document.getElementById('jina-expander-file-input').click() };
 			document.getElementById('jina-expander-file-input').addEventListener('change', this.handleUpload);
 			document.getElementById('jina-expander-capture-media-button').addEventListener('click', this.showCaptureMedia);
-			document.getElementById('jina-expander-capture-screen-button').addEventListener('click', this.showCaptureMedia);
+			document.getElementById('jina-expander-capture-audio-button').addEventListener('click', this.showCaptureAudio);
 		}
 
 		this.showCaptureMedia = async () => {
+			this.useVideo = true;
+			this.useAudio = true;
 			try {
 				if (this.videoSource === 'screen') {
 					this.showLoading('Accessing Screen Media');
@@ -327,6 +329,44 @@ class JinaBoxSearchComponent extends HTMLElement {
 			document.getElementById('jina-media-live-button').onclick = this.showLiveSearch;
 		}
 
+		this.showCaptureAudio = async () => {
+			this.useVideo = false;
+			this.useAudio = true;
+
+			try {
+				this.showLoading('Accessing Audio');
+				this.mediaStream = await this.getUserMediaStream();
+			}
+			catch (e) {
+				return this.showError('Could not access audio. Please ensure permission is granted.')
+			}
+
+			this.showContentContainer();
+			this.contentContainer.innerHTML = `
+			<div class="jina-media-container">
+				<div class="jina-input-controls">
+					<div>
+						<img src="assets/mic.svg"/>
+						<select class="jina-select jina-small" id="jina-audio-select">
+						</select>
+					</div>
+				</div>
+				<div id="jina-media-controls">
+				<button class="jina-media-button" id="jina-record-audio-button"><img src="assets/mic.svg"></button>
+				</div>
+			</div>
+			`
+			this.audioSelect = document.getElementById('jina-audio-select');
+			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureMedia);
+			await this.getMediaDevices();
+
+			if (this.audioSource) {
+				this.audioSelect.selectedIndex = [...this.audioSelect.options].findIndex(option => option.value === this.audioSource);
+			}
+
+			document.getElementById('jina-record-audio-button').onclick = () => this.startMediaRecord();
+		}
+
 		this.showLiveSearch = async () => {
 			console.log('audio tracks: ', this.mediaStream.getAudioTracks());
 			console.log('video tracks: ', this.mediaStream.getVideoTracks());
@@ -379,25 +419,25 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.getUserMediaStream = () => {
 			this.clearMedia();
 
-			const constraints = {
-				audio: false,
-
-				audio: {
-					deviceId: this.audioSource ? { exact: this.audioSource } : undefined
-				},
-				video: {
+			const constraints = {};
+			if (this.useVideo)
+				constraints.video = {
 					deviceId: this.videoSource ? { exact: this.videoSource } : undefined,
 					width: this.settings.userMediaWidth,
 					height: this.settings.userMediaHeight
 				}
-			};
+			if (this.useAudio)
+				constraints.audio = {
+					deviceId: this.audioSource ? { exact: this.audioSource } : undefined
+				}
+			console.log('*****constraints: ',constraints)
 			return navigator.mediaDevices.getUserMedia(constraints);
 		}
 
 		this.getScreenMediaStream = async () => {
 			this.clearMedia();
 
-			let audio = true;
+			let audio = this.useAudio;
 			console.log('audio: ', audio);
 			if (navigator.getDisplayMedia) {
 				console.log('displayMedia option 1')
@@ -413,7 +453,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		this.updateStreamSource = async (next) => {
 			this.clearMedia();
+			if(this.useAudio)
 			this.audioSource = this.audioSelect.value;
+			if(this.useVideo)
 			this.videoSource = this.videoSelect.value;
 			if (next == this.showCaptureMedia)
 				return next();
@@ -458,6 +500,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 				</button>
 				${type === 'video' ?
 					`<video src="${src}" width="100%" autoplay loop style="display: block;"></video>` :
+					type==='audio'?
+					`<audio src="${src}" controls autoplay loop style="margin-top: 5em; margin-bottom:5em; display:block"></audio>`
+					:
 					`<img src="${src}" width="100%">`
 				}
 				<div class="jina-media-search-button-container">
@@ -480,15 +525,18 @@ class JinaBoxSearchComponent extends HTMLElement {
 				option.value = deviceInfo.deviceId;
 				if (deviceInfo.kind === 'audioinput') {
 					option.text = deviceInfo.label || 'Microphone ' + (this.audioSelect.length + 1);
+					if(this.useAudio)
 					this.audioSelect.appendChild(option);
 				} else if (deviceInfo.kind === 'videoinput') {
 					option.text = deviceInfo.label || 'Camera ' + (this.videoSelect.length + 1);
+					if(this.useVideo)
 					this.videoSelect.appendChild(option);
 				}
 			}
 			let option = document.createElement('option');
 			option.value = 'screen';
 			option.text = 'Screen Capture';
+			if(this.useVideo)
 			this.videoSelect.appendChild(option);
 		}
 
@@ -539,13 +587,17 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.mediaRecorder.onstop = (event) => {
 				console.log('Recorder stopped: ', event);
 				console.log('Recorded Blobs: ', this.recordedBlobs);
-				const data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
+				let data;
+				if(this.useVideo)
+				data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
+				else
+				data = new Blob(this.recordedBlobs, { type: 'audio/mp3' });
 				let reader = new FileReader();
 				reader.addEventListener("load", () => {
 					const processed = reader.result;
 					this.recordedMedia = {
 						src: window.URL.createObjectURL(data),
-						type: 'video',
+						type: this.useVideo?'video':'audio',
 						dataURI: processed,
 						width,
 						height
