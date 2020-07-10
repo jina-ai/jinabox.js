@@ -1,4 +1,4 @@
-window.onload = function(){const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
+const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
 
 const searchbarContainer = document.getElementById('searchbar-container');
 const resultsContainer = document.getElementById('results-container');
@@ -221,11 +221,11 @@ document.getElementById('useTypewriter').addEventListener('change', function (e)
 	renderCode();
 });
 
-JinaBox.init(settings.url, { timeout: settings.timeout });
+(function(){
+	JinaBox.init(settings.url, { timeout: settings.timeout });
+})
 
 function handleFileDrag(ev) {
 	ev.dataTransfer.setData("text", ev.target.src);
 	console.log('ev')
-}
-
 }

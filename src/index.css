@@ -688,10 +688,14 @@
 	opacity: 1;
 }
 .jina-input-controls{
-	padding-top: .5em;
+    padding-top: .5em;
+}
+.jina-input-controls img{
+    vertical-align: middle;;
 }
 .jina-input-controls .jina-select{
-	width: 100%;
+    width: 100%;
+    cursor: pointer;
 }
 .jina-media-cancel-button{
 	position: absolute;
@@ -707,7 +711,9 @@
 	z-index: 2;
 }
 .jina-media-live-button{
-	position: absolute;
+    position: absolute;
+    font-size: 1em;
+    cursor: pointer;
 	background: white;
 	margin: .5em;
 	right: 0;
@@ -728,7 +734,8 @@
 	text-align: center;
 }
 .jina-media-search-button{
-	border: none;
+    border: none;
+    line-height: normal;
 	border-radius: 5em;
 	outline: none !important;
 	padding-left: 1.5em;
@@ -754,14 +761,16 @@
 	padding-bottom: .5em;
 }
 .jina-live-button{
-	border-radius: 50%;
+    border-radius: 50%;
+    font-size: 1em;
 	width: 2.5em;
 	height: 2.5em;
 	margin-left: .5em;
 	margin-right: .5em;
 	background: whitesmoke;
 	border: none;
-	outline: none !important;
+    outline: none !important;
+    cursor: pointer;
 }
 .jina-live-preview{
 	position: absolute;
@@ -775,7 +784,16 @@
 .jina-media-container{
     text-align: center;;
 }
+.jina-media-container img{
+    vertical-align: middle;
+}
+.jina-media-container button{
+    font-family: Comfortaa;
+    cursor: pointer;
+    font-size: 1em;
+}
 .jina-input-options button{
+    font-family: Comfortaa;
     font-size: 1em;
     cursor: pointer;
 }

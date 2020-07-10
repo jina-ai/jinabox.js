@@ -327,6 +327,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				document.getElementById('jina-record-video-button').onclick = () => this.startMediaRecord();
 			}
 			document.getElementById('jina-media-live-button').onclick = this.showLiveSearch;
+			this.previousCapture = this.showCaptureMedia
 		}
 
 		this.showCaptureAudio = async () => {
@@ -357,7 +358,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			</div>
 			`
 			this.audioSelect = document.getElementById('jina-audio-select');
-			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureMedia);
+			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureAudio);
 			await this.getMediaDevices();
 
 			if (this.audioSource) {
@@ -365,6 +366,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			document.getElementById('jina-record-audio-button').onclick = () => this.startMediaRecord();
+			this.previousCapture = this.showCaptureAudio
 		}
 
 		this.showLiveSearch = async () => {
@@ -513,7 +515,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			</div>
 			`
 			document.getElementById('jina-media-search-button').onclick = () => this.search([this.recordedMedia.dataURI]);
-			document.getElementById('jina-media-cancel-button').onclick = this.showCaptureMedia;
+			document.getElementById('jina-media-cancel-button').onclick = this.previousCapture;
 		}
 
 		this.getMediaDevices = async () => {
