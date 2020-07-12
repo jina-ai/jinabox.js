@@ -1,6 +1,8 @@
 name: npm-publish
 on:
   push:
+    branches:
+    - 'master'
     paths:
     - 'library/**'
     - 'package.json'
@@ -26,7 +28,7 @@ jobs:
         npm version $version --allow-same-version
         npm version patch
     - name: publish
-      run: npm install && npm run minify && npm publish
+      run: npm install && npm run build && npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # You need to set this in your repo settings
     - name: run git status

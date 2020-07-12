@@ -268,6 +268,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 				}
 			}
 			catch (e) {
+				console.log('error')
+				console.log(e)
 				return this.showError('Could not access media. Please ensure permission is granted.')
 			}
 
@@ -346,6 +348,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				this.mediaStream = await this.getUserMediaStream();
 			}
 			catch (e) {
+				console.log(e);
 				return this.showError('Could not access audio. Please ensure permission is granted.')
 			}
 
@@ -480,6 +483,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				}
 			}
 			catch (e) {
+				console.log(e);
 				return this.showError('Could not access media. Please ensure permission is granted.')
 			}
 			return next()
