@@ -249,6 +249,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.showCaptureMedia = async () => {
+			this.searchType = 'capture';
 			this.useVideo = true;
 			this.useAudio = true;
 			try {
@@ -331,6 +332,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.showCaptureAudio = async () => {
+			this.searchType = 'capture';
 			this.useVideo = false;
 			this.useAudio = true;
 
