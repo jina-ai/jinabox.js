@@ -275,12 +275,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 				</canvas>
 				<div class="jina-input-controls">
 					<div>
-						<img src="assets/camera.svg"/>
+						<img src="${_icons.camera}"/>
 						<select class="jina-select jina-small" id="jina-video-select">
 						</select>
 					</div>
 					<div>
-						<img src="assets/mic.svg"/>
+						<img src="${_icons.mic}"/>
 						<select class="jina-select jina-small" id="jina-audio-select">
 						</select>
 					</div>
@@ -292,8 +292,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 					<video id="jina-capture-preview" autoplay muted width="100%" style="display: block;"/>
 				</div>
 				<div class="jina-media-controls" id="jina-media-controls">
-				<button class="jina-media-button" id="jina-take-photo-button"><img src="assets/camera.svg"></button>
-				<button class="jina-media-button" id="jina-record-video-button"><img src="assets/video.svg"></button>
+				<button class="jina-media-button" id="jina-take-photo-button"><img src="${_icons.camera}"></button>
+				<button class="jina-media-button" id="jina-record-video-button"><img src="${_icons.video}"></button>
 				</div>
 			</div>
 			`
@@ -347,13 +347,13 @@ class JinaBoxSearchComponent extends HTMLElement {
 			<div class="jina-media-container">
 				<div class="jina-input-controls">
 					<div>
-						<img src="assets/mic.svg"/>
+						<img src="${_icons.mic}"/>
 						<select class="jina-select jina-small" id="jina-audio-select">
 						</select>
 					</div>
 				</div>
 				<div id="jina-media-controls">
-				<button class="jina-media-button" id="jina-record-audio-button"><img src="assets/mic.svg"></button>
+				<button class="jina-media-button" id="jina-record-audio-button"><img src="${_icons.mic}"></button>
 				</div>
 			</div>
 			`
@@ -381,7 +381,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				<div class="jina-live-header">
 					<div class="jina-live-header-item" style="text-align: left;">
 						<button class="jina-live-button" id="jina-live-cancel-button">
-							<img src="assets/x.svg">
+							<img src="${_icons.close}">
 						</button>
 					</div>
 					<div class="jina-live-header-item" style="margin-top: .5em">
@@ -389,7 +389,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 					</div>
 					<div class="jina-live-header-item" style="text-align: right;">
 						<button class="jina-live-button" id="jina-live-toggle-button">
-							<img src="assets/pause.svg">
+							<img src="${_icons.pause}">
 						</button>
 					</div>
 				</div>
@@ -498,7 +498,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.contentContainer.innerHTML = `
 			<div class="jina-media-container">
 				<button class="jina-media-cancel-button" id="jina-media-cancel-button">
-				<img src="assets/x.svg">
+				<img src="${_icons.close}">
 				</button>
 				${type === 'video' ?
 					`<video src="${src}" width="100%" autoplay loop style="display: block;"></video>` :
@@ -509,7 +509,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				}
 				<div class="jina-media-search-button-container">
 				<button class="jina-media-search-button" id="jina-media-search-button">
-				search <img src="assets/arrow-right.svg">
+				search <img src="${_icons.arrow_right}">
 				</button
 				</div>
 			</div>
@@ -619,7 +619,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 			console.log('MediaRecorder started', this.mediaRecorder);
 			document.getElementById('jina-media-controls').innerHTML = `
-			<button class="jina-media-button" id="jina-stop-record-button"><img src="assets/square.svg"></button>
+			<button class="jina-media-button" id="jina-stop-record-button"><img src="${_icons.stop}"></button>
 			`;
 			document.getElementById('jina-stop-record-button').onclick = this.stopMediaRecord;
 			document.getElementById('jina-media-live-button').style.display = 'none';
@@ -633,11 +633,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.toggleLiveSearch = (width, height) => {
 			if (this.liveInterval) {
 				clearInterval(this.liveInterval)
-				document.querySelector('#jina-live-toggle-button img').setAttribute('src', 'assets/play.svg');
+				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.play);
 				this.liveInterval = false;
 			}
 			else {
-				document.querySelector('#jina-live-toggle-button img').setAttribute('src', 'assets/pause.svg');
+				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.pause);
 				if (width && height)
 					this.startLiveSearch(width, height);
 				else
