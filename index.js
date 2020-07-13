@@ -221,11 +221,9 @@ document.getElementById('useTypewriter').addEventListener('change', function (e)
 	renderCode();
 });
 
-(function(){
-	JinaBox.init(settings.url, { timeout: settings.timeout });
-})
-
 function handleFileDrag(ev) {
 	ev.dataTransfer.setData("text", ev.target.src);
 	console.log('ev')
 }
+
+JinaBox.init(settings.url, { timeout: settings.timeout });
