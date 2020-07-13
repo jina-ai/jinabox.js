@@ -310,7 +310,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			capturePreview.setAttribute('muted', '');
 			capturePreview.setAttribute('playsinline', '');
 			capturePreview.srcObject = this.mediaStream;
-			
+
 			await capturePreview.play();
 
 			await this.getMediaDevices();
@@ -429,8 +429,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 			if (this.useVideo)
 				constraints.video = {
 					deviceId: this.videoSource ? { exact: this.videoSource } : undefined,
-					width: this.settings.userMediaWidth,
-					height: this.settings.userMediaHeight
+					width: {ideal: this.settings.userMediaWidth},
+					height: {ideal: this.settings.userMediaHeight},
+					facingMode: "environment"
 				}
 			if (this.useAudio)
 				constraints.audio = {
