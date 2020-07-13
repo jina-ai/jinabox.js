@@ -36,7 +36,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			if (this.searchType !== 'live')
 				this.showLoading();
 
-			console.log('searching...');
+			console.log('searching');
 			let response;
 			let startTime = new Date();
 			try {
