@@ -226,5 +226,5 @@ function handleFileDrag(ev) {
 	console.log('ev')
 }
 
-console.log('initializing');
+console.log('initializing///');
 JinaBox.init(settings.url, { timeout: settings.timeout });
