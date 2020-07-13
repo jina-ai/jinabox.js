@@ -1,5 +1,5 @@
 {
-  "name": "jinabox-test",
+  "name": "jinabox",
   "version": "0.1.31",
   "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
   "main": "src/jinabox.js",
