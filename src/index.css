@@ -202,11 +202,7 @@
 .jina-floater-box-visible {
 	opacity: 1;
     visibility: visible;
-<<<<<<< HEAD
-    height: 400px
-=======
     height: 500px;
->>>>>>> dev
 }
 .jina-search-input {
     font-family: Comfortaa;
