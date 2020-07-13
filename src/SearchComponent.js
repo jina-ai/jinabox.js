@@ -29,12 +29,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.search = async (query = [this.searchInput.value], inBytes = false) => {
 			console.log('query: ', query);
 			if (!inBytes || query.length > 1) {
-				console.log('removing search icon')
 				this.searchIcon.src = this.defaultSearchIcon;
 				this.searchIcon.classList.remove('jina-border-right');
 			}
 
-			console.log('searchType:', this.searchType);
 			if (this.searchType !== 'live')
 				this.showLoading();
 
@@ -112,8 +110,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		this.handleDrop = async (e) => {
 			this.dropped = true;
-			console.log('handle drop');
-			console.log('drop event:', e);
 			let dt = e.dataTransfer;
 			let text = dt.getData('Text');
 			let imgsrc = dt.getData('URL');
@@ -224,12 +220,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		//TODO: replace functional parts with onDragLeave()
 		this.handleDragLeave = () => {
-			console.log('leave base')
 			this.dragCounter--;
 			if (this.dragCounter < 1) {
 				this.searchInput.classList.remove('jina-highlighted');
 				if (!this.dropped) {
-					console.log('CLEARING EXPANDER')
 					this.clearExpander();
 				}
 				this.dragCounter = 0;
@@ -237,7 +231,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.showInputOptions = async () => {
-			console.log('showing input options')
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-input-options">
@@ -272,9 +265,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 				console.log(e)
 				return this.showError('Could not access media. Please ensure permission is granted.')
 			}
-
-			console.log('audio tracks: ', this.mediaStream.getAudioTracks());
-			console.log('video tracks: ', this.mediaStream.getVideoTracks());
 
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
@@ -380,8 +370,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.showLiveSearch = async () => {
-			console.log('audio tracks: ', this.mediaStream.getAudioTracks());
-			console.log('video tracks: ', this.mediaStream.getVideoTracks());
 
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
@@ -442,7 +430,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 				constraints.audio = {
 					deviceId: this.audioSource ? { exact: this.audioSource } : undefined
 				}
-			console.log('*****constraints: ',constraints)
 			return navigator.mediaDevices.getUserMedia(constraints);
 		}
 
@@ -450,15 +437,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.clearMedia();
 
 			let audio = this.useAudio;
-			console.log('audio: ', audio);
 			if (navigator.getDisplayMedia) {
-				console.log('displayMedia option 1')
 				return navigator.getDisplayMedia({ video: true, audio });
 			} else if (navigator.mediaDevices.getDisplayMedia) {
-				console.log('displayMedia option 2')
 				return navigator.mediaDevices.getDisplayMedia({ video: true, audio });
 			} else {
-				console.log('displayMedia option 3')
 				return await navigator.mediaDevices.getUserMedia({ video: { mediaSource: 'screen' }, audio });
 			}
 		}
@@ -554,7 +537,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.capturePhoto = async (width = this.settings.userMediaWidth, height = this.settings.userMediaHeight) => {
-			console.log('captureCanvas2: ', this.captureCanvas);
 			this.captureCanvas.width = width;
 			this.captureCanvas.height = height;
 			this.captureCanvas.style.display = 'block';
@@ -594,12 +576,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 				errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;
 				return;
 			}
-
-			console.log('Created MediaRecorder', this.mediaRecorder, 'with options', options);
 			//create button UI
 			this.mediaRecorder.onstop = (event) => {
-				console.log('Recorder stopped: ', event);
-				console.log('Recorded Blobs: ', this.recordedBlobs);
 				let data;
 				if(this.useVideo)
 				data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
