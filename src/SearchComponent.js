@@ -306,7 +306,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureMedia);
 			this.videoSelect.onchange = () => this.updateStreamSource(this.showCaptureMedia);
 
-			document.getElementById('jina-capture-preview').srcObject = this.mediaStream;
+			capturePreview.srcObject = this.mediaStream;
+			capturePreview.play();
+
 			await this.getMediaDevices();
 
 			if (this.audioSource) {
@@ -430,6 +432,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				constraints.audio = {
 					deviceId: this.audioSource ? { exact: this.audioSource } : undefined
 				}
+			console.log('userMedia constraints: ',constraints)
 			return navigator.mediaDevices.getUserMedia(constraints);
 		}
 
