@@ -287,7 +287,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 					<button class="jina-media-live-button" id="jina-media-live-button">
 					Live Search
 					</button>
-					<video id="jina-capture-preview" autoplay muted width="100%" style="display: block;"/>
+					<video id="jina-capture-preview" width="100%" style="display: block;"/>
 				</div>
 				<div class="jina-media-controls" id="jina-media-controls">
 				<button class="jina-media-button" id="jina-take-photo-button"><img src="${_icons.camera}"></button>
@@ -306,8 +306,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureMedia);
 			this.videoSelect.onchange = () => this.updateStreamSource(this.showCaptureMedia);
 
+			capturePreview.setAttribute('autoplay', '');
+			capturePreview.setAttribute('muted', '');
+			capturePreview.setAttribute('playsinline', '');
 			capturePreview.srcObject = this.mediaStream;
-			capturePreview.play();
+			
+			await capturePreview.play();
 
 			await this.getMediaDevices();
 
