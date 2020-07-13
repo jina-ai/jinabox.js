@@ -202,7 +202,11 @@
 .jina-floater-box-visible {
 	opacity: 1;
     visibility: visible;
+<<<<<<< HEAD
     height: 400px
+=======
+    height: 500px;
+>>>>>>> dev
 }
 .jina-search-input {
     font-family: Comfortaa;
@@ -229,12 +233,12 @@
     border: 1px solid white;
     border-radius: .5em;
     margin: .5em;
-		margin-top: 0px;
+	margin-top: 0px;
     height: 100%;
     transition: .2s;
-		overflow: hidden;
-		display: flex;
-		flex-direction: column;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 .jina-floater-results-container .jina-results-toolbar{
 	padding-top: 0px;
@@ -246,8 +250,13 @@
     margin: .1em;
     border-radius: .25em;
     cursor: pointer;
-		transition: .1s;
-		text-align: center;
+	transition: .1s;
+	text-align: center;
+}
+
+.jina-result-image{
+    width: 100%;
+    overflow: hidden;
 }
 
 .jina-result-video{
@@ -311,6 +320,7 @@
     top: .5rem;
     left: .65rem;
 		padding-right: .25rem;
+		cursor: pointer;
 }
 .jina-border-right {
     border-right: 1px solid #009999;
@@ -358,8 +368,8 @@
     max-height: 65vh;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
     display: flex;
-		flex-direction: column;
-		z-index: 2;
+	flex-direction: column;
+	z-index: 2;
 }
 .jina-expander-results-area {
     overflow-x: hidden;
@@ -640,4 +650,158 @@
 }
 .jina-scrollable{
 	overflow-y: auto;
+}
+.jina-select{
+	padding: .5em;
+	margin-bottom: .5em;
+	max-width: 50%;
+}
+.jina-small{
+	font-size: .75em;
+}
+.jina-action-button{
+	background-color: #009999;
+	border: none;
+	padding: .5em;
+	color: white;
+	border-radius: .5em;
+	margin: .5em;
+	display: block;
+	outline: none !important;
+	margin-left: auto;
+	margin-right: auto;
+}
+.jina-media-controls{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding-bottom: 20px;
+}
+.jina-media-button{
+	border: none;
+	outline: none !important;
+	width: 4em;
+	height: 4em;
+	border-radius: 50%;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	margin: .5em;
+	opacity: .75;
+	transition: .2s;
+}
+.jina-media-button:hover{
+	opacity: 1;
+}
+.jina-input-controls{
+    padding-top: .5em;
+}
+.jina-input-controls img{
+    vertical-align: middle;;
+}
+.jina-input-controls .jina-select{
+    width: 100%;
+    cursor: pointer;
+}
+.jina-media-cancel-button{
+	position: absolute;
+	background: white;
+	margin: .5em;
+	left: 0;
+	border-radius: 50%;
+	padding: .5em;
+	border: none !important;
+	outline: none !important;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	opacity: .75;
+	z-index: 2;
+}
+.jina-media-live-button{
+    position: absolute;
+    font-size: 1em;
+    cursor: pointer;
+	background: white;
+	margin: .5em;
+	right: 0;
+	border-radius: .25em;
+	border: none !important;
+	outline: none !important;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	opacity: .75;
+	z-index: 2;
+}
+.jina-media-search-button-container{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	font-size: 1.5em;
+	text-align: center;
+}
+.jina-media-search-button{
+    border: none;
+    line-height: normal;
+	border-radius: 5em;
+	outline: none !important;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+	margin: .5em;
+}
+.jina-live-container {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	flex: 1;
+}
+.jina-live-results-area{
+	height: 100%;
+	max-height: 500px;
+	overflow-y: auto;
+}
+.jina-live-header{
+	display: inline-grid;
+	grid-template-columns: 33% 33% 33%;
+	width: 100%;
+	padding-top: .5em;
+	padding-bottom: .5em;
+}
+.jina-live-button{
+    border-radius: 50%;
+    font-size: 1em;
+	width: 2.5em;
+	height: 2.5em;
+	margin-left: .5em;
+	margin-right: .5em;
+	background: whitesmoke;
+	border: none;
+    outline: none !important;
+    cursor: pointer;
+}
+.jina-live-preview{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 1em;
+	box-shadow: 0px 0px 10px rgba(0,0,0,.25);
+	border-radius: .5em;
+	transition: .2s;
+}
+.jina-media-container{
+    text-align: center;;
+}
+.jina-media-container img{
+    vertical-align: middle;
+}
+.jina-media-container button{
+    font-family: Comfortaa;
+    cursor: pointer;
+    font-size: 1em;
+}
+.jina-input-options button{
+    font-family: Comfortaa;
+    font-size: 1em;
+    cursor: pointer;
+}
+.jina-floater-box button{
+    cursor: pointer;
+    font-size: 1em;
 }

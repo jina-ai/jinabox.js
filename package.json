@@ -1,14 +1,12 @@
 {
-  "name": "jinabox",
-  "version": "0.1.28",
+  "name": "jinabox-test",
+  "version": "0.1.31",
   "description": "A lightweight, customizable omnibox. Useful for searching text, images, videos, audios or all other kinds data with a Jina backend.",
-  "main": "library/jinabox.js",
-  "unpkg": "dist/jinabox.min.js",
+  "main": "src/jinabox.js",
+  "unpkg": "dist/jinabox.umd.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p dist",
-    "build:rollup": "rollup -c",
-    "minify": "npm run build && terser library/jinabox.js -c toplevel,sequences=false,drop_console=true --mangle > dist/jinabox.min.js"
+    "build": "mkdir -p dist && rollup -c"
   },
   "files": [
     "dist/"

@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	<jina-searchbar typewriterEffect="true"></jina-searchbar>
-	<jina-results></jina-results>
+	<jina-searchbar></jina-searchbar>
+	<!-- <jina-results></jina-results> -->
 	<jina-floater></jina-floater>
-	<test-element></test-element>
+	<!-- <test-element></test-element> -->
 </body>
-<script src="./library/jinabox.js" type="text/javascript"></script>
+<script src="http://192.168.1.100:3000/jinabox.umd.min.js" type="text/javascript"></script>
 <script>
-    jb = window.JinaBox
-    jb.init('http://0.0.0.0:65481/api/search');
+	window.onload = ()=>JinaBox.init('http://0.0.0.0:65481/api/search');
 </script>
+<style>
+	body{
+		box-sizing: border-box;
+	}
+</style>
 </html>
