@@ -5,7 +5,7 @@
   "main": "dist/jinabox.umd.js",
   "unpkg": "dist/jinabox.umd.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "mkdir -p dist && rollup -c && rollup --config rollup.config.prod.js",
     "build:dev": "mkdir -p dist && rollup -c"
   },
@@ -42,16 +42,21 @@
   "homepage": "https://github.com/jina-ai/jinabox.js",
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run test"
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
     "@rollup/plugin-node-resolve": "^8.1.0",
+    "@testing-library/dom": "^7.20.2",
+    "@testing-library/jest-dom": "^5.11.0",
+    "babel-jest": "^26.1.0",
     "husky": "^4.2.5",
+    "jest": "^26.1.0",
     "rollup": "^2.18.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-postcss": "^3.1.2",

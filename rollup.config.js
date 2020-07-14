@@ -16,7 +16,7 @@ module.exports = {
       babel({
         ...babelConfig,
         extensions,
-        exclude: 'node_modules/**',
+        exclude: ['node_modules/**','*.test.js','*.test.js.snap'],
       }),
       postcss(),
     ],
