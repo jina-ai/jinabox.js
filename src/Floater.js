@@ -16,6 +16,7 @@ class Floater extends SearchComponent{
 				this.highlightArea();
 				this.highlightSearch();
 			} else {
+				if(this.settings.showDropzone && this.settings.showDropzone!=='false')
 				this.showLargeFloater();
 			}
 		}

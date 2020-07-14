@@ -15,6 +15,8 @@ const settings = {
 	resultsAreaId: false,
 	showSearch: true,
 	showFloater: true,
+	showSearchbarDropzone: true,
+	showFloaterDropzone: true,
 	theme: 'default',
 	placeholders:['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'],
 	typewriterDelayCharacter: 50,
@@ -104,7 +106,8 @@ ${settings.showSearch ?
 	${settings.typewriterDelayCharacter!=defaultComponentSettings.typewriterDelayCharacter ? `\ntypewriterDelayCharacter=${settings.typewriterDelayCharacter}` : ''}\
 	${settings.typewriterDelayItem!=defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
-	${settings.resultsLocation=='external' ?'\nresultsLocation="external"':''}\>
+	${settings.resultsLocation=='external' ?'\nresultsLocation="external"':''}\
+	${settings.showSearchbarDropzone ?'':'\nshowDropzone="false"'}>
 </jina-searchbar>\n`
 				: ''}\
 ${settings.resultsLocation=='external' ?'\n<jina-results></jina-results>':''}
@@ -114,7 +117,8 @@ ${settings.showFloater ?
 	${settings.typewriterEffect ? `\ntypewriterEffect="true"` : ''}\
 	${settings.typewriterDelayCharacter!=defaultComponentSettings.typewriterDelayCharacter ? `\ntypewriterDelayCharacter=${settings.typewriterDelayCharacter}` : ''}\
 	${settings.typewriterDelayItem!=defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
-	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}>
+	${String(settings.placeholders)!=String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
+	${settings.showFloaterDropzone ?'':'\nshowDropzone="false"'}>
 	</jina-floater>\n`
         : ''}
 <body>
@@ -182,6 +186,31 @@ document.getElementById('showFloater').addEventListener('change', function (e) {
 	}
 	renderCode()
 });
+
+document.getElementById('showSearchbarDropzone').addEventListener('change', function (e) {
+	const checked = e.target.checked;
+	settings.showSearchbarDropzone = checked;
+	if(checked){
+		document.getElementById('main-searchbar').setAttribute('showDropzone', 'true');
+	}
+	else{
+		document.getElementById('main-searchbar').setAttribute('showDropzone', 'false');
+	}
+	renderCode()
+});
+
+document.getElementById('showFloaterDropzone').addEventListener('change', function (e) {
+	const checked = e.target.checked;
+	settings.showFloaterDropzone = checked;
+	if(checked){
+		document.getElementById('main-floater').setAttribute('showDropzone', 'true');
+	}
+	else{
+		document.getElementById('main-floater').setAttribute('showDropzone', 'false');
+	}
+	renderCode()
+});
+
 
 const themes = document.querySelectorAll('.jina-theme-select');
 for (let i = 0; i < themes.length; ++i) {

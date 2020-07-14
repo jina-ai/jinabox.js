@@ -206,6 +206,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.handleDrag = () => {
 			this.dragCounter++;
 			if (!this.highlighted) {
+				if(this.settings.showDropzone && this.settings.showDropzone!=='false')
 				this.showContentContainer();
 				this.contentContainer.innerHTML = `
 				<div class="jina-dropdown-message jina-ready unselectable">

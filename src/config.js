@@ -10,4 +10,5 @@ export const defaultSettings = {
 	theme: 'default',
 	searchIcon: 'color',
 	floaterIcon: 'color',
+	showDropzone: true,
 };
