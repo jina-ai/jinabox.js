@@ -113,12 +113,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 			let dt = e.dataTransfer;
 			let text = dt.getData('Text');
 			let imgsrc = dt.getData('URL');
+			console.log('text: ',text)
 			console.log('imgsrc: ', imgsrc)
-			if(text){
-				this.searchInput.value = text;
-				this.search()
-			}
-			else if (imgsrc) {
+			if (imgsrc) {
 				if (imgsrc.startsWith('data:')) {
 					this.search([imgsrc], true);
 					this.searchIcon.src = imgsrc;
@@ -135,7 +132,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 					this.searchIcon.classList.add('jina-border-right');
 					this.search([imgsrc], true);
 				}
-			} else {
+			}
+			else if(text){
+				this.searchInput.value = text;
+				this.search()
+			}else {
 				let acceptedFiles = dt.files;
 				let processedFiles = [];
 				console.log('files: ', acceptedFiles)
@@ -817,7 +818,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			['dragenter'].forEach(eventName => {
 				document.addEventListener(eventName, this.handleDrag);
 			});
-			['drop','dragleave',  'dragexit'].forEach(eventName => {
+			['drop','dragleave'].forEach(eventName => {
 				document.addEventListener(eventName, this.handleDragLeave);
 			});
 
