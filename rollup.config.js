@@ -4,7 +4,7 @@ const { terser } = require('rollup-plugin-terser');
 const postcss = require('rollup-plugin-postcss');
 
 const babelConfig = require('./babel.config');
-const extensions = ['.js']
+const extensions = ['.js'];
 
 const terserConfig = {
   compress: {
@@ -39,7 +39,7 @@ module.exports = [
       format: 'umd',
     },
     plugins: [
-      nodeResolve({ extensions: ['.js'] }),
+      nodeResolve({ extensions }),
       babel({
         ...babelConfig,
         extensions,
