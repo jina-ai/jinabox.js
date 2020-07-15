@@ -1,5 +1,5 @@
 import SearchBar from "../SearchBar";
-import './golbalTestsSetup';
+import '../../golbalTestsSetup';
 import { getByPlaceholderText, getByTestId } from "@testing-library/dom";
 
 describe('SearchBar test', () => {

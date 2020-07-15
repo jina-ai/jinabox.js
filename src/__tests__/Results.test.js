@@ -1,5 +1,5 @@
 import Results from '../Results';
-import './golbalTestsSetup';
+import '../../golbalTestsSetup';
 import { getByTestId, } from '@testing-library/dom'
 
 describe('jina-results tests', () => {
