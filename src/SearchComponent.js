@@ -113,7 +113,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			let dt = e.dataTransfer;
 			let text = dt.getData('Text');
 			let imgsrc = dt.getData('URL');
-			console.log('text: ',text)
+			console.log('text: ', text)
 			console.log('imgsrc: ', imgsrc)
 			if (imgsrc) {
 				if (imgsrc.startsWith('data:')) {
@@ -133,10 +133,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 					this.search([imgsrc], true);
 				}
 			}
-			else if(text){
+			else if (text) {
 				this.searchInput.value = text;
 				this.search()
-			}else {
+			} else {
 				let acceptedFiles = dt.files;
 				let processedFiles = [];
 				console.log('files: ', acceptedFiles)
@@ -206,8 +206,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.handleDrag = () => {
 			this.dragCounter++;
 			if (!this.highlighted) {
-				if(this.settings.showDropzone && this.settings.showDropzone!=='false')
-				this.showContentContainer();
+				if (this.settings.showDropzone && this.settings.showDropzone !== 'false')
+					this.showContentContainer();
 				this.contentContainer.innerHTML = `
 				<div class="jina-dropdown-message jina-ready unselectable">
     			<div class="jina-face"><div class="eye"></div><div class="eye right"></div><div class="mouth happy"></div></div>
@@ -419,15 +419,15 @@ class JinaBoxSearchComponent extends HTMLElement {
 			if (this.useVideo)
 				constraints.video = {
 					deviceId: this.videoSource ? { exact: this.videoSource } : undefined,
-					width: {ideal: this.settings.userMediaWidth},
-					height: {ideal: this.settings.userMediaHeight},
+					width: { ideal: this.settings.userMediaWidth },
+					height: { ideal: this.settings.userMediaHeight },
 					facingMode: "environment"
 				}
 			if (this.useAudio)
 				constraints.audio = {
 					deviceId: this.audioSource ? { exact: this.audioSource } : undefined
 				}
-			console.log('userMedia constraints: ',constraints)
+			console.log('userMedia constraints: ', constraints)
 			return navigator.mediaDevices.getUserMedia(constraints);
 		}
 
@@ -446,10 +446,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		this.updateStreamSource = async (next) => {
 			this.clearMedia();
-			if(this.useAudio)
-			this.audioSource = this.audioSelect.value;
-			if(this.useVideo)
-			this.videoSource = this.videoSelect.value;
+			if (this.useAudio)
+				this.audioSource = this.audioSelect.value;
+			if (this.useVideo)
+				this.videoSource = this.videoSelect.value;
 			if (next == this.showCaptureMedia)
 				return next();
 
@@ -494,10 +494,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 				</button>
 				${type === 'video' ?
 					`<video src="${src}" width="100%" autoplay loop style="display: block;"></video>` :
-					type==='audio'?
-					`<audio src="${src}" controls autoplay loop style="margin-top: 5em; margin-bottom:5em; display:block"></audio>`
-					:
-					`<img src="${src}" width="100%">`
+					type === 'audio' ?
+						`<audio src="${src}" controls autoplay loop style="margin-top: 5em; margin-bottom:5em; display:block"></audio>`
+						:
+						`<img src="${src}" width="100%">`
 				}
 				<div class="jina-media-search-button-container">
 				<button class="jina-media-search-button" id="jina-media-search-button">
@@ -519,19 +519,19 @@ class JinaBoxSearchComponent extends HTMLElement {
 				option.value = deviceInfo.deviceId;
 				if (deviceInfo.kind === 'audioinput') {
 					option.text = deviceInfo.label || 'Microphone ' + (this.audioSelect.length + 1);
-					if(this.useAudio)
-					this.audioSelect.appendChild(option);
+					if (this.useAudio)
+						this.audioSelect.appendChild(option);
 				} else if (deviceInfo.kind === 'videoinput') {
 					option.text = deviceInfo.label || 'Camera ' + (this.videoSelect.length + 1);
-					if(this.useVideo)
-					this.videoSelect.appendChild(option);
+					if (this.useVideo)
+						this.videoSelect.appendChild(option);
 				}
 			}
 			let option = document.createElement('option');
 			option.value = 'screen';
 			option.text = 'Screen Capture';
-			if(this.useVideo)
-			this.videoSelect.appendChild(option);
+			if (this.useVideo)
+				this.videoSelect.appendChild(option);
 		}
 
 		this.capturePhoto = async () => {
@@ -552,8 +552,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 				src: data,
 				dataURI: data,
 				type: 'image',
-				width,
-				height
 			}
 			if (this.searchType === 'live')
 				this.search([data])
@@ -562,8 +560,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.startMediaRecord = async () => {
-			let width = this.capturePreview.videoWidth;
-			let height = this.capturePreview.videoHeight;
 			this.recordedBlobs = [];
 			let options = { mimeType: 'video/mp4' };
 			if (!MediaRecorder.isTypeSupported(options.mimeType)) {
@@ -581,19 +577,17 @@ class JinaBoxSearchComponent extends HTMLElement {
 			//create button UI
 			this.mediaRecorder.onstop = (event) => {
 				let data;
-				if(this.useVideo)
-				data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
+				if (this.useVideo)
+					data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
 				else
-				data = new Blob(this.recordedBlobs, { type: 'audio/mp3' });
+					data = new Blob(this.recordedBlobs, { type: 'audio/mp3' });
 				let reader = new FileReader();
 				reader.addEventListener("load", () => {
 					const processed = reader.result;
 					this.recordedMedia = {
 						src: window.URL.createObjectURL(data),
-						type: this.useVideo?'video':'audio',
+						type: this.useVideo ? 'video' : 'audio',
 						dataURI: processed,
-						width,
-						height
 					}
 					this.showReviewMedia()
 					console.log('processed: ', processed);
@@ -819,7 +813,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			['dragenter'].forEach(eventName => {
 				document.addEventListener(eventName, this.handleDrag);
 			});
-			['drop','dragleave'].forEach(eventName => {
+			['drop', 'dragleave'].forEach(eventName => {
 				document.addEventListener(eventName, this.handleDragLeave);
 			});
 
