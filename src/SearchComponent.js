@@ -313,7 +313,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.capturePreview.setAttribute('playsinline', '');
 			this.capturePreview.srcObject = this.mediaStream;
 
-			await this.capturePreview.play();
+			try{
+				this.capturePreview.play();
+			}
+			catch{
+				console.log('no need to play')
+			}
 
 			await this.getMediaDevices();
 
@@ -561,44 +566,20 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		this.startMediaRecord = async () => {
 			this.recordedBlobs = [];
-			let options = { mimeType: 'video/mp4' };
-			if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-				console.error(`${options.mimeType} is not supported`);
-				options = { mimeType: '' };
-			}
-
 			try {
-				this.mediaRecorder = new MediaRecorder(this.mediaStream, options);
+				this.mediaRecorder = new MediaRecorder(this.mediaStream);
 			} catch (e) {
 				console.error('Exception while creating MediaRecorder:', e);
 				errorMsgElement.innerHTML = `Exception while creating MediaRecorder: ${JSON.stringify(e)}`;
 				return;
 			}
 			//create button UI
-			this.mediaRecorder.onstop = (event) => {
-				let data;
-				if (this.useVideo)
-					data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
-				else
-					data = new Blob(this.recordedBlobs, { type: 'audio/mp3' });
-				let reader = new FileReader();
-				reader.addEventListener("load", () => {
-					const processed = reader.result;
-					this.recordedMedia = {
-						src: window.URL.createObjectURL(data),
-						type: this.useVideo ? 'video' : 'audio',
-						dataURI: processed,
-					}
-					this.showReviewMedia()
-					console.log('processed: ', processed);
-				}, false);
-				reader.readAsDataURL(data);
-			};
-			this.mediaRecorder.ondataavailable = (event) => {
+			this.mediaRecorder.addEventListener('dataavailable',(event) => {
 				if (event.data && event.data.size > 0) {
 					this.recordedBlobs.push(event.data);
 				}
-			}
+			})
+			this.mediaRecorder.addEventListener('stop',this.handleStopMediaRecording)
 			this.mediaRecorder.start();
 			// setTimeout(this.stopMediaRecord,1000);
 
@@ -607,7 +588,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 			<button class="jina-media-button" id="jina-stop-record-button"><img src="${_icons.stop}"></button>
 			`;
 			document.getElementById('jina-stop-record-button').onclick = this.stopMediaRecord;
-			document.getElementById('jina-media-live-button').style.display = 'none';
+			let liveButton = document.getElementById('jina-media-live-button');
+			if (liveButton)
+				liveButton.style.display = 'none';
 		}
 
 		this.startLiveSearch = async () => {
@@ -631,6 +614,27 @@ class JinaBoxSearchComponent extends HTMLElement {
 			console.log('stopping media recording')
 			this.mediaRecorder.stop();
 		}
+
+		this.handleStopMediaRecording = () => {
+			console.log('handleStop')
+			let data;
+			if (this.useVideo)
+				data = new Blob(this.recordedBlobs, { type: 'video/mp4' });
+			else
+				data = new Blob(this.recordedBlobs, { type: 'audio/wav' });
+			let reader = new FileReader();
+			reader.addEventListener("load", () => {
+				const processed = reader.result;
+				this.recordedMedia = {
+					src: window.URL.createObjectURL(data),
+					type: this.useVideo ? 'video' : 'audio',
+					dataURI: processed,
+				}
+				this.showReviewMedia()
+				console.log('processed: ', processed);
+			}, false);
+			reader.readAsDataURL(data);
+		};
 
 		this.showLoading = (message = "Searching") => {
 			this.showContentContainer();
