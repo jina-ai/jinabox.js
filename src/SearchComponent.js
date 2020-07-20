@@ -349,7 +349,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.showCaptureScreen = async () => {
 			this.searchType = 'capture';
 			this.useVideo = true;
-			this.useAudio = false;
+			this.useAudio = true;
 
 			try {
 				this.showLoading('Accessing Screen Capture');
@@ -384,7 +384,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.captureCanvas.width = 0;
 			this.captureCanvas.height = 0;
 			this.captureCanvas.style.display = 'none';
-
 			this.capturePreview.srcObject = this.mediaStream;
 
 			document.getElementById('jina-take-photo-button').onclick = this.capturePhoto;
@@ -577,11 +576,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 				option.value = deviceInfo.deviceId;
 				if (deviceInfo.kind === 'audioinput') {
 					option.text = deviceInfo.label || 'Microphone ' + (this.audioSelect.length + 1);
-					if (this.useAudio)
+					if (this.audioSelect)
 						this.audioSelect.appendChild(option);
 				} else if (deviceInfo.kind === 'videoinput') {
 					option.text = deviceInfo.label || 'Camera ' + (this.videoSelect.length + 1);
-					if (this.useVideo)
+					if (this.videoSelect)
 						this.videoSelect.appendChild(option);
 				}
 			}
