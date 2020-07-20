@@ -447,7 +447,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 						</button>
 					</div>
 					<div class="jina-live-header-item" style="margin-top: .5em">
-					<div class="jina-live-icon jina-pulse"></div> Live Search
+					<div class="jina-live-icon jina-pulse" id="jina-live-icon" ></div> Live Search
 					</div>
 					<div class="jina-live-header-item" style="text-align: right;">
 						<button class="jina-live-button" id="jina-live-toggle-button">
@@ -459,11 +459,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 				<video id="jina-capture-preview" class="jina-live-preview" autoplay muted width="33%"></video>
 			</div>
 			`
-			let capturePreview = document.getElementById('jina-capture-preview');
+			// this.capturePreview = document.getElementById('jina-capture-preview');
 			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
 			this.captureCanvas.width = 0;
 			this.captureCanvas.height = 0;
 			this.captureCanvas.style.display = 'none';
+			this.liveIcon = document.getElementById('jina-live-icon');
 
 			document.getElementById('jina-live-cancel-button').onclick = this.showCaptureMedia;
 
@@ -648,10 +649,14 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.toggleLiveSearch = () => {
 			if (this.liveInterval) {
 				clearInterval(this.liveInterval)
+				this.liveIcon.classList.add('jina-live-icon-paused');
+				this.liveIcon.classList.remove('jina-pulse');
 				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.play);
 				this.liveInterval = false;
 			}
 			else {
+				this.liveIcon.classList.remove('jina-live-icon-paused');
+				this.liveIcon.classList.add('jina-pulse');
 				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.pause);
 				this.startLiveSearch();
 			}
