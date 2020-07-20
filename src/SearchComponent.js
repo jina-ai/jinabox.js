@@ -237,17 +237,17 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.contentContainer.innerHTML = `
 			<div class="jina-input-options">
 				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
-				<button class="jina-action-button" id="jina-expander-file-input-trigger">Upload Files</button>
-				<button class="jina-action-button" id="jina-expander-capture-media-button">Camera Search</button>
+				<button id="jina-expander-file-input-trigger"><img src="${_icons.filePlus}"> Upload Files</button>
+				<button id="jina-expander-capture-media-button"><img src="${_icons.camera}"> Camera Search</button>
 				${
 				window.MediaRecorder ?
-					'<button class="jina-action-button" id="jina-expander-capture-audio-button">Audio Search</button>'
+					`<button id="jina-expander-capture-audio-button"><img src="${_icons.mic}"> Audio Search</button>`
 					:
 					''
 				}
 				${
 				navigator.mediaDevices && (navigator.mediaDevices.getDisplayMedia || navigator.getDisplayMedia) ?
-					'<button class="jina-action-button" id="jina-expander-capture-screen-button">Screen Capture</button>'
+					`<button id="jina-expander-capture-screen-button"><img src="${_icons.monitor}">  Screen Capture</button>`
 					:
 					''
 				}
@@ -305,7 +305,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				</div>
 				<div class="jina-media-preview-container">
 					<button class="jina-media-live-button" id="jina-media-live-button">
-					Live Search
+					<div class="jina-live-icon"></div> Live Search
 					</button>
 					<video id="jina-capture-preview" width="100%" style="display: block;" autoplay muted playsinline></video>
 					<button id="jina-media-screen-button" style="display:none;"></button>
@@ -368,7 +368,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				</canvas>
 				<div class="jina-media-preview-container">
 					<button class="jina-media-live-button" id="jina-media-live-button">
-					Live Search
+					<div class="jina-live-icon"></div> Live Search
 					</button>
 					<video id="jina-capture-preview" width="100%" style="display: block;" autoplay muted playsinline></video>
 					<button id="jina-media-screen-button" style="display:none;"></button>
@@ -447,7 +447,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 						</button>
 					</div>
 					<div class="jina-live-header-item" style="margin-top: .5em">
-						Live Search
+					<div class="jina-live-icon jina-pulse"></div> Live Search
 					</div>
 					<div class="jina-live-header-item" style="text-align: right;">
 						<button class="jina-live-button" id="jina-live-toggle-button">

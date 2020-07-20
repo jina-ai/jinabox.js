@@ -650,22 +650,14 @@
 .jina-select{
 	padding: .5em;
 	margin-bottom: .5em;
-	max-width: 50%;
+    max-width: 50%;
+    background-color: #eceff1;
+    outline: none !important;
+    border: 1px solid #cfd8dc;
+    border-radius: .5em;
 }
 .jina-small{
 	font-size: .75em;
-}
-.jina-action-button{
-	background-color: #009999;
-	border: none;
-	padding: .5em;
-	color: white;
-	border-radius: .5em;
-	margin: .5em;
-	display: block;
-	outline: none !important;
-	margin-left: auto;
-	margin-right: auto;
 }
 .jina-media-controls{
 	position: absolute;
@@ -689,9 +681,13 @@
 }
 .jina-input-controls{
     padding-top: .5em;
+    box-shadow: 0px 0px 10px black;
 }
 .jina-input-controls img{
-    vertical-align: middle;;
+    vertical-align: middle;
+    height: 1em;
+    opacity: .75;
+    margin-right: .25em;
 }
 .jina-input-controls .jina-select{
     width: 100%;
@@ -713,9 +709,11 @@
 .jina-media-live-button{
     position: absolute;
     font-size: 1em;
+    line-height: normal;
     cursor: pointer;
 	background: white;
-	margin: .5em;
+    margin: .5em;
+    padding: .25em;
 	right: 0;
 	border-radius: .25em;
 	border: none !important;
@@ -793,11 +791,52 @@
     font-size: 1em;
 }
 .jina-input-options button{
+    background-color: #eceff1;
+    text-align: left;
+	border: none;
+	padding: .5em;
+    border-radius: .5em;
+	margin: .5em;
+	display: block;
+	outline: none !important;
     font-family: Comfortaa;
     font-size: 1em;
     cursor: pointer;
+    width: calc(100% - 1em);
+    transition: .2s;
+}
+.jina-input-options button img{
+    height: 1em;
+    vertical-align: text-top;
+    margin-right: .25em;
 }
 .jina-floater-box button{
     cursor: pointer;
     font-size: 1em;
+}
+.jina-live-icon{
+    height: 1em;
+    vertical-align: text-top;
+    display: inline-block;
+    width: .5em;
+    height: .5em;
+    background-color: red;
+    vertical-align: middle;
+    margin-bottom: .25em;
+    border-radius: 50%;
+}
+.jina-pulse{
+    animation: 1s infinite jina-pulse ;
+}
+
+@keyframes jina-pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
