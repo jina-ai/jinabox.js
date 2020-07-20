@@ -1,5 +1,5 @@
 import { Floater, Results, SearchBar } from './index.js';
-// import './index.css';
+import './index.css';
 
 window.customElements.define('jina-floater', Floater);
 window.customElements.define('jina-searchbar', SearchBar);
