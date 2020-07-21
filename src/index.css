@@ -748,10 +748,13 @@
 	flex: 1;
 }
 .jina-live-results-area{
+    display: flex;
+	flex-direction: column;
     height: 100%;
     min-height: 250px;
 	max-height: 500px;
-    overflow-y: auto;
+    /* overflow-y: auto; */
+    overflow: hidden;
 }
 .jina-live-header{
 	display: inline-grid;

@@ -466,7 +466,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				<video id="jina-capture-preview" class="jina-live-preview" autoplay muted width="33%"></video>
 			</div>
 			`
-			// this.capturePreview = document.getElementById('jina-capture-preview');
+			let capturePreview = document.getElementById('jina-capture-preview');
 			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
 			this.captureCanvas.width = 0;
 			this.captureCanvas.height = 0;
@@ -482,10 +482,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 				this.showCaptureMedia();
 			}
 
-			document.getElementById('jina-capture-preview').srcObject = this.mediaStream;
+			capturePreview.srcObject = this.mediaStream;
 			this.searchType = 'live'
 
-			this.startLiveSearch();
+			capturePreview.oncanplaythrough = () => setTimeout(this.startLiveSearch,50);
 			document.getElementById('jina-live-toggle-button').onclick = this.toggleLiveSearch;
 		}
 
