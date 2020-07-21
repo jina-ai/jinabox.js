@@ -238,10 +238,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 			<div class="jina-input-options">
 				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
 				<button id="jina-expander-file-input-trigger"><img src="${_icons.filePlus}"> Upload Files</button>
-				<button id="jina-expander-capture-media-button"><img src="${_icons.camera}"> Camera Search</button>
+				<button id="jina-expander-capture-media-button"><img src="${_icons.camera}"> Camera</button>
 				${
 				window.MediaRecorder ?
-					`<button id="jina-expander-capture-audio-button"><img src="${_icons.mic}"> Audio Search</button>`
+					`<button id="jina-expander-capture-audio-button"><img src="${_icons.mic}"> Audio</button>`
 					:
 					''
 				}
@@ -446,7 +446,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 							<img src="${_icons.close}">
 						</button>
 					</div>
-					<div class="jina-live-header-item" style="margin-top: .5em">
+					<div class="jina-live-header-item" style="margin-top: .5em;text-align:center;">
 					<div class="jina-live-icon jina-pulse" id="jina-live-icon" ></div> Live Search
 					</div>
 					<div class="jina-live-header-item" style="text-align: right;">
@@ -528,6 +528,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.clearMedia = () => {
+			this.liveSearchActive = true;
+			
 			if (this.liveInterval)
 				clearInterval(this.liveInterval);
 
@@ -642,12 +644,14 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.startLiveSearch = async () => {
+			this.liveSearchActive = true;
 			this.capturePhoto()
 			this.liveInterval = setInterval(() => this.capturePhoto(), 3000);
 		}
 
 		this.toggleLiveSearch = () => {
 			if (this.liveInterval) {
+				this.liveSearchActive = false;
 				clearInterval(this.liveInterval)
 				this.liveIcon.classList.add('jina-live-icon-paused');
 				this.liveIcon.classList.remove('jina-pulse');
@@ -655,6 +659,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				this.liveInterval = false;
 			}
 			else {
+				this.liveSearchActive = true;
 				this.liveIcon.classList.remove('jina-live-icon-paused');
 				this.liveIcon.classList.add('jina-pulse');
 				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.pause);
@@ -717,6 +722,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.showResults = (index = this.resultsIndex) => {
+			if(this.searchType === 'live' && !this.liveSearchActive)
+				return;
 			//TODO: settings > expander height
 			this.resultsIndex = index;
 			let resultsHTML = '';
