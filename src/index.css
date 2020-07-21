@@ -667,6 +667,7 @@
 	padding-bottom: 20px;
 }
 .jina-media-button{
+    background: white;
 	border: none;
 	outline: none !important;
 	width: 4em;
