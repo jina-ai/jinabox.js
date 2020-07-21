@@ -26,7 +26,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 		}
 
-		this.search = async (query = [this.searchInput.value], inBytes = false) => {
+		this.search = async (query = [this.searchInput.value], inBytes = false, searchType) => {
 			console.log('query: ', query);
 			if (!inBytes || query.length > 1) {
 				this.searchIcon.src = this.defaultSearchIcon;
@@ -94,7 +94,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.resultsMeta = { totalTime, totalResults, resultsContainText, queriesContainMedia, onlyImages };
 
 			this.resultsIndex = 0;
-			this.showResults();
+			this.showResults(0, searchType);
 		}
 
 		this.listenForEnter = (key) => {
@@ -233,6 +233,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.showInputOptions = async () => {
+			this.clearMedia();
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-input-options">
@@ -455,7 +456,13 @@ class JinaBoxSearchComponent extends HTMLElement {
 						</button>
 					</div>
 				</div>
-				<div class="jina-live-results-area" id="jina-live-results-area"></div>
+				<div class="jina-live-results-area" id="jina-live-results-area">
+					<div class="jina-sea">
+						<span class="jina-wave"></span>
+						<span class="jina-wave"></span>
+						<span class="jina-wave"></span>
+					</div>
+				</div>
 				<video id="jina-capture-preview" class="jina-live-preview" autoplay muted width="33%"></video>
 			</div>
 			`
@@ -466,7 +473,14 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.captureCanvas.style.display = 'none';
 			this.liveIcon = document.getElementById('jina-live-icon');
 
-			document.getElementById('jina-live-cancel-button').onclick = this.showCaptureMedia;
+			document.getElementById('jina-live-cancel-button').onclick = () => {
+				this.liveSearchActive = false;
+				if (this.liveInterval) {
+					clearInterval(this.liveInterval)
+					this.liveInterval = false;
+				}
+				this.showCaptureMedia();
+			}
 
 			document.getElementById('jina-capture-preview').srcObject = this.mediaStream;
 			this.searchType = 'live'
@@ -528,7 +542,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.clearMedia = () => {
-			this.liveSearchActive = true;
+			this.liveSearchActive = false;
 
 			if (this.liveInterval)
 				clearInterval(this.liveInterval);
@@ -609,7 +623,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				type: 'image',
 			}
 			if (this.searchType === 'live')
-				this.search([data])
+				this.search([data], false, 'live')
 			else
 				this.showReviewMedia()
 		}
@@ -721,8 +735,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.errorButton.onclick = this.clearExpander;
 		}
 
-		this.showResults = (index = this.resultsIndex) => {
-			if(this.searchType === 'live' && !this.liveSearchActive)
+		this.showResults = (index = this.resultsIndex, searchType) => {
+			if (searchType === 'live' && !this.liveSearchActive)
 				return;
 			//TODO: settings > expander height
 			this.resultsIndex = index;
