@@ -529,7 +529,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		this.clearMedia = () => {
 			this.liveSearchActive = true;
-			
+
 			if (this.liveInterval)
 				clearInterval(this.liveInterval);
 
@@ -697,7 +697,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-sea">
-				<p class="title">${message}</p>
+				<p class="jina-title">${message}</p>
 				<span class="jina-wave"></span>
 				<span class="jina-wave"></span>
 				<span class="jina-wave"></span>

@@ -78,7 +78,7 @@
 	background-image: linear-gradient(#ffcc66, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0.5));
 }
 
-.jina-sea .title {
+.jina-sea .jina-title {
     color: white;
     font-size: 24px;
     font-family: Comfortaa;
@@ -87,6 +87,7 @@
     position: absolute;
     z-index: 1;
     width: 100%;
+    padding: 1em;
 }
 .jina-sea .jina-wave {
     position: absolute;
