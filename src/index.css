@@ -649,6 +649,7 @@
 	overflow-y: auto;
 }
 .jina-select{
+    -webkit-appearance:none;
 	padding: .5em;
 	margin-bottom: .5em;
     max-width: 50%;
