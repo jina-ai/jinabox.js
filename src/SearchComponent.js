@@ -237,38 +237,38 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-input-options">
-				<input type="file" class="jina-floater-file-input" id="jina-expander-file-input" multiple>
-				<button id="jina-expander-file-input-trigger"><img src="${_icons.filePlus}"> Upload Files</button>
-				<button id="jina-expander-capture-media-button"><img src="${_icons.camera}"> Camera</button>
+				<input type="file" class="jina-expander-file-input" multiple>
+				<button class="jina-expander-file-input-trigger"><img src="${_icons.filePlus}"> Upload Files</button>
+				<button class="jina-expander-capture-media-button"><img src="${_icons.camera}"> Camera</button>
 				${
 				window.MediaRecorder ?
-					`<button id="jina-expander-capture-audio-button"><img src="${_icons.mic}"> Audio</button>`
+					`<button class="jina-expander-capture-audio-button"><img src="${_icons.mic}"> Audio</button>`
 					:
 					''
 				}
 				${
 				navigator.mediaDevices && (navigator.mediaDevices.getDisplayMedia || navigator.getDisplayMedia) ?
-					`<button id="jina-expander-capture-screen-button"><img src="${_icons.monitor}">  Screen Capture</button>`
+					`<button class="jina-expander-capture-screen-button"><img src="${_icons.monitor}">  Screen Capture</button>`
 					:
 					''
 				}
 				
 			</div>
 		`;
-			document.getElementById('jina-expander-file-input-trigger').onclick = function () { document.getElementById('jina-expander-file-input').click() };
-			document.getElementById('jina-expander-file-input').addEventListener('change', this.handleUpload);
+			this.getElement('jina-expander-file-input-trigger').onclick = ()=>this.getElement('jina-expander-file-input').click();
+			this.getElement('jina-expander-file-input').addEventListener('change', this.handleUpload);
 
-			let captureMediaButton = document.getElementById('jina-expander-capture-media-button');
+			let captureMediaButton = this.getElement('jina-expander-capture-media-button');
 			if (captureMediaButton)
 				captureMediaButton.addEventListener('click', this.showCaptureMedia);
 
-			let captureScreenButton = document.getElementById('jina-expander-capture-screen-button');
-			if (captureScreenButton)
-				captureScreenButton.addEventListener('click', this.showCaptureScreen);
-
-			let captureAudioButton = document.getElementById('jina-expander-capture-audio-button')
+			let captureAudioButton = this.getElement('jina-expander-capture-audio-button')
 			if (captureAudioButton)
 				captureAudioButton.addEventListener('click', this.showCaptureAudio);
+
+			let captureScreenButton = this.getElement('jina-expander-capture-screen-button');
+			if (captureScreenButton)
+				captureScreenButton.addEventListener('click', this.showCaptureScreen);
 		}
 
 		this.showCaptureMedia = async (e) => {
@@ -289,39 +289,41 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-media-container">
-				<canvas id="jina-media-capture-canvas">
+				<canvas class="jina-media-capture-canvas">
 				</canvas>
 				<div class="jina-input-controls">
 					<div>
-						<input type="file" name="video" accept="video/*" capture style="display: none;" id="jina-video-input-button">
+						<input type="file" name="video" accept="video/*" capture style="display: none;" class="jina-video-input-button">
 						<img src="${_icons.camera}"/>
-						<select class="jina-select jina-small" id="jina-video-select">
+						<select class="jina-select jina-small jina-video-select">
 						</select>
 					</div>
 					<div>
 						<img src="${_icons.mic}"/>
-						<select class="jina-select jina-small" id="jina-audio-select">
+						<select class="jina-select jina-small jina-audio-select">
 						</select>
 					</div>
 				</div>
 				<div class="jina-media-preview-container">
-					<button class="jina-media-live-button" id="jina-media-live-button">
+					<button class="jina-media-live-button">
 					<div class="jina-live-icon"></div> Live Search
 					</button>
-					<video id="jina-capture-preview" width="100%" style="display: block;" autoplay muted playsinline></video>
-					<button id="jina-media-screen-button" style="display:none;"></button>
+					<video class="jina-capture-preview" width="100%" style="display: block;" autoplay muted playsinline></video>
+					<button class="jina-media-screen-button" style="display:none;"></button>
 				</div>
-				<div class="jina-media-controls" id="jina-media-controls">
-				<button class="jina-media-button" id="jina-take-photo-button"><img src="${_icons.camera}"></button>
-				<button class="jina-media-button" id="jina-record-video-button"><img src="${_icons.video}"></button>
+				<div class="jina-media-controls-container jina-media-controls">
+				<button class="jina-media-button jina-take-photo-button"><img src="${_icons.camera}"></button>
+				<button class="jina-media-button jina-record-video-button"><img src="${_icons.video}"></button>
 				</div>
 			</div>
 			`
-			this.capturePreview = document.getElementById('jina-capture-preview');
-			this.videoInputButton = document.getElementById('jina-video-input-button');
-			this.audioSelect = document.getElementById('jina-audio-select');
-			this.videoSelect = document.getElementById('jina-video-select');
-			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
+			//TODO: hide jina-media-screen-button
+			this.capturePreview = this.getElement('jina-capture-preview');
+			this.videoInputButton = this.getElement('jina-video-input-button');
+			this.videoSelect = this.getElement('jina-video-select');
+			this.audioSelect = this.getElement('jina-audio-select');
+
+			this.captureCanvas = this.getElement('jina-media-capture-canvas');
 			this.captureCanvas.width = 0;
 			this.captureCanvas.height = 0;
 			this.captureCanvas.style.display = 'none';
@@ -341,10 +343,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			this.videoInputButton.addEventListener('change', this.handleUpload);
-			document.getElementById('jina-take-photo-button').onclick = this.capturePhoto;
-			document.getElementById('jina-record-video-button').onclick = window.MediaRecorder ? this.startMediaRecord : () => this.videoInputButton.click();
-			document.getElementById('jina-media-live-button').onclick = this.showLiveSearch;
-			this.previousCapture = this.showCaptureMedia
+			this.getElement('jina-take-photo-button').onclick = this.capturePhoto;
+			this.getElement('jina-record-video-button').onclick = window.MediaRecorder ? this.startMediaRecord : () => this.videoInputButton.click();
+			this.getElement('jina-media-live-button').onclick = this.showLiveSearch;
+			this.previousCapture = this.showCaptureMedia;
 		}
 
 		this.showCaptureScreen = async () => {
@@ -365,31 +367,31 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-media-container">
-				<canvas id="jina-media-capture-canvas">
+				<canvas class="jina-media-capture-canvas">
 				</canvas>
 				<div class="jina-media-preview-container">
-					<button class="jina-media-live-button" id="jina-media-live-button">
+					<button class="jina-media-live-button">
 					<div class="jina-live-icon"></div> Live Search
 					</button>
-					<video id="jina-capture-preview" width="100%" style="display: block;" autoplay muted playsinline></video>
-					<button id="jina-media-screen-button" style="display:none;"></button>
+					<video class="jina-capture-preview" width="100%" style="display: block;" autoplay muted playsinline></video>
+					<button class="jina-media-screen-button" style="display:none;"></button>
 				</div>
-				<div class="jina-media-controls" id="jina-media-controls">
-				<button class="jina-media-button" id="jina-take-photo-button"><img src="${_icons.camera}"></button>
-				<button class="jina-media-button" id="jina-record-video-button"><img src="${_icons.video}"></button>
+				<div class="jina-media-controls-container jina-media-controls">
+				<button class="jina-media-button jina-take-photo-button"><img src="${_icons.camera}"></button>
+				<button class="jina-media-button jina-record-video-button"><img src="${_icons.video}"></button>
 				</div>
 			</div>
 			`
-			this.capturePreview = document.getElementById('jina-capture-preview');
-			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
+			this.capturePreview = this.getElement('jina-capture-preview');
+			this.captureCanvas = this.getElement('jina-media-capture-canvas');
 			this.captureCanvas.width = 0;
 			this.captureCanvas.height = 0;
 			this.captureCanvas.style.display = 'none';
 			this.capturePreview.srcObject = this.mediaStream;
 
-			document.getElementById('jina-take-photo-button').onclick = this.capturePhoto;
-			document.getElementById('jina-record-video-button').onclick = window.MediaRecorder ? this.startMediaRecord : () => this.videoInputButton.click();
-			document.getElementById('jina-media-live-button').onclick = this.showLiveSearch;
+			this.getElement('jina-take-photo-button').onclick = this.capturePhoto;
+			this.getElement('jina-record-video-button').onclick = window.MediaRecorder ? this.startMediaRecord : () => this.videoInputButton.click();
+			this.getElement('jina-media-live-button').onclick = this.showLiveSearch;
 			this.previousCapture = this.showCaptureScreen
 		}
 
@@ -413,16 +415,17 @@ class JinaBoxSearchComponent extends HTMLElement {
 				<div class="jina-input-controls">
 					<div>
 						<img src="${_icons.mic}"/>
-						<select class="jina-select jina-small" id="jina-audio-select">
+						<select class="jina-select jina-small jina-audio-select">
 						</select>
 					</div>
 				</div>
-				<div id="jina-media-controls">
-				<button class="jina-media-button" id="jina-record-audio-button"><img src="${_icons.mic}"></button>
+				<div class="jina-media-controls" style="margin-top:2em; margin-bottom:2em;">
+				<button class="jina-media-button jina-record-audio-button"><img src="${_icons.mic}"></button>
 				</div>
 			</div>
 			`
-			this.audioSelect = document.getElementById('jina-audio-select');
+			//TODO: make sure audio button not floating, change classes for jina-media-controls if necessary
+			this.audioSelect = this.getElement('jina-audio-select');
 			this.audioSelect.onchange = () => this.updateStreamSource(this.showCaptureAudio);
 			await this.getMediaDevices();
 
@@ -430,7 +433,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				this.audioSelect.selectedIndex = [...this.audioSelect.options].findIndex(option => option.value === this.audioSource);
 			}
 
-			document.getElementById('jina-record-audio-button').onclick = () => this.startMediaRecord();
+			this.getElement('jina-record-audio-button').onclick = () => this.startMediaRecord();
 			this.previousCapture = this.showCaptureAudio
 		}
 
@@ -439,41 +442,41 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-live-container">
-				<canvas id="jina-media-capture-canvas">
+				<canvas class="jina-media-capture-canvas">
 				</canvas>
 				<div class="jina-live-header">
 					<div class="jina-live-header-item" style="text-align: left;">
-						<button class="jina-live-button" id="jina-live-cancel-button">
+						<button class="jina-live-button jina-live-cancel-button">
 							<img src="${_icons.close}">
 						</button>
 					</div>
 					<div class="jina-live-header-item" style="margin-top: .5em;text-align:center;">
-					<div class="jina-live-icon jina-pulse" id="jina-live-icon" ></div> Live Search
+					<div class="jina-live-icon jina-pulse" ></div> Live Search
 					</div>
 					<div class="jina-live-header-item" style="text-align: right;">
-						<button class="jina-live-button" id="jina-live-toggle-button">
+						<button class="jina-live-button jina-live-toggle-button">
 							<img src="${_icons.pause}">
 						</button>
 					</div>
 				</div>
-				<div class="jina-live-results-area" id="jina-live-results-area">
+				<div class="jina-live-results-area">
 					<div class="jina-sea">
 						<span class="jina-wave"></span>
 						<span class="jina-wave"></span>
 						<span class="jina-wave"></span>
 					</div>
 				</div>
-				<video id="jina-capture-preview" class="jina-live-preview" autoplay muted width="33%"></video>
+				<video class="jina-live-preview jina-capture-preview" autoplay muted width="33%"></video>
 			</div>
 			`
-			let capturePreview = document.getElementById('jina-capture-preview');
-			this.captureCanvas = document.getElementById('jina-media-capture-canvas');
+			let capturePreview = this.getElement('jina-live-preview');
+			this.captureCanvas = this.getElement('jina-media-capture-canvas');
 			this.captureCanvas.width = 0;
 			this.captureCanvas.height = 0;
 			this.captureCanvas.style.display = 'none';
-			this.liveIcon = document.getElementById('jina-live-icon');
+			this.liveIcon = this.getElement('jina-live-icon');
 
-			document.getElementById('jina-live-cancel-button').onclick = () => {
+			this.getElement('jina-live-cancel-button').onclick = () => {
 				this.liveSearchActive = false;
 				if (this.liveInterval) {
 					clearInterval(this.liveInterval)
@@ -486,7 +489,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.searchType = 'live'
 
 			capturePreview.oncanplaythrough = () => setTimeout(this.startLiveSearch,50);
-			document.getElementById('jina-live-toggle-button').onclick = this.toggleLiveSearch;
+			this.getElement('jina-live-toggle-button').onclick = this.toggleLiveSearch;
 		}
 
 		this.getUserMediaStream = () => {
@@ -562,25 +565,25 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.showContentContainer();
 			this.contentContainer.innerHTML = `
 			<div class="jina-media-container">
-				<button class="jina-media-cancel-button" id="jina-media-cancel-button">
+				<button class="jina-media-cancel-button">
 				<img src="${_icons.close}">
 				</button>
 				${type === 'video' ?
-					`<video src="${dataURI}" width="100%" autoplay muted playsinline loop style="display: block;" id="jina-media-video"></video>` :
+					`<video src="${dataURI}" width="100%" autoplay muted playsinline loop style="display: block;"></video>` :
 					type === 'audio' ?
 						`<audio src="${dataURI}" controls autoplay loop style="margin-top: 5em; margin-bottom:5em; display:block"></audio>`
 						:
 						`<img src="${dataURI}" width="100%">`
 				}
 				<div class="jina-media-search-button-container">
-				<button class="jina-media-search-button" id="jina-media-search-button">
+				<button class="jina-media-search-button">
 				search <img src="${_icons.arrow_right}">
 				</button
 				</div>
 			</div>
 			`
-			document.getElementById('jina-media-search-button').onclick = () => this.search([this.recordedMedia.dataURI]);
-			document.getElementById('jina-media-cancel-button').onclick = this.previousCapture;
+			this.getElement('jina-media-search-button').onclick = () => this.search([this.recordedMedia.dataURI]);
+			this.getElement('jina-media-cancel-button').onclick = this.previousCapture;
 			return;
 		}
 
@@ -610,7 +613,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.captureCanvas.height = height;
 			this.captureCanvas.style.display = 'block';
 			let context = this.captureCanvas.getContext('2d');
-			context.drawImage(document.getElementById('jina-capture-preview'), 0, 0, width, height);
+			context.drawImage(this.getElement('jina-capture-preview'), 0, 0, width, height);
 
 			let data = this.captureCanvas.toDataURL('image/jpeg');
 			this.captureCanvas.width = 0;
@@ -648,11 +651,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 			// setTimeout(this.stopMediaRecord,1000);
 
 			console.log('MediaRecorder started', this.mediaRecorder);
-			document.getElementById('jina-media-controls').innerHTML = `
-			<button class="jina-media-button" id="jina-stop-record-button"><img src="${_icons.stop}"></button>
+			this.getElement('jina-media-controls').innerHTML = `
+			<button class="jina-media-button jina-stop-record-button"><img src="${_icons.stop}"></button>
 			`;
-			document.getElementById('jina-stop-record-button').onclick = this.stopMediaRecord;
-			let liveButton = document.getElementById('jina-media-live-button');
+			this.getElement('jina-stop-record-button').onclick = this.stopMediaRecord;
+			let liveButton = this.getElement('jina-media-live-button');
 			if (liveButton)
 				liveButton.style.display = 'none';
 		}
@@ -669,14 +672,14 @@ class JinaBoxSearchComponent extends HTMLElement {
 				clearInterval(this.liveInterval)
 				this.liveIcon.classList.add('jina-live-icon-paused');
 				this.liveIcon.classList.remove('jina-pulse');
-				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.play);
+				this.getElement('jina-live-toggle-button img').setAttribute('src', _icons.play);
 				this.liveInterval = false;
 			}
 			else {
 				this.liveSearchActive = true;
 				this.liveIcon.classList.remove('jina-live-icon-paused');
 				this.liveIcon.classList.add('jina-pulse');
-				document.querySelector('#jina-live-toggle-button img').setAttribute('src', _icons.pause);
+				this.getElement('jina-live-toggle-button img').setAttribute('src', _icons.pause);
 				this.startLiveSearch();
 			}
 		}
@@ -728,10 +731,10 @@ class JinaBoxSearchComponent extends HTMLElement {
    			<div class="jina-shadow jina-move"></div>
 				<h4 class="alert">Error!</h4>
 				<p>${message}</p>
-				<button id="jina-searchbar-error-ok">Ok</button>
+				<button class="jina-searchbar-error-ok">Ok</button>
 			</div>
 		`
-			this.errorButton = document.getElementById('jina-searchbar-error-ok')
+			this.errorButton = this.getElement('jina-searchbar-error-ok');
 			this.errorButton.onclick = this.clearExpander;
 		}
 
@@ -758,8 +761,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 				if (onlyImages)
 					toolbar += `
 					</div>
-					<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''}" src="${_icons.listView}" id="jina-toolbar-button-list" draggable="false">
-					<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''}" src="${_icons.gridView}" id="jina-toolbar-button-grid" draggable="false">`
+					<img class="jina-results-action-button${this.resultsView === 'list' ? ' jina-active' : ''} jina-toolbar-button-list" src="${_icons.listView}" draggable="false">
+					<img class="jina-results-action-button${this.resultsView === 'grid' ? ' jina-active' : ''} jina-toolbar-button-grid" src="${_icons.gridView}" draggable="false">`
 
 				toolbar += '</div></div>'
 			}
@@ -773,7 +776,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			if (this.searchType === 'live') {
-				document.getElementById('jina-live-results-area').innerHTML = `
+				this.getElement('jina-live-results-area').innerHTML = `
 				${toolbar || ''}
 				<div class="jina-expander-results-area">
 					${resultsHTML}
@@ -801,16 +804,16 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 			if (toolbar) {
 				for (let i = 0; i < queries.length; ++i) {
-					document.getElementById(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
+					this.getElement(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
 				}
 				if (onlyImages) {
-					document.getElementById("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
-					document.getElementById("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
+					this.getElement("jina-toolbar-button-list").addEventListener('click', () => this.setResultsView('list'));
+					this.getElement("jina-toolbar-button-grid").addEventListener('click', () => this.setResultsView('grid'));
 				}
 			}
 
 			results[index].map((result, idx) => {
-				let resultElement = document.getElementById(`jina-result-${idx}`);
+				let resultElement = this.getElement(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
 					if (result.mimeType.startsWith('text')) {
 						this.searchInput.value = result.text;
@@ -826,26 +829,26 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 		this.renderResult = (result) => {
 			if (result.mimeType.startsWith('text')) {
-				return `<div class="jina-result jina-text-result" id="jina-result-${result.index}">${result.text}</div>`
+				return `<div class="jina-result jina-text-result jina-result-${result.index}">${result.text}</div>`
 			}
 			else if (result.mimeType.startsWith('image')) {
 				if (this.resultsView === 'grid')
-					return `<div class="jina-grid-container"><div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
+					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
 				else
-					return `<div class="jina-result" id="jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
+					return `<div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
 			}
 			else if (result.mimeType.startsWith('audio')) {
-				return `<div class="jina-result" id="jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
+				return `<div class="jina-result jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
 			}
 			else if (result.mimeType.startsWith('video')) {
-				return `<div class="jina-result" id="jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
+				return `<div class="jina-result jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
 			}
 		}
 
 		this.renderPreviewTab = (query, i, active) => {
 			const { uri, mimeType } = query
 			return `
-			<div class="jina-results-tab${active ? ' jina-active' : ''}" id="jina-results-tab-${i}">
+			<div class="jina-results-tab${active ? ' jina-active' : ''} jina-results-tab-${i}">
 			${
 				(mimeType.startsWith('image')) ?
 					`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
@@ -915,23 +918,30 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 		}
 
-		this.settings = {};
+		this.getElement = (className)=>{
+			return document.querySelector(`#${this.elementId} .${className}`);
+		}
 
+		this.settings = {};
 		let options = Object.keys(defaultSettings);
 		for (let i = 0; i < options.length; ++i) {
 			const attr = options[i];
 			this.settings[attr] = this.getAttribute(attr) || defaultSettings[attr];
 		}
 
+		this.elementId = this.getAttribute('id') || `jina-component-${Math.floor(Math.random() * Math.floor(10000000000))}`;
 		this.defaultSearchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
+
 		this.innerHTML = `
-		<div class="jina-expander-overlay" id="jina-expander-overlay"></div>
-		<div class="jina-searchbar-container jina-theme-${this.settings.theme}">
-			<div class="jina-expander" id="jina-search-expander"></div>
-			<div id="jina-searchbar-background-container" class="jina-bg-default">
-				<div class="jina-search-container">
-					<img src="${this.defaultSearchIcon}" class="jina-search-icon" id="jina-search-icon" onerror="this.src='${this.defaultSearchIcon}'" />
-					<input placeholder="type or drop to search" class="jina-search-input jina-contained" id="jina-search-input" autocomplete="off">
+		<div id="${this.elementId}">
+			<div class="jina-expander-overlay"></div>
+			<div class="jina-searchbar-container jina-theme-${this.settings.theme}">
+				<div class="jina-expander jina-search-expander"></div>
+				<div class="jina-bg-default jina-searchbar-background-container">
+					<div class="jina-search-container">
+						<img src="${this.defaultSearchIcon}" class="jina-search-icon" onerror="this.src='${this.defaultSearchIcon}'" />
+						<input placeholder="type or drop to search" class="jina-search-input jina-contained" autocomplete="off">
+					</div>
 				</div>
 			</div>
 		</div>

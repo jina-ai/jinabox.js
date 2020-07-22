@@ -242,7 +242,7 @@
 .jina-floater-results-container .jina-results-toolbar{
 	padding-top: 0px;
 }
-.jina-floater-file-input {
+.jina-expander-file-input {
     display: none;
 }
 .jina-floater-result, .jina-result {
@@ -662,7 +662,7 @@
 .jina-small{
 	font-size: .75em;
 }
-.jina-media-controls{
+.jina-media-controls-container{
 	position: absolute;
 	bottom: 0;
 	width: 100%;

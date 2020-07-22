@@ -46,18 +46,18 @@ class Floater extends SearchComponent{
 			this.showBox = !this.showBox;
 			if (this.showBox) {
 				this.floaterBox.classList.add('jina-floater-box-visible');
-				document.querySelector('#jina-floater-button img').src = this.closeIcon;
+				this.getElement('jina-floater-button img').src = this.closeIcon;
 			} else {
 				this.clearDropArea();
 				this.floaterBox.classList.remove('jina-floater-box-visible');
-				document.querySelector('#jina-floater-button img').src = this.floaterIcon;
+				this.getElement('jina-floater-button img').src = this.floaterIcon;
 			}
 		}
 		this.clearDropArea = () => {
 			this.clearExpander();
 			this.contentContainer.classList.remove('jina-scrollable');
 			this.contentContainer.innerHTML = `
-			<input type="file" id="jina-floater-file-input" class="jina-floater-file-input" multiple>
+			<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
 				<h3 class="jina-floater-instructions">Drop here to search</h3>
 				`
 		}
@@ -89,38 +89,38 @@ class Floater extends SearchComponent{
 
 		this.innerHTML = `
 		<div class="jina-floater-container jina-theme-${this.settings.theme}">
-			<div class="jina-floater" id="jina-floater-button">
+			<div class="jina-floater jina-floater-button">
 				<img src="${this.floaterIcon}" class="jina-floater-icon"/>
 				<h4 class="jina-floater-label">Drop here</h4>
 			</div>
 		</div>
-		<div class="jina-floater-box jina-theme-${this.settings.theme}" id="jina-floater-box">
+		<div class="jina-floater-box jina-theme-${this.settings.theme}">
 			<div class="jina-floater-search-container">
-				<div id="jina-floater-background-search-container" class="jina-bg-default">
+				<div class="jina-bg-default jina-floater-background-search-container">
 					<div class="jina-search-container">
-						<img src="${this.defaultSearchIcon}" class="jina-search-icon" id="jina-floater-search-icon" onerror="this.src='${this.originalSearchIcon}'"/>
-						<input placeholder="type or drop to search" class="jina-search-input jina-contained" id="jina-floater-search-box" autocomplete="off">
+						<img src="${this.defaultSearchIcon}" class="jina-search-icon jina-floater-search-icon" onerror="this.src='${this.originalSearchIcon}'"/>
+						<input placeholder="type or drop to search" class="jina-search-input jina-contained jina-floater-search-box" autocomplete="off">
 					</div>
 				</div>
 			</div>
-			<div class="jina-floater-results-container" id="jina-floater-drop-area">
-				<input type="file" id="jina-floater-file-input" class="jina-floater-file-input" multiple>
+			<div class="jina-floater-results-container jina-floater-drop-area">
+				<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
 				<h3 class="jina-floater-instructions">Drop here to search</h3>
 			</div>
 		</div>
 		`;
 
 		this.defaultContent = `
-		<input type="file" id="jina-floater-file-input" class="jina-floater-file-input" multiple>
+		<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
 			<h3 class="jina-floater-instructions">Drop here to search</h3>
 			`;
 
 		this.overlay = false;
-		this.contentContainer = document.getElementById('jina-floater-drop-area');
-		this.searchInput = document.getElementById('jina-floater-search-box');
-		this.searchIcon = document.getElementById('jina-floater-search-icon');
-		this.floaterBox = document.getElementById('jina-floater-box');
-		this.jinaButton = document.getElementById('jina-floater-button');
+		this.contentContainer = this.getElement('jina-floater-drop-area');
+		this.searchInput = this.getElement('jina-floater-search-box');
+		this.searchIcon = this.getElement('jina-floater-search-icon');
+		this.floaterBox = this.getElement('jina-floater-box');
+		this.jinaButton = this.getElement('jina-floater-button');
 
 		this.init();
 
