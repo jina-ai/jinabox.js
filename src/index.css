@@ -184,6 +184,12 @@
     left: 6em;
     top: 3em;
 }
+.jina-floater-title{
+    padding: .5em;
+    font-size: 1em;
+    text-align: center;
+    border-bottom: 1px solid #eceff1;
+}
 .jina-floater-box {
     position: fixed;
     background: white;
@@ -237,7 +243,8 @@
     transition: .2s;
 	overflow: hidden;
 	display: flex;
-	flex-direction: column;
+    flex-direction: column;
+    position: relative;
 }
 .jina-floater-results-container .jina-results-toolbar{
 	padding-top: 0px;
@@ -789,7 +796,7 @@
 	transition: .2s;
 }
 .jina-media-container{
-    text-align: center;;
+    text-align: center;
 }
 .jina-media-container img{
     vertical-align: middle;
@@ -839,6 +846,26 @@
 }
 .jina-pulse{
     animation: 1s infinite jina-pulse ;
+}
+
+.jina-message-from{
+    margin: .5em;
+    margin-right: 5em;
+    padding: .5em;
+    font-weight: 700;
+    background: #009999;
+    color:white;
+    border-radius: .5em .5em .5em 0em;
+}
+
+.jina-message-to{
+    margin: .5em;
+    margin-left: 5em;
+    padding: .5em;
+    font-weight: 700;
+    background: #eceff1;
+    color:black;
+    border-radius: .5em .5em .5em 0em;
 }
 
 @keyframes jina-pulse {
