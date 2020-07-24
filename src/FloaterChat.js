@@ -9,6 +9,7 @@ class Floater extends SearchComponent {
 		this.floaterIcon = _icons[this.settings.floaterIcon] || this.settings.floaterIcon;
 		this.closeIcon = _icons.closeDark;
 		this.showBox = false;
+		this.currentResultsBatch = 0;
 
 		this.messages = [
 			{ direction: 'from', content: 'Hello! What are you looking for?', contentType: 'text' }
@@ -109,34 +110,48 @@ class Floater extends SearchComponent {
 			// if (queriesContainMedia)
 			// return this.showResultsOriginal();
 
+			let batch = this.currentResultsBatch++;
 			let results = this.results;
 
 			this.messages.push({ direction: 'from', content: `I found ${totalResults} results:` });
-
 			for (let i = 0; i < results[index].length; ++i) {
 				let result = results[index][i];
-				this.messages.push({ direction: 'from', content: this.renderResultMessage(result), type: 'result' });
+				result.index = i;
+				this.messages.push({ direction: 'from', content: this.renderResultMessage(result,batch), type: 'result' });
 			}
 			this.removeLoading();
 			this.renderMessages();
 			this.clearContentContainer();
-			await waitFor(.25);
-			this.scrollToBottom();
+
+			results[index].forEach((result, idx) => {
+				let resultElement = this.getElement(`jina-result-${batch}-${idx}`);
+				resultElement.addEventListener('click', () => {
+					if (result.mimeType.startsWith('text')) {
+						this.searchInput.value = result.text;
+						this.search()
+					} else {
+						this.search([result.data], true);
+						this.searchIcon.src = result.data;
+						this.searchIcon.classList.add('jina-border-right');
+					}
+				});
+			})
+			// this.scrollToBottom();
 			// let results = this.results;
 		}
 
-		this.renderResultMessage = (result) => {
+		this.renderResultMessage = (result,batch) => {
 			if (result.mimeType.startsWith('text')) {
-				return `<div class="jina-message-result jina-result-${result.index}">${result.text}</div>`
+				return `<div class="jina-message-result jina-result-${batch}-${result.index}">${result.text}</div>`
 			}
 			else if (result.mimeType.startsWith('image')) {
-				return `<div class="jina-message-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
+				return `<div class="jina-message-result jina-result-${batch}-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
 			}
 			else if (result.mimeType.startsWith('audio')) {
-				return `<div class="jina-message-result jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
+				return `<div class="jina-message-result jina-result-${batch}-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
 			}
 			else if (result.mimeType.startsWith('video')) {
-				return `<div class="jina-message-result jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
+				return `<div class="jina-message-result jina-result-${batch}-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
 			}
 		}
 
@@ -254,5 +269,4 @@ class Floater extends SearchComponent {
 	}
 }
 
-export default Floater
-t
+export default Floater;

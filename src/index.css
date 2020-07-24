@@ -864,6 +864,11 @@
     border-radius: .5em .5em .5em 0em;
 }
 
+.jina-message-result{
+    transition: .2s;
+    cursor: pointer;
+}
+
 .jina-message-query,
 .jina-message-to{
     word-break: break-word;

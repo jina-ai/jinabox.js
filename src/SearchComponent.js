@@ -812,7 +812,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				}
 			}
 
-			results[index].map((result, idx) => {
+			results[index].forEach((result, idx) => {
 				let resultElement = this.getElement(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
 					if (result.mimeType.startsWith('text')) {
