@@ -1,9 +1,9 @@
 import SearchComponent from './SearchComponent.js';
 import _icons from './icons.js';
-import {waitFor}from './utils.js';
+import { waitFor } from './utils.js';
 
-class Floater extends SearchComponent{
-	constructor(){
+class Floater extends SearchComponent {
+	constructor() {
 		super();
 
 		this.floaterIcon = _icons[this.settings.floaterIcon] || this.settings.floaterIcon;
@@ -11,55 +11,79 @@ class Floater extends SearchComponent{
 		this.showBox = false;
 
 		this.messages = [
-			{type:'from',content:'Howdy! Let\'s find you a South Park quote.',contentType:'text'}
+			{ direction: 'from', content: 'Hello! What are you looking for?', contentType: 'text' }
 		]
 
-		this.renderMessages = () =>{
+		this.renderMessages = () => {
 			let content = '<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>';
-			for(let i=0; i<this.messages.length;++i){
+			for (let i = 0; i < this.messages.length; ++i) {
 				let message = this.messages[i];
+				if (message.type === 'result' || message.type === 'query') {
+					content += message.content;
+					continue;
+				}
+
+
 				let item = `
-				<div class="jina-message-${message.type}">
+				<div class="jina-message-${message.direction}">
 				${message.content}
 				</div>
 				`
-				content+=(item);
+				content += (item);
 			}
+
 			this.defaultContent = content;
-			console.log('content: ',content)
+			console.log('content: ', content)
 			return content;
 		}
 
-		this.listenForEnter = (key) => {
-			if (key.keyCode == 13) {
-				let query = this.searchInput.value;
-				let message = {type:'to',content:query,contentType:'text'}
-				this.messages.push(message);
-				this.searchInput.value = '';
-				this.renderMessages();
-				this.search([query])
-			}
-		}
-
-		this.showError = async (text) =>{
+		this.showError = async (text) => {
 			await waitFor(2);
 			this.removeLoading();
-			let message = {type:'from',content:`Error: ${text}`,contentType:'text',theme:'error'};
+			let message = { direction: 'from', content: `Error: ${text}`, contentType: 'text', theme: 'error' };
 			this.messages.push(message);
 			this.renderMessages();
 			this.clearContentContainer();
 			this.scrollToBottom();
 		}
 
-		this.scrollToBottom = () =>{
-			this.contentContainer.scrollTo(0,this.contentContainer.scrollHeight);
+		this.scrollToBottom = () => {
+			this.contentContainer.scrollTo(0, this.contentContainer.scrollHeight);
 		}
 
 		this.showLoadingOriginal = this.showLoading;
 		this.showResultsOriginal = this.showResults;
+		this.searchOriginal = this.search;
 
-		this.showLoading = (text) =>{
-			if(text){
+		this.search = (query = [this.searchInput.value], inBytes = false, searchType) => {
+			let content = '';
+			console.log('query:', query);
+			for (let i = 0; i < query.length; ++i) {
+				let q = query[i];
+				console.log('q:', q);
+				if (q.startsWith('data:image')) {
+					content += `<div class="jina-message-query"><img src="${q}" class="jina-result-image"/></div>`
+				}
+				else if (q.startsWith('data:audio')) {
+					content += `<div class="jina-message-query"><audio src="${q}" class="jina-result-audio" controls></audio></div>`
+				}
+				else if (q.startsWith('data:video')) {
+					content += `<div class="jina-message-query"><video src="${q}" class="jina-result-video" controls autoplay muted loop></video></div>`
+				}
+				else {
+					content += `<div class="jina-message-to">${q}</div>`
+				}
+			}
+			console.log('search content: ', content)
+			let message = { direction: 'to', content, type: 'query' }
+			this.messages.push(message);
+			this.searchInput.value = '';
+			this.renderMessages();
+			this.searchOriginal(query, inBytes, searchType);
+		}
+
+		this.showLoading = (text) => {
+			if (text) {
 				return this.showLoadingOriginal(text);
 			}
 			this.removeLoading();
@@ -71,7 +95,7 @@ class Floater extends SearchComponent{
 			</div>
 			`;
 
-			this.messages.push({type:'from',content,theme:'loading'});
+			this.messages.push({ direction: 'from', content, theme: 'loading' });
 			this.renderMessages();
 			this.clearContentContainer();
 			this.scrollToBottom();
@@ -82,41 +106,56 @@ class Floater extends SearchComponent{
 				return;
 			//TODO: settings > expander height
 			let { totalResults, totalTime, onlyImages, queriesContainMedia } = this.resultsMeta;
-			if(queriesContainMedia)
-			return this.showResultsOriginal();
+			// if (queriesContainMedia)
+			// return this.showResultsOriginal();
 
 			let results = this.results;
 
-			this.messages.push({type:'from',content:`I found ${totalResults} quotes:`});
-			for(let i=0; i<results[index].length;++i){
+			this.messages.push({ direction: 'from', content: `I found ${totalResults} results:` });
+
+			for (let i = 0; i < results[index].length; ++i) {
 				let result = results[index][i];
-				this.messages.push({type:'from',content:result.text})
+				this.messages.push({ direction: 'from', content: this.renderResultMessage(result), type: 'result' });
 			}
 			this.removeLoading();
 			this.renderMessages();
 			this.clearContentContainer();
+			await waitFor(.25);
 			this.scrollToBottom();
-
 			// let results = this.results;
 		}
 
-		this.removeLoading = ()=>{
-			for (let i=0; i<this.messages.length; ++i) {
-				let message = this.messages[i];
-				if(message.theme==='loading')
-					this.messages.splice(i,1);
+		this.renderResultMessage = (result) => {
+			if (result.mimeType.startsWith('text')) {
+				return `<div class="jina-message-result jina-result-${result.index}">${result.text}</div>`
+			}
+			else if (result.mimeType.startsWith('image')) {
+				return `<div class="jina-message-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
+			}
+			else if (result.mimeType.startsWith('audio')) {
+				return `<div class="jina-message-result jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
+			}
+			else if (result.mimeType.startsWith('video')) {
+				return `<div class="jina-message-result jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
 			}
 		}
 
-		//Override Inherited Methods
+		this.removeLoading = () => {
+			for (let i = 0; i < this.messages.length; ++i) {
+				let message = this.messages[i];
+				if (message.theme === 'loading')
+					this.messages.splice(i, 1);
+			}
+		}
+
 		this.handleDrag = () => {
 			this.dragCounter++;
 			if (this.showBox) {
 				this.highlightArea();
 				this.highlightSearch();
 			} else {
-				if(this.settings.showDropzone && this.settings.showDropzone!=='false')
-				this.showLargeFloater();
+				if (this.settings.showDropzone && this.settings.showDropzone !== 'false')
+					this.showLargeFloater();
 			}
 		}
 		this.handleDragLeave = () => {
@@ -132,13 +171,11 @@ class Floater extends SearchComponent{
 				this.dragCounter = 0;
 			}
 		}
-		this.showContentContainer = () =>{
-			if(!this.showBox)
-				this.toggleShow();	
+		this.showContentContainer = () => {
+			if (!this.showBox)
+				this.toggleShow();
 		}
-		//End Override Inherited Methods
 
-		//Class Specific Methods
 		this.toggleShow = () => {
 			console.log('toggle show');
 			this.hideLargeFloater();
@@ -180,7 +217,6 @@ class Floater extends SearchComponent{
 			// this.searchBackground.classList.remove('jina-bg-rainbow');
 			this.searchInput.classList.remove('jina-highlighted')
 		}
-		//End Class Specific Methods
 
 		this.innerHTML = `
 		<div class="jina-floater-container jina-theme-${this.settings.theme}">
@@ -219,3 +255,4 @@ class Floater extends SearchComponent{
 }
 
 export default Floater
+t

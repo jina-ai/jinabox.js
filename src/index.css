@@ -246,7 +246,6 @@
     flex-direction: column;
     position: relative;
     overflow-y: auto;
-    scroll-behavior: smooth;
 }
 .jina-floater-results-container .jina-results-toolbar{
 	padding-top: 0px;
@@ -850,9 +849,12 @@
     animation: 1s infinite jina-pulse ;
 }
 
+.jina-message-result,
 .jina-message-from{
     word-break: break-word;
-    margin: .5em;
+    margin: .15em;
+    margin-left: .5em;
+    margin-right: .5em;
     max-width: 12em;
     margin-right: auto;
     padding: .5em;
@@ -862,7 +864,9 @@
     border-radius: .5em .5em .5em 0em;
 }
 
+.jina-message-query,
 .jina-message-to{
+    word-break: break-word;
     margin: .5em;
     margin-left: auto;
     max-width: 12em;
