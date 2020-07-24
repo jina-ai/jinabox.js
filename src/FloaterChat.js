@@ -1,5 +1,6 @@
 import SearchComponent from './SearchComponent.js';
 import _icons from './icons.js';
+import {waitFor}from './utils.js';
 
 class Floater extends SearchComponent{
 	constructor(){
@@ -8,6 +9,104 @@ class Floater extends SearchComponent{
 		this.floaterIcon = _icons[this.settings.floaterIcon] || this.settings.floaterIcon;
 		this.closeIcon = _icons.closeDark;
 		this.showBox = false;
+
+		this.messages = [
+			{type:'from',content:'Howdy! Let\'s find you a South Park quote.',contentType:'text'}
+		]
+
+		this.renderMessages = () =>{
+			let content = '<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>';
+			for(let i=0; i<this.messages.length;++i){
+				let message = this.messages[i];
+				let item = `
+				<div class="jina-message-${message.type}">
+				${message.content}
+				</div>
+				`
+				content+=(item);
+			}
+			this.defaultContent = content;
+			console.log('content: ',content)
+			return content;
+		}
+
+		this.listenForEnter = (key) => {
+			if (key.keyCode == 13) {
+				let query = this.searchInput.value;
+				let message = {type:'to',content:query,contentType:'text'}
+				this.messages.push(message);
+				this.searchInput.value = '';
+				this.renderMessages();
+				this.search([query])
+			}
+		}
+
+		this.showError = async (text) =>{
+			await waitFor(2);
+			this.removeLoading();
+			let message = {type:'from',content:`Error: ${text}`,contentType:'text',theme:'error'};
+			this.messages.push(message);
+			this.renderMessages();
+			this.clearContentContainer();
+			this.scrollToBottom();
+		}
+
+		this.scrollToBottom = () =>{
+			this.contentContainer.scrollTo(0,this.contentContainer.scrollHeight);
+		}
+
+		this.showLoadingOriginal = this.showLoading;
+		this.showResultsOriginal = this.showResults;
+
+		this.showLoading = (text) =>{
+			if(text){
+				return this.showLoadingOriginal(text);
+			}
+			this.removeLoading();
+			let content = `
+			<div class="jina-jumping-dots">
+				<span class="jina-dot"></span>
+				<span class="jina-dot"></span>
+				<span class="jina-dot"></span>
+			</div>
+			`;
+
+			this.messages.push({type:'from',content,theme:'loading'});
+			this.renderMessages();
+			this.clearContentContainer();
+			this.scrollToBottom();
+		}
+
+		this.showResults = async (index = this.resultsIndex, searchType) => {
+			if (searchType === 'live' && !this.liveSearchActive)
+				return;
+			//TODO: settings > expander height
+			let { totalResults, totalTime, onlyImages, queriesContainMedia } = this.resultsMeta;
+			if(queriesContainMedia)
+			return this.showResultsOriginal();
+
+			let results = this.results;
+
+			this.messages.push({type:'from',content:`I found ${totalResults} quotes:`});
+			for(let i=0; i<results[index].length;++i){
+				let result = results[index][i];
+				this.messages.push({type:'from',content:result.text})
+			}
+			this.removeLoading();
+			this.renderMessages();
+			this.clearContentContainer();
+			this.scrollToBottom();
+
+			// let results = this.results;
+		}
+
+		this.removeLoading = ()=>{
+			for (let i=0; i<this.messages.length; ++i) {
+				let message = this.messages[i];
+				if(message.theme==='loading')
+					this.messages.splice(i,1);
+			}
+		}
 
 		//Override Inherited Methods
 		this.handleDrag = () => {
@@ -56,10 +155,6 @@ class Floater extends SearchComponent{
 		this.clearDropArea = () => {
 			this.clearExpander();
 			this.contentContainer.classList.remove('jina-scrollable');
-			this.contentContainer.innerHTML = `
-			<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
-				<h3 class="jina-floater-instructions">Drop here to search</h3>
-				`
 		}
 		this.showLargeFloater = () => {
 			this.jinaButton.classList.add('jina-floater-large')
@@ -90,35 +185,27 @@ class Floater extends SearchComponent{
 		this.innerHTML = `
 		<div class="jina-floater-container jina-theme-${this.settings.theme}">
 			<div class="jina-floater jina-floater-button">
-				<img src="${this.floaterIcon}" class="jina-floater-icon"/>
+				<img src="${this.floaterIcon}" class="jina-floater-icon" draggable="false"/>
 			</div>
 		</div>
 		<div class="jina-floater-box jina-theme-${this.settings.theme}">
 			<div class="jina-floater-title">Jina Search</div>
-			<div class="jina-floater-results-container jina-floater-drop-area" style="margin-bottom: 0em; margin-top: .5em;>
-				<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
-				<div class="jina-message-from">
-					Hello, what are you looking for?
-				</div>
+			<div class="jina-floater-results-container" style="margin:0px;">
+				${this.renderMessages()}
 			</div>
 			<div>
 			<div class="jina-floater-search-container">
 				<div class="jina-bg-default jina-floater-background-search-container">
 					<div class="jina-search-container">
 						<img src="${this.defaultSearchIcon}" class="jina-search-icon jina-floater-search-icon" onerror="this.src='${this.originalSearchIcon}'"/>
-						<input placeholder="type or drop to search" class="jina-search-input jina-contained jina-floater-search-box" autocomplete="off">
+						<input placeholder="type or drop to search" class="jina-search-input jina-contained jina-floater-search-box" autocomplete="off" autofocus>
 					</div>
 				</div>
 			</div>
 		`;
 
-		this.defaultContent = `
-		<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
-			<h3 class="jina-floater-instructions">Drop here to search</h3>
-			`;
-
 		this.overlay = false;
-		this.contentContainer = this.getElement('jina-floater-drop-area');
+		this.contentContainer = this.getElement('jina-floater-results-container');
 		this.searchInput = this.getElement('jina-floater-search-box');
 		this.searchIcon = this.getElement('jina-floater-search-icon');
 		this.floaterBox = this.getElement('jina-floater-box');
