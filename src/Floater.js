@@ -88,7 +88,8 @@ class Floater extends SearchComponent{
 		//End Class Specific Methods
 
 		this.innerHTML = `
-		<div class="jina-floater-container jina-theme-${this.settings.theme}">
+		<div id=${this.elementId}>
+		<div class="jina-floater-container jina-theme-${this.settings.theme}" id=${this.elementId}>
 			<div class="jina-floater jina-floater-button">
 				<img src="${this.floaterIcon}" class="jina-floater-icon"/>
 				<h4 class="jina-floater-label">Drop here</h4>
@@ -107,6 +108,7 @@ class Floater extends SearchComponent{
 				<input type="file" class="jina-expander-file-input jina-floater-file-input" multiple>
 				<h3 class="jina-floater-instructions">Drop here to search</h3>
 			</div>
+		</div>
 		</div>
 		`;
 

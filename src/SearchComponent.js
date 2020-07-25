@@ -932,6 +932,8 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.elementId = this.getAttribute('id') || `jina-component-${Math.floor(Math.random() * Math.floor(10000000000))}`;
 		this.defaultSearchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
 
+		console.log('elementId',this.elementId);
+
 		this.innerHTML = `
 		<div id="${this.elementId}">
 			<div class="jina-expander-overlay"></div>

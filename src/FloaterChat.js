@@ -230,6 +230,7 @@ class Floater extends SearchComponent {
 		}
 
 		this.innerHTML = `
+		<div id=${this.elementId}>
 		<div class="jina-floater-container jina-theme-${this.settings.theme}">
 			<div class="jina-floater jina-floater-button">
 				<img src="${this.floaterIcon}" class="jina-floater-icon" draggable="false"/>
@@ -249,6 +250,7 @@ class Floater extends SearchComponent {
 						<input placeholder="type or drop to search" class="jina-search-input jina-contained jina-floater-search-box" autocomplete="off" autofocus>
 					</div>
 				</div>
+			</div>
 			</div>
 		`;
 
