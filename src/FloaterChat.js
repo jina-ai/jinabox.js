@@ -24,7 +24,6 @@ class Floater extends SearchComponent {
 					continue;
 				}
 
-
 				let item = `
 				<div class="jina-message-${message.direction}">
 				${message.content}
@@ -34,7 +33,6 @@ class Floater extends SearchComponent {
 			}
 
 			this.defaultContent = content;
-			console.log('content: ', content)
 			return content;
 		}
 
@@ -58,10 +56,8 @@ class Floater extends SearchComponent {
 
 		this.search = (query = [this.searchInput.value], inBytes = false, searchType) => {
 			let content = '';
-			console.log('query:', query);
 			for (let i = 0; i < query.length; ++i) {
 				let q = query[i];
-				console.log('q:', q);
 				if (q.startsWith('data:image')) {
 					content += `<div class="jina-message-query"><img src="${q}" class="jina-result-image"/></div>`
 				}
@@ -75,7 +71,6 @@ class Floater extends SearchComponent {
 					content += `<div class="jina-message-to">${q}</div>`
 				}
 			}
-			console.log('search content: ', content)
 			let message = { direction: 'to', content, type: 'query' }
 			this.messages.push(message);
 			this.searchInput.value = '';
@@ -84,6 +79,7 @@ class Floater extends SearchComponent {
 		}
 
 		this.showLoading = (text) => {
+			this.showContentContainer();
 			if (text) {
 				return this.showLoadingOriginal(text);
 			}
@@ -237,6 +233,7 @@ class Floater extends SearchComponent {
 		<div class="jina-floater-container jina-theme-${this.settings.theme}">
 			<div class="jina-floater jina-floater-button">
 				<img src="${this.floaterIcon}" class="jina-floater-icon" draggable="false"/>
+				<h4 class="jina-floater-label">Drop here</h4>
 			</div>
 		</div>
 		<div class="jina-floater-box jina-theme-${this.settings.theme}">
