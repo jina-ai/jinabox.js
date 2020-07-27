@@ -1,7 +1,8 @@
-import { Floater, Results, SearchBar } from './index.js';
+import { Floater,FloaterChat, Results, SearchBar } from './index.js';
 import './index.css';
 
 window.customElements.define('jina-floater', Floater);
+window.customElements.define('jina-floater-chat', FloaterChat);
 window.customElements.define('jina-searchbar', SearchBar);
 window.customElements.define('jina-results', Results);
 

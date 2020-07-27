@@ -79,6 +79,25 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Floater Style</label>
+                        <div class="form-check">
+                            <input class="form-check-input jina-results-select" type="radio" name="floaterStyleRadios"
+                                   id="floaterStandard"
+                                   value="standard" checked>
+                            <label class="form-check-label" for="floaterStandard">
+                                Standard
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input jina-results-select" type="radio" name="floaterStyleRadios"
+                                   id="floaterChatBot"
+                                   value="chatBot">
+                            <label class="form-check-label" for="floaterChatBot">
+                                Chat Bot
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label>Expanding Dropzone</label>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="showSearchbarDropzone" checked>
@@ -321,7 +340,7 @@
                                 </div>
                             </div>
                             <div id="floater-container">
-                                <jina-floater id="main-floater"></jina-floater>
+                                <jina-floater-chat id="main-floater"></jina-floater-chat>
                             </div>
 
                         </div>
