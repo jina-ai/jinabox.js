@@ -7,6 +7,15 @@ module.exports = {
         modules: false,
       },
     ],
+    [
+        '@babel/preset-env',
+        {
+            targets: {
+                node: 'current',
+            },
+        },
+        'babel-jest'
+      ],
   ],
   plugins: [],
 };

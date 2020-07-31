@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jina-results tests should get default inner HTML when first render 1`] = `
+<div>
+  Results {
+    "dropArea": null,
+    "handleDrag": [Function],
+    "handleDragLeave": [Function],
+  }
+</div>
+`;
