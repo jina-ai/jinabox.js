@@ -39,10 +39,18 @@
     "url": "https://github.com/jina-ai/jinabox.js/issues"
   },
   "homepage": "https://github.com/jina-ai/jinabox.js",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
     "@rollup/plugin-node-resolve": "^8.1.0",
+    "husky": "^4.2.5",
     "rollup": "^2.18.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-postcss": "^3.1.2",
