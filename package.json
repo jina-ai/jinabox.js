@@ -6,7 +6,8 @@
   "unpkg": "dist/jinabox.umd.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p dist && rollup -c"
+    "build": "mkdir -p dist && rollup -c && rollup --config rollup.config.prod.js",
+    "build:dev": "mkdir -p dist && rollup -c"
   },
   "files": [
     "dist/"
