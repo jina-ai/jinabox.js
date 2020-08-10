@@ -1,3 +1,4 @@
+const initialEndpointType = localStorage.getItem('jina-endpoint-type') || '';
 const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
 
 const searchbarContainer = document.getElementById('searchbar-container');
@@ -10,6 +11,7 @@ const defaultInitSettings = {
 }
 
 const settings = {
+	endpointType: initialEndpointType,
 	url: initialEndpoint,
 	timeout: defaultInitSettings.timeout,
 	resultsAreaId: false,
@@ -137,13 +139,12 @@ JinaBox.init('${settings.url}'${(settings.timeout || settings.top_k) ? `,{\
 	document.getElementById('jinabox-code').innerText = code;
 }
 
-renderCode();
-
 const endpointSelection = document.getElementById('endpointSelection');
 const inputEndpoint = document.getElementById('inputEndpoint');
 
 endpointSelection.addEventListener('change',function(e){
 	let url = e.target.value;
+	localStorage.setItem('jina-endpoint-type', url);
 	if(url==='custom'){
 		url = inputEndpoint.value;
 		inputEndpoint.style.display = 'block';
@@ -158,6 +159,14 @@ endpointSelection.addEventListener('change',function(e){
 		renderCode();
 	}
 })
+
+if(initialEndpointType==='custom'){
+	endpointSelection.value = initialEndpointType;
+	inputEndpoint.style.display = 'block';
+}
+else{
+	settings.url = initialEndpointType;
+}
 
 inputEndpoint.setAttribute('value', initialEndpoint || '');
 inputEndpoint.addEventListener('input', function (e) {
@@ -262,6 +271,8 @@ function handleFileDrag(ev) {
 	ev.dataTransfer.setData("text", ev.target.src);
 	console.log('ev')
 }
+
+renderCode();
 
 console.log('initializing');
 JinaBox.init(settings.url, { timeout: settings.timeout })
