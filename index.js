@@ -3,12 +3,13 @@ const resultsContainer = document.getElementById('results-container');
 const floaterContainer = document.getElementById('floater-container');
 
 const defaultInitSettings = {
-	timeout: 5000,
-	top_k: 16
+	timeout: 25000,
+	top_k: 16,
+	endpointType:'https://demo.jina.ai/api/search'
 }
 
 const settings = {
-	endpointType: localStorage.getItem('jina-endpoint-type') || '',
+	endpointType: localStorage.getItem('jina-endpoint-type') || defaultInitSettings.endpointType,
 	url: localStorage.getItem('jina-endpoint') || '',
 	timeout: localStorage.getItem('jina-timeout') || defaultInitSettings.timeout,
 	top_k: localStorage.getItem('jina-top_k') || defaultInitSettings.top_k,
