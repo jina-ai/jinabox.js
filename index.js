@@ -1,6 +1,3 @@
-const initialEndpointType = localStorage.getItem('jina-endpoint-type') || '';
-const initialEndpoint = localStorage.getItem('jina-endpoint') || '';
-
 const searchbarContainer = document.getElementById('searchbar-container');
 const resultsContainer = document.getElementById('results-container');
 const floaterContainer = document.getElementById('floater-container');
@@ -11,9 +8,10 @@ const defaultInitSettings = {
 }
 
 const settings = {
-	endpointType: initialEndpointType,
-	url: initialEndpoint,
-	timeout: defaultInitSettings.timeout,
+	endpointType: localStorage.getItem('jina-endpoint-type') || '',
+	url: localStorage.getItem('jina-endpoint') || '',
+	timeout: localStorage.getItem('jina-timeout') || defaultInitSettings.timeout,
+	top_k: localStorage.getItem('jina-top_k') || defaultInitSettings.top_k,
 	resultsAreaId: false,
 	showSearch: true,
 	showFloater: true,
@@ -160,15 +158,7 @@ endpointSelection.addEventListener('change',function(e){
 	}
 })
 
-if(initialEndpointType==='custom'){
-	endpointSelection.value = initialEndpointType;
-	inputEndpoint.style.display = 'block';
-}
-else{
-	settings.url = initialEndpointType;
-}
-
-inputEndpoint.setAttribute('value', initialEndpoint || '');
+inputEndpoint.setAttribute('value', settings.url || '');
 inputEndpoint.addEventListener('input', function (e) {
 	const url = e.target.value;
 	localStorage.setItem('jina-endpoint', url);
@@ -177,20 +167,30 @@ inputEndpoint.addEventListener('input', function (e) {
 	renderCode();
 });
 
+if(settings.endpointType==='custom'){
+	endpointSelection.value = settings.endpointType;
+	inputEndpoint.style.display = 'block';
+}
+else{
+	settings.url = settings.endpointType;
+}
+
 const inputTimeout = document.getElementById('inputTimeout');
-inputTimeout.setAttribute('value', defaultInitSettings.timeout);
+inputTimeout.setAttribute('value', settings.timeout);
 inputTimeout.addEventListener('input', function (e) {
 	const timeout = e.target.value;
 	window.JinaBox.updateSettings({ timeout });
+	localStorage.setItem('jina-timeout',timeout);
 	settings.timeout = timeout;
 	renderCode()
 });
 
 const inputTopk = document.getElementById('inputTopk');
-inputTopk.setAttribute('value', defaultInitSettings.top_k);
+inputTopk.setAttribute('value', settings.top_k);
 inputTopk.addEventListener('input', function (e) {
 	const top_k = e.target.value;
 	window.JinaBox.updateSettings({ top_k });
+	localStorage.setItem('jina-top_k',top_k);
 	settings.top_k = top_k;
 	renderCode()
 });
@@ -275,4 +275,4 @@ function handleFileDrag(ev) {
 renderCode();
 
 console.log('initializing');
-JinaBox.init(settings.url, { timeout: settings.timeout })
+JinaBox.init(settings.url, { timeout: settings.timeout, top_k: settings.top_k })
