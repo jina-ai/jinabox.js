@@ -139,7 +139,26 @@ JinaBox.init('${settings.url}'${(settings.timeout || settings.top_k) ? `,{\
 
 renderCode();
 
+const endpointSelection = document.getElementById('endpointSelection');
 const inputEndpoint = document.getElementById('inputEndpoint');
+
+endpointSelection.addEventListener('change',function(e){
+	let url = e.target.value;
+	if(url==='custom'){
+		url = inputEndpoint.value;
+		inputEndpoint.style.display = 'block';
+		window.JinaBox.updateSettings({url});
+		settings.url = url;
+		renderCode();
+	}
+	else{
+		inputEndpoint.style.display = 'none';
+		window.JinaBox.updateSettings({url});
+		settings.url = url;
+		renderCode();
+	}
+})
+
 inputEndpoint.setAttribute('value', initialEndpoint || '');
 inputEndpoint.addEventListener('input', function (e) {
 	const url = e.target.value;
