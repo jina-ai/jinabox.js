@@ -11,4 +11,8 @@ export const defaultSettings = {
 	searchIcon: 'color',
 	floaterIcon: 'color',
 	showDropzone: true,
+	acceptAudio: true,
+	acceptVideo: true,
+	acceptText: true,
+	acceptImage: true,
 };

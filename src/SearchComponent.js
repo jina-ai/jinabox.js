@@ -1,5 +1,5 @@
 import { defaultPlaceholders, defaultSettings } from './config.js';
-import { getDataUri, waitFor } from './utils.js';
+import { getDataUri, waitFor,parseBool } from './utils.js';
 import _icons from './icons.js';
 
 class JinaBoxSearchComponent extends HTMLElement {
@@ -31,6 +31,22 @@ class JinaBoxSearchComponent extends HTMLElement {
 			if (!inBytes || query.length > 1) {
 				this.searchIcon.src = this.defaultSearchIcon;
 				this.searchIcon.classList.remove('jina-border-right');
+			}
+
+			for (let i = 0; i < query.length; ++i) {
+				console.log('acceptVideo',this.settings.acceptVideo)
+				console.log('acceptImage',this.settings.acceptImage)
+				console.log('acceptAudio',this.settings.acceptAudio)
+				console.log('acceptText',this.settings.acceptText)
+				let q = query[i];
+				if (q.startsWith('data:image') && !parseBool(this.settings.acceptImage))
+					return this.showError('Images are not accepted');
+				else if (q.startsWith('data:video') && !parseBool(this.settings.acceptVideo))
+					return this.showError('Video queries are not accepted');
+				else if (q.startsWith('data:audio') && !parseBool(this.settings.acceptAudio))
+					return this.showError('Audio queries are not accepted');
+				else if (!q.startsWith('data') && !parseBool(this.settings.acceptText))
+					return this.showError('Text queries are not accepted');
 			}
 
 			if (this.searchType !== 'live')
@@ -206,7 +222,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 		this.handleDrag = () => {
 			this.dragCounter++;
 			if (!this.highlighted) {
-				if (this.settings.showDropzone && this.settings.showDropzone !== 'false')
+				if (parseBool(this.settings.showDropzone))
 					this.showContentContainer();
 				this.contentContainer.innerHTML = `
 				<div class="jina-dropdown-message jina-ready unselectable">
@@ -255,7 +271,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				
 			</div>
 		`;
-			this.getElement('jina-expander-file-input-trigger').onclick = ()=>this.getElement('jina-expander-file-input').click();
+			this.getElement('jina-expander-file-input-trigger').onclick = () => this.getElement('jina-expander-file-input').click();
 			this.getElement('jina-expander-file-input').addEventListener('change', this.handleUpload);
 
 			let captureMediaButton = this.getElement('jina-expander-capture-media-button');
@@ -488,7 +504,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			capturePreview.srcObject = this.mediaStream;
 			this.searchType = 'live'
 
-			capturePreview.oncanplaythrough = () => setTimeout(this.startLiveSearch,50);
+			capturePreview.oncanplaythrough = () => setTimeout(this.startLiveSearch, 50);
 			this.getElement('jina-live-toggle-button').onclick = this.toggleLiveSearch;
 		}
 
@@ -918,7 +934,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 		}
 
-		this.getElement = (className)=>{
+		this.getElement = (className) => {
 			return document.querySelector(`#${this.elementId} .${className}`);
 		}
 
@@ -929,10 +945,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.settings[attr] = this.getAttribute(attr) || defaultSettings[attr];
 		}
 
+		console.log('%%%%%%attribute acceptVideo:',this.getAttribute('acceptVideo'))
+
 		this.elementId = this.getAttribute('id') || `jina-component-${Math.floor(Math.random() * Math.floor(10000000000))}`;
 		this.defaultSearchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
 
-		console.log('elementId',this.elementId);
+		console.log('elementId', this.elementId);
 
 		this.innerHTML = `
 		<div id="${this.elementId}">

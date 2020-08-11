@@ -22,7 +22,11 @@ const settings = {
 	placeholders: ['type or drag anything to search', 'powered by Jina', 'unleash your curiosity and happy searching'],
 	typewriterDelayCharacter: 50,
 	typewriterDelayItem: 1000,
-	floaterStyle: 'standard'
+	floaterStyle: 'standard',
+	acceptVideo: true,
+	acceptAudio: true,
+	acceptText: true,
+	acceptImage: true,
 };
 
 const defaultComponentSettings = {
@@ -96,6 +100,10 @@ function renderCode() {
 	${settings.typewriterDelayItem != defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders) != String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
 	${settings.resultsLocation == 'external' ? '\nresultsLocation="external"' : ''}\
+	${settings.acceptAudio ? '':'\nacceptAudio="false"'}\
+	${settings.acceptVideo ? '': '\nacceptVideo="false"'}\
+	${settings.acceptImage ? '': '\nacceptImage="false"'}\
+	${settings.acceptText ? '': '\nacceptText="false"'}\
 	${settings.showSearchbarDropzone ? '' : '\nshowDropzone="false"'}>
 	</jina-searchbar>`: ''}\
 	`;
@@ -108,6 +116,10 @@ function renderCode() {
 	${settings.typewriterDelayCharacter != defaultComponentSettings.typewriterDelayCharacter ? `\ntypewriterDelayCharacter=${settings.typewriterDelayCharacter}` : ''}\
 	${settings.typewriterDelayItem != defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders) != String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
+	${settings.acceptAudio ? '': '\nacceptAudio="false"'}\
+	${settings.acceptVideo ? '': '\nacceptVideo="false"'}\
+	${settings.acceptImage ? '': '\nacceptImage="false"'}\
+	${settings.acceptText ? '': '\nacceptText="false"'}\
 	${settings.showFloaterDropzone ? '' : '\nshowDropzone="false"'}>
 	${settings.floaterStyle === 'standard' ? '</jina-floater>' : '</jina-floater-chat>'}` : ''}
 	`;
@@ -229,6 +241,30 @@ document.getElementById('showSearchbarDropzone').addEventListener('change', func
 document.getElementById('showFloaterDropzone').addEventListener('change', function (e) {
 	const checked = e.target.checked;
 	settings.showFloaterDropzone = checked;
+	renderCode()
+});
+
+document.getElementById('acceptVideo').addEventListener('change', function (e) {
+	const checked = e.target.checked;
+	settings.acceptVideo = checked;
+	renderCode()
+});
+
+document.getElementById('acceptAudio').addEventListener('change', function (e) {
+	const checked = e.target.checked;
+	settings.acceptAudio = checked;
+	renderCode()
+});
+
+document.getElementById('acceptText').addEventListener('change', function (e) {
+	const checked = e.target.checked;
+	settings.acceptText = checked;
+	renderCode()
+});
+
+document.getElementById('acceptImage').addEventListener('change', function (e) {
+	const checked = e.target.checked;
+	settings.acceptImage = checked;
 	renderCode()
 });
 

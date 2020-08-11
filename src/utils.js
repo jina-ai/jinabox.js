@@ -31,7 +31,13 @@ export function getDataUri(url) {
 }
 
 export function waitFor(seconds) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(), seconds * 1000)
-  })
+	return new Promise((resolve, reject) => {
+		setTimeout(() => resolve(), seconds * 1000)
+	})
+}
+
+export function parseBool(x) {
+	if (String(x).toLowerCase() === 'true')
+		return true;
+	return false;
 }
