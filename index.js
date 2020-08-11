@@ -5,7 +5,7 @@ const floaterContainer = document.getElementById('floater-container');
 const defaultInitSettings = {
 	timeout: 25000,
 	top_k: 16,
-	endpointType:'https://demo.jina.ai/api/search'
+	endpointType: 'https://demo.jina.ai/api/search'
 }
 
 const settings = {
@@ -100,10 +100,10 @@ function renderCode() {
 	${settings.typewriterDelayItem != defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders) != String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
 	${settings.resultsLocation == 'external' ? '\nresultsLocation="external"' : ''}\
-	${settings.acceptAudio ? '':'\nacceptAudio="false"'}\
-	${settings.acceptVideo ? '': '\nacceptVideo="false"'}\
-	${settings.acceptImage ? '': '\nacceptImage="false"'}\
-	${settings.acceptText ? '': '\nacceptText="false"'}\
+	${settings.acceptAudio ? '' : '\nacceptAudio="false"'}\
+	${settings.acceptVideo ? '' : '\nacceptVideo="false"'}\
+	${settings.acceptImage ? '' : '\nacceptImage="false"'}\
+	${settings.acceptText ? '' : '\nacceptText="false"'}\
 	${settings.showSearchbarDropzone ? '' : '\nshowDropzone="false"'}>
 	</jina-searchbar>`: ''}\
 	`;
@@ -116,10 +116,10 @@ function renderCode() {
 	${settings.typewriterDelayCharacter != defaultComponentSettings.typewriterDelayCharacter ? `\ntypewriterDelayCharacter=${settings.typewriterDelayCharacter}` : ''}\
 	${settings.typewriterDelayItem != defaultComponentSettings.typewriterDelayItem ? `\ntypewriterDelayItem=${settings.typewriterDelayItem}` : ''}\
 	${String(settings.placeholders) != String(defaultComponentSettings.placeholders) ? `\nplaceholders='${JSON.stringify(settings.placeholders)}'` : ''}\
-	${settings.acceptAudio ? '': '\nacceptAudio="false"'}\
-	${settings.acceptVideo ? '': '\nacceptVideo="false"'}\
-	${settings.acceptImage ? '': '\nacceptImage="false"'}\
-	${settings.acceptText ? '': '\nacceptText="false"'}\
+	${settings.acceptAudio ? '' : '\nacceptAudio="false"'}\
+	${settings.acceptVideo ? '' : '\nacceptVideo="false"'}\
+	${settings.acceptImage ? '' : '\nacceptImage="false"'}\
+	${settings.acceptText ? '' : '\nacceptText="false"'}\
 	${settings.showFloaterDropzone ? '' : '\nshowDropzone="false"'}>
 	${settings.floaterStyle === 'standard' ? '</jina-floater>' : '</jina-floater-chat>'}` : ''}
 	`;
@@ -153,19 +153,23 @@ JinaBox.init('${settings.url}'${(settings.timeout || settings.top_k) ? `,{\
 const endpointSelection = document.getElementById('endpointSelection');
 const inputEndpoint = document.getElementById('inputEndpoint');
 
-endpointSelection.addEventListener('change',function(e){
+endpointSelection.addEventListener('change', function (e) {
 	let url = e.target.value;
 	localStorage.setItem('jina-endpoint-type', url);
-	if(url==='custom'){
+	if (url === 'custom') {
 		url = inputEndpoint.value;
 		inputEndpoint.style.display = 'block';
-		window.JinaBox.updateSettings({url});
+		window.JinaBox.updateSettings({ url });
 		settings.url = url;
 		renderCode();
 	}
-	else{
+	else {
+		document.getElementById('acceptAudio').checked = false;
+		document.getElementById('acceptVideo').checked = false;
+		settings.acceptAudio = false;
+		settings.acceptVideo = false;
 		inputEndpoint.style.display = 'none';
-		window.JinaBox.updateSettings({url});
+		window.JinaBox.updateSettings({ url });
 		settings.url = url;
 		renderCode();
 	}
@@ -180,11 +184,15 @@ inputEndpoint.addEventListener('input', function (e) {
 	renderCode();
 });
 
-if(settings.endpointType==='custom'){
+if (settings.endpointType === 'custom') {
 	endpointSelection.value = settings.endpointType;
 	inputEndpoint.style.display = 'block';
 }
-else{
+else {
+	document.getElementById('acceptAudio').checked = false;
+	document.getElementById('acceptVideo').checked = false;
+	settings.acceptAudio = false;
+	settings.acceptVideo = false;
 	settings.url = settings.endpointType;
 }
 
@@ -193,7 +201,7 @@ inputTimeout.setAttribute('value', settings.timeout);
 inputTimeout.addEventListener('input', function (e) {
 	const timeout = e.target.value;
 	window.JinaBox.updateSettings({ timeout });
-	localStorage.setItem('jina-timeout',timeout);
+	localStorage.setItem('jina-timeout', timeout);
 	settings.timeout = timeout;
 	renderCode()
 });
@@ -203,7 +211,7 @@ inputTopk.setAttribute('value', settings.top_k);
 inputTopk.addEventListener('input', function (e) {
 	const top_k = e.target.value;
 	window.JinaBox.updateSettings({ top_k });
-	localStorage.setItem('jina-top_k',top_k);
+	localStorage.setItem('jina-top_k', top_k);
 	settings.top_k = top_k;
 	renderCode()
 });
