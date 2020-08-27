@@ -41,3 +41,13 @@ export function parseBool(x) {
 		return true;
 	return false;
 }
+
+export function blobToBase64(blob){
+	return new Promise((resolve,reject)=>{
+		let reader = new FileReader();
+		reader.onload = function(){
+			resolve(reader.result);
+		}
+		reader.readAsDataURL(blob);
+	})
+}

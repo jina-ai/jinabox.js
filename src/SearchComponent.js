@@ -1,5 +1,5 @@
 import { defaultPlaceholders, defaultSettings } from './config.js';
-import { getDataUri, waitFor,parseBool } from './utils.js';
+import { getDataUri, waitFor, parseBool,blobToBase64 } from './utils.js';
 import _icons from './icons.js';
 
 class JinaBoxSearchComponent extends HTMLElement {
@@ -34,10 +34,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			for (let i = 0; i < query.length; ++i) {
-				console.log('acceptVideo',this.settings.acceptVideo)
-				console.log('acceptImage',this.settings.acceptImage)
-				console.log('acceptAudio',this.settings.acceptAudio)
-				console.log('acceptText',this.settings.acceptText)
+				console.log('acceptVideo', this.settings.acceptVideo)
+				console.log('acceptImage', this.settings.acceptImage)
+				console.log('acceptAudio', this.settings.acceptAudio)
+				console.log('acceptText', this.settings.acceptText)
 				let q = query[i];
 				if (q.startsWith('data:image') && !parseBool(this.settings.acceptImage))
 					return this.showError('Images are not accepted');
@@ -77,26 +77,38 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
-				let { topkResults, uri, mimeType } = docResults;
+				let { topkResults, matches, uri, mimeType } = docResults;
 				if (docResults.mimeType !== 'text/plain')
 					queriesContainMedia = true;
 				queries.push({ uri, mimeType });
 
-				for (let j = 0; j < topkResults.length; ++j) {
-					const res = topkResults[j];
+				let resultsArr = topkResults || matches
+
+				for (let j = 0; j < resultsArr.length; ++j) {
+					const res = resultsArr[j];
 					if (!results[i])
 						results[i] = [];
-					if (res.matchDoc.mimeType === 'text/plain')
-						resultsContainText = true;
-					if (!res.matchDoc.mimeType.startsWith('image'))
-						onlyImages = false;
 
-					results[i].push({
-						mimeType: res.matchDoc.mimeType,
-						data: res.matchDoc.uri,
-						text: res.matchDoc.text,
-						score: res.score.value,
-					});
+					let data, text, mimeType, score;
+					score = res.score.value;
+					if (res.matchDoc) {
+						mimeType = res.matchDoc.mimeType;
+						data = res.matchDoc.uri;
+						text = res.matchDoc.text;
+						if (mimeType === 'text/plain')
+							resultsContainText = true;
+						if (!mimeType.startsWith('image'))
+							onlyImages = false;
+					}
+					else {
+						mimeType = res.modality;
+						// let blob = new Blob([res.blob.buffer],{type:'image/*'});
+						// data =  await blobToBase64(blob);
+						data = `data:image/*;base64,${res.blob.buffer}`
+						text = '';
+					}
+
+					results[i].push({ mimeType, data, text, score });
 					totalResults++;
 				}
 			}
@@ -945,7 +957,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			this.settings[attr] = this.getAttribute(attr) || defaultSettings[attr];
 		}
 
-		console.log('%%%%%%attribute acceptVideo:',this.getAttribute('acceptVideo'))
+		console.log('%%%%%%attribute acceptVideo:', this.getAttribute('acceptVideo'))
 
 		this.elementId = this.getAttribute('id') || `jina-component-${Math.floor(Math.random() * Math.floor(10000000000))}`;
 		this.defaultSearchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
