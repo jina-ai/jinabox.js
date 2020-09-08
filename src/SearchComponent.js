@@ -1,5 +1,5 @@
 import { defaultPlaceholders, defaultSettings } from './config.js';
-import { getDataUri, waitFor, parseBool,blobToBase64 } from './utils.js';
+import { getDataUri, waitFor, parseBool } from './utils.js';
 import _icons from './icons.js';
 
 class JinaBoxSearchComponent extends HTMLElement {
@@ -78,8 +78,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
 				let { topkResults, matches, uri, mimeType } = docResults;
-				if (docResults.mimeType !== 'text/plain')
-					queriesContainMedia = true;
 				queries.push({ uri, mimeType });
 
 				let resultsArr = topkResults || matches
@@ -95,18 +93,19 @@ class JinaBoxSearchComponent extends HTMLElement {
 						mimeType = res.matchDoc.mimeType;
 						data = res.matchDoc.uri;
 						text = res.matchDoc.text;
-						if (mimeType === 'text/plain')
-							resultsContainText = true;
-						if (!mimeType.startsWith('image'))
-							onlyImages = false;
 					}
 					else {
-						mimeType = res.modality;
-						// let blob = new Blob([res.blob.buffer],{type:'image/*'});
-						// data =  await blobToBase64(blob);
-						data = `data:image/*;base64,${res.blob.buffer}`
-						text = '';
+						mimeType = res.mimeType;
+						data = res.uri;
+						text = res.text;
 					}
+
+					if (mimeType.includes('text')){
+						onlyImages = false;
+						resultsContainText = true;
+					}
+					if (!mimeType.includes('image'))
+						onlyImages = false;
 
 					results[i].push({ mimeType, data, text, score });
 					totalResults++;
@@ -117,9 +116,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 					return b.score - a.score
 				});
 			}
+
 			this.queries = queries;
 			this.results = results;
 			this.resultsMeta = { totalTime, totalResults, resultsContainText, queriesContainMedia, onlyImages };
+
+			console.log('resultsMeta:', this.resultsMeta);
 
 			this.resultsIndex = 0;
 			this.showResults(0, searchType);
@@ -843,7 +845,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			results[index].forEach((result, idx) => {
 				let resultElement = this.getElement(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
-					if (result.mimeType.startsWith('text')) {
+					if (result.mimeType.includes('text')) {
 						this.searchInput.value = result.text;
 						this.search()
 					} else {
@@ -856,19 +858,19 @@ class JinaBoxSearchComponent extends HTMLElement {
 		}
 
 		this.renderResult = (result) => {
-			if (result.mimeType.startsWith('text')) {
+			if (result.mimeType.includes('text')) {
 				return `<div class="jina-result jina-text-result jina-result-${result.index}">${result.text}</div>`
 			}
-			else if (result.mimeType.startsWith('image')) {
+			else if (result.mimeType.includes('image')) {
 				if (this.resultsView === 'grid')
 					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
 				else
 					return `<div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
 			}
-			else if (result.mimeType.startsWith('audio')) {
+			else if (result.mimeType.includes('audio')) {
 				return `<div class="jina-result jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
 			}
-			else if (result.mimeType.startsWith('video')) {
+			else if (result.mimeType.includes('video')) {
 				return `<div class="jina-result jina-result-${result.index}"><video src="${result.data}" class="jina-result-video" controls autoplay muted loop></video></div>`
 			}
 		}
@@ -878,13 +880,13 @@ class JinaBoxSearchComponent extends HTMLElement {
 			return `
 			<div class="jina-results-tab${active ? ' jina-active' : ''} jina-results-tab-${i}">
 			${
-				(mimeType.startsWith('image')) ?
+				(mimeType.includes('image')) ?
 					`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
 					:
-					(mimeType.startsWith('video')) ?
+					(mimeType.includes('video')) ?
 						`<video class="jina-results-tab-video" src="${uri}" autoplay muted loop></video>`
 						:
-						(mimeType.startsWith('audio')) ?
+						(mimeType.includes('audio')) ?
 							`<audio controls class="jina-results-tab-audio" src="${uri}"></audio>`
 							: ''
 				}
@@ -956,8 +958,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 			const attr = options[i];
 			this.settings[attr] = this.getAttribute(attr) || defaultSettings[attr];
 		}
-
-		console.log('%%%%%%attribute acceptVideo:', this.getAttribute('acceptVideo'))
 
 		this.elementId = this.getAttribute('id') || `jina-component-${Math.floor(Math.random() * Math.floor(10000000000))}`;
 		this.defaultSearchIcon = _icons[this.settings.searchIcon] || this.settings.searchIcon;
