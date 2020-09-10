@@ -111,12 +111,6 @@ class JinaBoxSearchComponent extends HTMLElement {
 					totalResults++;
 				}
 			}
-			for (let i = 0; i < results.length; ++i) {
-				results[i] = results[i].sort((a, b) => {
-					return b.score - a.score
-				});
-			}
-
 			this.queries = queries;
 			this.results = results;
 			this.resultsMeta = { totalTime, totalResults, resultsContainText, queriesContainMedia, onlyImages };
