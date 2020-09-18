@@ -80,6 +80,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 				let { topkResults, matches, uri, mimeType } = docResults;
 				queries.push({ uri, mimeType });
 
+				if(mimeType.includes("image"))
+					queriesContainMedia = true;
+
 				let resultsArr = topkResults || matches
 
 				for (let j = 0; j < resultsArr.length; ++j) {
@@ -100,10 +103,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 						text = res.text;
 					}
 
-					if (mimeType.includes('text')){
+					if (mimeType.includes('text')) {
 						onlyImages = false;
 						resultsContainText = true;
 					}
+
 					if (!mimeType.includes('image'))
 						onlyImages = false;
 
@@ -264,14 +268,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 				<input type="file" class="jina-expander-file-input" multiple>
 				<button class="jina-expander-file-input-trigger"><img src="${_icons.filePlus}"> Upload Files</button>
 				<button class="jina-expander-capture-media-button"><img src="${_icons.camera}"> Camera</button>
-				${
-				window.MediaRecorder ?
+				${window.MediaRecorder ?
 					`<button class="jina-expander-capture-audio-button"><img src="${_icons.mic}"> Audio</button>`
 					:
 					''
 				}
-				${
-				navigator.mediaDevices && (navigator.mediaDevices.getDisplayMedia || navigator.getDisplayMedia) ?
+				${navigator.mediaDevices && (navigator.mediaDevices.getDisplayMedia || navigator.getDisplayMedia) ?
 					`<button class="jina-expander-capture-screen-button"><img src="${_icons.monitor}">  Screen Capture</button>`
 					:
 					''
@@ -773,7 +775,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			let queries = this.queries;
 			let { totalResults, totalTime, onlyImages, queriesContainMedia } = this.resultsMeta;
 
-			if (queries.length > 1 || queriesContainMedia) {
+			if (queries.length > 1 || onlyImages) {
 				toolbar = `
 				<div class="jina-results-toolbar">
 					<div class="jina-results-tabs">`;
@@ -827,6 +829,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			if (toolbar) {
+				if(queriesContainMedia)
 				for (let i = 0; i < queries.length; ++i) {
 					this.getElement(`jina-results-tab-${i}`).addEventListener('click', () => this.showResults(i));
 				}
@@ -873,8 +876,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			const { uri, mimeType } = query
 			return `
 			<div class="jina-results-tab${active ? ' jina-active' : ''} jina-results-tab-${i}">
-			${
-				(mimeType.includes('image')) ?
+			${(mimeType.includes('image')) ?
 					`<div class="jina-results-tab-img" style="background:url(${uri});background-size: cover;"></div>`
 					:
 					(mimeType.includes('video')) ?

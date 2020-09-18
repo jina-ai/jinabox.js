@@ -596,12 +596,13 @@
 }
 
 .jina-results-action-button {
-		box-sizing: border-box;
+    box-sizing: border-box;
     cursor: pointer;
     width: 1.85em;
     height: 1.85em;
     border-radius: 5px;
-  	padding: .25em;
+    padding: .25em;
+    margin-bottom: .5em;
 }
 .jina-results-action-button.jina-active {
     background-color: rgba(0, 153, 153, 0.25);
