@@ -58,18 +58,18 @@ In HTML, include the minified script:
 Then create a container where the searchbar/floater is to appear:
 
 ```html
-<jina-searchbar/>
+<jina-searchbar></jina-searchbar>
 
 <!--or-->
 
-<jina-floater/>
+<jina-floater></jina-searchbar>
 ```
 
 Now you can drag anything from anywhere (local/browser/webpage) to it and conduct the search.
 
 Ready to learn Jina? [Read our 101 tutorials](https://101.jina.ai).
 
-### Using with a module bundler
+### Installation via package manager
 
 ```bash
 npm install jinabox
@@ -98,22 +98,89 @@ yarn add jinabox
 
 ## Configuration
 
-| Settings                   | Description                                          |
-| ---                        | ---                                                  |
-| `theme`                    | Color theme: `persian`, `pompelmo`, `honeybee`, none |
-| `typewriterEffect`         | Enable typewriter effect on the placeholder          |
-| `typewriterDelayItem`      | Time (ms) delay between every placeholder            |
-| `typewriterDelayCharacter` | Time (ms) delay between each character               |
+Play with and preview jinabox configurations here: https://jina.ai/jinabox.js/
+
+| Setting                    | Default             | Type    | Description                                                                                                                                                 |
+|----------------------------|---------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `theme`                    | `default`           | string  | Color theme: `default`, `persian`, `pompelmo`, `honeybee`                                                                                                   |
+| `searchIcon`               | `color`             | string  | Searchbar icon: `color`, `mono`, `inverse`, or a URL                                                                                                        |
+| `showDropzone`             | `true`              | boolean | Show expanding drop zone when dragging files                                                                                                                |
+| `resultsLocation`          | `dropdown`          | string  | Where to display results: `dropdown` or `external`. When selecting external, results will be rendered in the element corresponding to the `results-area-id` |
+| `resultsAreaId`            | `jina-results-area` | string  | ID of where results will be rendered if `resultsLocation` is set to `external`                                                                              |
+| `typewriterEffect`         | `false`             | boolean | Enable typewriter effect on the placeholder                                                                                                                 |
+| `typewriterDelayItem`      | `1000`              | number  | Time (ms) delay between every placeholder switch when `typewriterEffect` is enabled                                                                         |
+| `typewriterDelayCharacter` | `50`                | number  | Time (ms) delay between each character when `typwriterEffect` is enabled                                                                                    |
+| `userMediaHeight`          | `500`               | number  | Webcam feed and capture height                                                                                                                              |
+| `userMediaWidth`           | `300`               | number  | Webcam feed and capture width                                                                                                                               |
+| `acceptAudio`              | `true`              | boolean | Allow search with audio queries                                                                                                                             |
+| `acceptVideo`              | `true`              | boolean | Allow search with video queries                                                                                                                             |
+| `acceptText`               | `true`              | boolean | Allow search with text queries                                                                                                                              |
+| `acceptImage`              | `true`              | boolean | Allow search with image queries                                                                                                                             |
+
+### Expected Response Structure
+
+`jinabox.js` expects query responses to contain either of the following structures
+
+```json
+{
+  "search": {
+    "docs": [
+      {
+        "topkResults": [
+          {
+            "matchDoc": {
+              "docId": 14704,
+              "weight": 1,
+              "uri": "data:image/png;charset=utf,...",
+              "mimeType":"image/png"
+            }
+          }
+        ],
+        "uri":"data:image/jpeg;...",
+        "mimeType":"image/jpeg"
+      }
+    ]
+  }
+}
+
+```
+or
+
+```json
+{
+  "search": {
+    "docs": [
+      {
+        "matches": [
+          {
+            "docId": 14704,
+            "weight": 1,
+            "uri": "data:image/png;charset=utf,...",
+            "mimeType":"image/png"
+          }
+        ],
+        "uri":"data:image/jpeg;...",
+        "mimeType":"image/jpeg"
+      }
+    ]
+  }
+}
+
+```
 
 ## Browser Support
 
-`jinabox.js` runs on modern browsers supporting Web Audio, including Firefox, Chrome, Safari (desktop and mobile) and Opera.
+`jinabox.js` runs on modern browsers including Chrome, Firefox, Safari (desktop and mobile) and Opera. Certain features (like recording audio/video) are not available on all browsers and jinabox will make these features available accordingly.
 
 ## Troubleshooting
 
 ### SSL Error on Localhost
 
 Try `http://localhost:65481/api/search`, make sure to use `http` and `localhost`, instead of `0.0.0.0`.
+
+### Requests hanging or failing
+
+Query your api with `curl` to ensure it is properly receiving, processing, and responding to requests. Ensure responses meet `jinabox` expected response structure.
 
 ## License
 
