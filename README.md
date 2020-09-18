@@ -180,7 +180,7 @@ Try `http://localhost:65481/api/search`, make sure to use `http` and `localhost`
 
 ### Requests hanging or failing
 
-Query your api with `curl` to ensure it is properly receiving, processing, and responding to requests. Ensure responses meet `jinabox` [expected response structure].(#expected-response-structure).
+Query your api with `curl` to ensure it is properly receiving, processing, and responding to requests. Ensure responses meet `jinabox` [expected response structure](#expected-response-structure).
 
 ## License
 
