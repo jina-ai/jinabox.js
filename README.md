@@ -172,6 +172,8 @@ or
 
 `jinabox.js` runs on modern browsers including Chrome, Firefox, Safari (desktop and mobile) and Opera. Certain features (like recording audio/video) are not available on all browsers and jinabox will make these features available accordingly.
 
+This is a test, do not merge
+
 ## Troubleshooting
 
 ### SSL Error on Localhost
