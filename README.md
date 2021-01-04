@@ -62,7 +62,7 @@ Then create a container where the searchbar/floater is to appear:
 
 <!--or-->
 
-<jina-floater></jina-searchbar>
+<jina-floater></jina-floater>
 ```
 
 Now you can drag anything from anywhere (local/browser/webpage) to it and conduct the search.
