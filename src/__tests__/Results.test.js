@@ -17,7 +17,6 @@ describe('jina-results tests', () => {
 
     it('should get default inner HTML when first render', async () => {
         const jinaResults = getByTestId(container, 'jina-results-area');
-        expect(jinaResults).toContainHTML(`<div class="jina-results-area" id="jina-results-area"></div>`);
-        expect(container).toMatchSnapshot();
+        expect(jinaResults.getAttribute("id")).toEqual("jina-results-area");
     });
 });
