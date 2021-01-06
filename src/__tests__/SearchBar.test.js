@@ -1,6 +1,7 @@
 import SearchBar from "../SearchBar";
+import icons from "../icons";
 import '../../golbalTestsSetup';
-import { getByPlaceholderText, getByTestId } from "@testing-library/dom";
+import { getByPlaceholderText, getBy } from "@testing-library/dom";
 
 describe('SearchBar test', () => {
     let container;
@@ -13,10 +14,7 @@ describe('SearchBar test', () => {
         container = div;
     });
     it('should show search bar with icon and placeholder on input element', function () {
-        const jinaSearchBarInput = getByPlaceholderText(container, 'type or drop to search');
-        const jinaSearchBarIcon = getByTestId(container, 'jina-search-icon');
-        expect(jinaSearchBarIcon.getAttribute('id')).toEqual('jina-search-icon');
-        expect(jinaSearchBarInput.getAttribute('id')).toEqual("jina-search-input");
-        expect(container).toMatchSnapshot();
+        expect(container.querySelector(".jina-search-input").getAttribute("placeholder")).toEqual('type or drop to search');
+        expect(container.querySelector(".jina-search-icon").getAttribute("src")).toEqual(icons.color);
     });
 });
