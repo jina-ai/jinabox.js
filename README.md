@@ -14,7 +14,7 @@
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
 - [Features](#features)
 - [Jinabox in Action](#jinaboxjs-in-action)
-- [Jinabox in Your Project](#jinaboxjs-in-your-project)
+- [Adding Jinabox to Your Project](#adding-jinaboxjs-to-your-project)
 - [Supported MIME types](#supported-mime-types)
 - [Configuration](#configuration)
 
