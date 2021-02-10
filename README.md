@@ -12,9 +12,9 @@
 
 
 - [Learn Jina: the fastest way to build cloud-native neural search](https://github.com/jina-ai/jina)
+- [Features](#features)
 - [Jinabox in Action](#jinaboxjs-in-action)
 - [Jinabox in Your Project](#jinaboxjs-in-your-project)
-- [Features](#features)
 - [Supported MIME types](#supported-mime-types)
 - [Configuration](#configuration)
 
