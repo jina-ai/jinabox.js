@@ -80,7 +80,7 @@ Then add the jinabox [web components](https://developer.mozilla.org/en-US/docs/W
 
 <!--or-->
 
-<jina-floater></jina-searchbar>
+<jina-floater></jina-floater>
 ```
 
 Now you can drag anything from anywhere (local/browser/webpage) to it and conduct the search.
