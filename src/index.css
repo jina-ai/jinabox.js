@@ -348,6 +348,7 @@
 		z-index: 1;
 }
 .jina-search-container {
+    display: flex;
     position: relative;
 }
 .jina-persian {
@@ -882,6 +883,11 @@
     color:black;
     border-radius: .5em .5em 0em .5em;
     /* text-align: right; */
+}
+
+.jina-close-icon {
+    height: 30px;
+    cursor: pointer;
 }
 
 .jina-jumping-dots {
