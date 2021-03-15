@@ -13,7 +13,7 @@ describe('SearchBar test', () => {
         div.innerHTML = `<jina-searchbar></jina-searchbar>`;
         container = div;
     });
-    it('should show search bar with icon and placeholder on input element', function () {
+    it('should show search bar with search and close icons and placeholder on input element', function () {
         expect(container.querySelector(".jina-search-input").getAttribute("placeholder")).toEqual('type or drop to search');
         expect(container.querySelector(".jina-search-icon").getAttribute("src")).toEqual(icons.color);
         expect(container.querySelector(".jina-close-icon").getAttribute("src")).toEqual(icons.close);
