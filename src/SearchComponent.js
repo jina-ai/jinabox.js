@@ -70,13 +70,15 @@ class JinaBoxSearchComponent extends HTMLElement {
 			let queriesContainMedia = false;
 			let resultsContainText = false;
 			let onlyImages = true;
-			let { docs } = response.search;
+			let { docs } = response.data;
 			let { code, description } = response.status || {};
-			if (code == 'ERROR')
-				return this.showError(description);
+			// if (code == 'ERROR')
+			// 	return this.showError(description);
 
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
+				console.log(docResults, 'docResults')
+
 				let { topkResults, matches, uri, mimeType } = docResults;
 				queries.push({ uri, mimeType });
 
