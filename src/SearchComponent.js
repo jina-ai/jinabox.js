@@ -90,18 +90,19 @@ class JinaBoxSearchComponent extends HTMLElement {
 
 				for (let j = 0; j < resultsArr.length; ++j) {
 					const res = resultsArr[j];
+				
 					if (!results[i])
 						results[i] = [];
 
 					let data, text, mimeType, score;
 					score = res.score.value;
 					if (res.matchDoc) {
-						mimeType = res.matchDoc.mimeType;
+						mimeType = res.matchDoc.mime_type;
 						data = res.matchDoc.uri;
 						text = res.matchDoc.text;
 					}
 					else {
-						mimeType = res.mimeType;
+						mimeType = res.mime_type;
 						data = res.uri;
 						text = res.text;
 					}
