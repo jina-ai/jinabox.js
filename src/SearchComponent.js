@@ -87,10 +87,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 					queriesContainMedia = true;
 
 				let resultsArr = matches
-
 				for (let j = 0; j < resultsArr.length; ++j) {
 					const res = resultsArr[j];
-				
+
 					if (!results[i])
 						results[i] = [];
 
@@ -103,9 +102,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 					}
 					else {
 						mimeType = res.mime_type;
-						data = res.uri;
+						data = res.blob.dense.buffer;
 						text = res.text;
 					}
+
 
 					if (mimeType.includes('text')) {
 						onlyImages = false;
@@ -115,7 +115,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 					if (!mimeType.includes('image'))
 						onlyImages = false;
 
-					results[i].push({ mimeType, data, text, score });
+					const result = { mimeType, data, text, score }
+					console.log('result', result)
+
+					results[i].push(result);
 					totalResults++;
 				}
 			}
@@ -844,6 +847,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			results[index].forEach((result, idx) => {
+				console.log('nextResult', result)
 				let resultElement = this.getElement(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
 					if (result.mimeType.includes('text')) {
@@ -863,10 +867,11 @@ class JinaBoxSearchComponent extends HTMLElement {
 				return `<div class="jina-result jina-text-result jina-result-${result.index}">${result.text}</div>`
 			}
 			else if (result.mimeType.includes('image')) {
+				
 				if (this.resultsView === 'grid')
-					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
+					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="data:image/png;base64,${result.data}" class="jina-result-image"/></div></div>`
 				else
-					return `<div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
+					return `<div class="jina-result jina-result-${result.index}"><img src="data:image/png;base64,${result.data}" class="jina-result-image"/></div>`
 			}
 			else if (result.mimeType.includes('audio')) {
 				return `<div class="jina-result jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
