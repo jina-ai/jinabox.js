@@ -72,20 +72,21 @@ class JinaBoxSearchComponent extends HTMLElement {
 			let onlyImages = true;
 			let { docs } = response.data;
 			let { code, description } = response.status || {};
-			// if (code == 'ERROR')
-			// 	return this.showError(description);
+			if (code == 'ERROR')
+				return this.showError(description);
 
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
-				console.log(docResults, 'docResults')
+				console.log('docResults', docResults)
 
-				let { topkResults, matches, uri, mimeType } = docResults;
+				let { matches, uri, mime_type } = docResults;
+				const mimeType = mime_type
 				queries.push({ uri, mimeType });
 
 				if(mimeType.includes("image"))
 					queriesContainMedia = true;
 
-				let resultsArr = topkResults || matches
+				let resultsArr = matches
 
 				for (let j = 0; j < resultsArr.length; ++j) {
 					const res = resultsArr[j];
