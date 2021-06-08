@@ -102,7 +102,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 					}
 					else {
 						mimeType = res.mime_type;
-						data = res.blob.dense.buffer;
+						data = res.uri;
 						text = res.text;
 					}
 
@@ -869,9 +869,9 @@ class JinaBoxSearchComponent extends HTMLElement {
 			else if (result.mimeType.includes('image')) {
 				
 				if (this.resultsView === 'grid')
-					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="data:image/png;base64,${result.data}" class="jina-result-image"/></div></div>`
+					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
 				else
-					return `<div class="jina-result jina-result-${result.index}"><img src="data:image/png;base64,${result.data}" class="jina-result-image"/></div>`
+					return `<div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div>`
 			}
 			else if (result.mimeType.includes('audio')) {
 				return `<div class="jina-result jina-result-${result.index}"><audio src="${result.data}" class="jina-result-audio" controls></audio></div>`
