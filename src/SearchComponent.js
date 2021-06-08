@@ -70,38 +70,42 @@ class JinaBoxSearchComponent extends HTMLElement {
 			let queriesContainMedia = false;
 			let resultsContainText = false;
 			let onlyImages = true;
-			let { docs } = response.search;
+			let { docs } = response.data;
 			let { code, description } = response.status || {};
 			if (code == 'ERROR')
 				return this.showError(description);
 
 			for (let i = 0; i < docs.length; ++i) {
 				let docResults = docs[i];
-				let { topkResults, matches, uri, mimeType } = docResults;
+				console.log('docResults', docResults)
+
+				let { matches, uri, mime_type } = docResults;
+				const mimeType = mime_type
 				queries.push({ uri, mimeType });
 
 				if(mimeType.includes("image"))
 					queriesContainMedia = true;
 
-				let resultsArr = topkResults || matches
-
+				let resultsArr = matches
 				for (let j = 0; j < resultsArr.length; ++j) {
 					const res = resultsArr[j];
+
 					if (!results[i])
 						results[i] = [];
 
 					let data, text, mimeType, score;
 					score = res.score.value;
 					if (res.matchDoc) {
-						mimeType = res.matchDoc.mimeType;
+						mimeType = res.matchDoc.mime_type;
 						data = res.matchDoc.uri;
 						text = res.matchDoc.text;
 					}
 					else {
-						mimeType = res.mimeType;
+						mimeType = res.mime_type;
 						data = res.uri;
 						text = res.text;
 					}
+
 
 					if (mimeType.includes('text')) {
 						onlyImages = false;
@@ -111,7 +115,10 @@ class JinaBoxSearchComponent extends HTMLElement {
 					if (!mimeType.includes('image'))
 						onlyImages = false;
 
-					results[i].push({ mimeType, data, text, score });
+					const result = { mimeType, data, text, score }
+					console.log('result', result)
+
+					results[i].push(result);
 					totalResults++;
 				}
 			}
@@ -840,6 +847,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 			}
 
 			results[index].forEach((result, idx) => {
+				console.log('nextResult', result)
 				let resultElement = this.getElement(`jina-result-${idx}`);
 				resultElement.addEventListener('click', () => {
 					if (result.mimeType.includes('text')) {
@@ -859,6 +867,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 				return `<div class="jina-result jina-text-result jina-result-${result.index}">${result.text}</div>`
 			}
 			else if (result.mimeType.includes('image')) {
+				
 				if (this.resultsView === 'grid')
 					return `<div class="jina-grid-container"><div class="jina-result jina-result-${result.index}"><img src="${result.data}" class="jina-result-image"/></div></div>`
 				else
