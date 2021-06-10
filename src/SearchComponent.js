@@ -942,8 +942,12 @@ class JinaBoxSearchComponent extends HTMLElement {
 			if (this.contentContainer) {
 				this.contentContainer.addEventListener('drop', this.handleDrop);
 			}
-			if (this.searchIcon)
+			if (this.searchIcon) {
 				this.searchIcon.addEventListener('click', this.showInputOptions);
+			}
+			if (this.closeIcon) {
+				this.closeIcon.addEventListener('click', this.clearExpander);
+			}
 
 			this.resultsView = localStorage.getItem('jina-results-view') || 'list';
 
@@ -978,6 +982,7 @@ class JinaBoxSearchComponent extends HTMLElement {
 					<div class="jina-search-container">
 						<img src="${this.defaultSearchIcon}" class="jina-search-icon" onerror="this.src='${this.defaultSearchIcon}'" />
 						<input placeholder="type or drop to search" class="jina-search-input jina-contained" autocomplete="off">
+						<img src="${_icons.close}" class="jina-close-icon" onerror="this.src='${_icons.close}'"/>
 					</div>
 				</div>
 			</div>

@@ -8,6 +8,7 @@ class SearchBar extends SearchComponent{
 		this.contentContainer = this.getElement('jina-search-expander');
 		this.searchInput = this.getElement('jina-search-input');
 		this.searchIcon = this.getElement('jina-search-icon');
+		this.closeIcon = this.getElement('jina-close-icon');
 		this.init();
 	}
 }
